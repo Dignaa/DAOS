@@ -4,12 +4,15 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { MongooseModule } from '@nestjs/mongoose';
+import { env } from 'node:process';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true, // Makes the configuration accessible throughout the application
     }),
+    MongooseModule.forRoot(env.MONGODB_URI),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

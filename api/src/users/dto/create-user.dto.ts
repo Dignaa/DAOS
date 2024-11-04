@@ -6,11 +6,11 @@ export class CreateUserDto {
 
   @IsString()
   @Length(3, 50)
-  fullName: string;
+  name: string;
 
   @IsString()
   @Length(8, 100)
-  passwordHash: string;
+  password: string;
 
   @IsOptional()
   @IsString()

@@ -1,41 +1,69 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
+import { User, UserDocument } from '../../schemas/user.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose'; // Ensure this import is present
+import * as bcrypt from 'bcrypt';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class UsersService {
-  private readonly users = [
-    {
-      id: 1,
-      email: 'emil.email',
-      passwordHash: 'changeme',
-      fullName: 'name',
-      posts: [],
-    },
-  ];
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    // Check if a user with the same email already exists
+    const existingUser = await this.userModel.findOne({
+      email: createUserDto.email,
+    });
+    if (existingUser) {
+      throw new BadRequestException('Email is already in use');
+    }
+
+    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+
+    // Create a new user instance
+    const user = new this.userModel({
+      ...createUserDto,
+      password: hashedPassword,
+    });
+
+    // Save and return the user
+    return user.save();
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.userModel.find({});
   }
 
-  async findOne(id: number) {
-    return this.users.find((user) => user.id === id);
+  async findOne(id: string) {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException('Invalid ID format');
+    }
+
+    const user = await this.userModel.findById(new Types.ObjectId(id)).exec();
+    console.log(user);
+    return user;
   }
 
   async findOneByEmail(email: string) {
-    return this.users.find((user) => user.email === email);
+    const user = await this.userModel.findOne({ email });
+    console.log(user);
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(id: string, updateUserDto: UpdateUserDto) {
+    return this.userModel
+      .findByIdAndUpdate(new ObjectId(id), UpdateUserDto, { new: true })
+      .exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string) {
+    return this.userModel.findByIdAndDelete(new ObjectId(id)).exec();
   }
 }

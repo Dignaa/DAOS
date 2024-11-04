@@ -1,30 +1,35 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { Document } from 'mongoose';
 
-export type CatDocument = HydratedDocument<User>;
+export type UserDocument = User & Document;
 
 @Schema()
 export class User {
-  @Prop()
-  id: string;
-
-  @Prop()
+  @Prop({ required: true })
+  @IsString()
   name: string;
 
-  @Prop()
+  @Prop({ required: true, unique: true })
+  @IsEmail()
   email: string;
 
-  @Prop()
-  passwordHash: string;
+  @Prop({ required: true })
+  @IsString()
+  password: string;
 
-  @Prop()
-  phoneNumber: string;
+  @Prop({ required: false })
+  @IsOptional()
+  @IsString()
+  phoneNumber?: string;
 
-  @Prop()
-  avatarURL: string;
+  @Prop({ required: false })
+  @IsOptional()
+  @IsString()
+  avatarURL?: string;
 
-  @Prop()
-  lastLoggedIn: string;
+  @Prop({ required: false, type: Date })
+  lastLoggedIn?: Date; // Change to Date type for better date handling
 }
 
-export const userSchema = SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(User);

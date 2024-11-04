@@ -1,22 +1,16 @@
-import {
-  Entity,
-  Column,
-  PrimaryColumn,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Post } from '../../posts/entities/post.entity';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
-  @PrimaryColumn()
+  @Column({ unique: true })
   email: string;
 
   @Column()
-  fullName: string;
+  name: string;
 
   @Column()
   passwordHash: string;
