@@ -1,4 +1,10 @@
 {
+  "dependencies": {
+    "@nestjs/config": "^3.3.0",
+    "@nestjs/mapped-types": "*",
+    "class-validator": "^0.14.1",
+    "typeorm": "^0.3.20"
+  },
   "name": "daos",
   "version": "1.0.0",
   "main": "index.js",
