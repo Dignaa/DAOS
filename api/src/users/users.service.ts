@@ -23,8 +23,11 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  async findOne(email: string) {
-    console.log(email);
+  async findOne(id: number) {
+    return this.users.find((user) => user.id === id);
+  }
+
+  async findOneByEmail(email: string) {
     return this.users.find((user) => user.email === email);
   }
 
