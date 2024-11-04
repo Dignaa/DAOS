@@ -1,22 +1,38 @@
-import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
+import {
+  IsEmail,
+  IsOptional,
+  IsString,
+  Length,
+  IsNotEmpty,
+} from 'class-validator';
 
 export class CreateUserDto {
-  @IsEmail()
+  @IsEmail({}, { message: 'Email must be a valid email address.' })
   email: string;
 
-  @IsString()
-  @Length(3, 50)
-  fullName: string;
+  @IsString({ message: 'Name must be a string.' })
+  @Length(3, 50, {
+    message: 'Name must be between 3 and 50 characters long.',
+  })
+  @IsNotEmpty({ message: 'Name is required.' })
+  name: string;
 
-  @IsString()
-  @Length(8, 100)
-  passwordHash: string;
+  @IsString({ message: 'Password must be a string.' })
+  @Length(8, 100, {
+    message: 'Password must be between 8 and 100 characters long.',
+  })
+  @IsNotEmpty({ message: 'Password is required.' })
+  password: string;
 
   @IsOptional()
-  @IsString()
+  @IsString({ message: 'Phone number must be a string.' })
+  @Length(10, 15, {
+    message:
+      'Phone number must be between 10 and 15 characters long, if provided.',
+  })
   phoneNumber?: string;
 
   @IsOptional()
-  @IsString()
+  @IsString({ message: 'Avatar URL must be a string.' })
   avatarUrl?: string;
 }

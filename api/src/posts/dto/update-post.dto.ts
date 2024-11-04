@@ -1,30 +1,4 @@
-import { IsEnum, IsOptional, IsString, Length } from 'class-validator';
-import { PostType, Instrument } from '../entities/enum/post.enum';
+import { CreatePostDto } from './create-post.dto';
+import { PartialType } from '@nestjs/mapped-types';
 
-export class UpdatePostDto {
-  @IsOptional()
-  @IsEnum(PostType)
-  type?: PostType;
-
-  @IsOptional()
-  @IsString()
-  @Length(3, 100)
-  title?: string;
-
-  @IsOptional()
-  @IsString()
-  @Length(10, 500)
-  description?: string;
-
-  @IsOptional()
-  @IsString()
-  zipCode?: string;
-
-  @IsOptional()
-  @IsString()
-  city?: string;
-
-  @IsOptional()
-  @IsEnum(Instrument)
-  instrument?: Instrument;
-}
+export class UpdatePostDto extends PartialType(CreatePostDto) {}
