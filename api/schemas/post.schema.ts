@@ -1,34 +1,34 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Types } from 'mongoose';
-import { User } from 'schemas/user.schema';
+import { Document, Types } from 'mongoose';
+import { User } from './user.schema';
 
-export type CatDocument = HydratedDocument<Post>;
+export type PostDocument = Post & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Post {
-  @Prop()
+  @Prop({ required: true })
   id: string;
 
-  @Prop()
-  type: Enumerator;
+  @Prop({ required: true })
+  type: string;
 
-  @Prop()
+  @Prop({ required: true })
   title: string;
 
-  @Prop()
+  @Prop({ required: true })
   description: string;
 
-  @Prop()
+  @Prop({ required: true })
   zipCode: string;
 
-  @Prop()
+  @Prop({ required: true })
   city: string;
 
-  @Prop()
-  createdAt: string;
+  @Prop({ type: Date, default: Date.now })
+  createdAt: Date;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   author: User;
 }
 
-export const userSchema = SchemaFactory.createForClass(Post);
+export const PostSchema = SchemaFactory.createForClass(Post);
