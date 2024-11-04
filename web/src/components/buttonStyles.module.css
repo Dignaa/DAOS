@@ -1,0 +1,22 @@
+.button {
+  background-color: white;
+  color: var(--color-blue);
+  font-size: 16pt;
+  font-weight: 700;
+  border-radius: 10pt;
+  cursor: pointer;
+  box-shadow: 0 2pt 4pt #00000014;
+  border: 1pt solid var(--color-lightGray);
+  transition: 0.3s;
+  padding: 15pt 30pt;
+  &:hover {
+    background-color: #f9f9f9;
+  }
+}
+.blue {
+  background-color: var(--color-blue);
+  color: white;
+  &:hover {
+    background-color: #4a4e6e;
+  }
+}
