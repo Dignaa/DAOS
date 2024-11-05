@@ -1,4 +1,11 @@
-import { IsEnum, IsNotEmpty, IsString, Length } from 'class-validator';
+import {
+  IsDate,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
 import { PostType, Instrument } from '../entities/enum/post.enum';
 
 export class CreatePostDto {
@@ -14,14 +21,15 @@ export class CreatePostDto {
   description: string;
 
   @IsString()
-  zipCode: string;
-
-  @IsString()
-  city: string;
+  address: string;
 
   @IsEnum(Instrument)
   instrument: Instrument;
 
+  @IsDate()
+  date: Date;
+
   @IsString()
-  userId: string;
+  @IsOptional()
+  author: string;
 }

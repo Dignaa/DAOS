@@ -15,15 +15,19 @@ export class AuthGuard implements CanActivate {
 
   private validateRequest(request: Request): boolean {
     const authHeader = request.headers['authorization'];
-    console.log(authHeader);
-    console.log('JWT Token:', env.JWT_SECRET);
-    if (!authHeader) {
+    console.log('auth header: ', authHeader);
+    const token = request.headers['authorization']?.split(' ')[1]; // Assuming the format is "Bearer token"
+
+    console.log('JWT Secret:', env.JWT_SECRET);
+    if (!token) {
       return false; // No authorization header
     }
 
     try {
       // Verify the token
-      const decoded = jwt.verify(authHeader, env.JWT_SECRET);
+      const decoded = jwt.verify(token, env.JWT_SECRET);
+      request['user'] = decoded;
+
       return true; // Token is valid
     } catch (error) {
       console.error('Token verification failed:', error);

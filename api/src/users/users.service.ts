@@ -31,6 +31,7 @@ export class UsersService {
     const user = new this.userModel({
       ...createUserDto,
       password: hashedPassword,
+      lastLoggedIn: Date.now(),
     });
 
     // Save and return the user

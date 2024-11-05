@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsEmail, IsOptional, IsString } from 'class-validator';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { Post } from './post.schema';
 
 export type UserDocument = User & Document;
 
@@ -26,7 +27,7 @@ export class User {
   @Prop({ required: false })
   @IsOptional()
   @IsString()
-  avatarURL?: string;
+  avatarUrl?: string;
 
   @Prop({ required: false, type: Date })
   lastLoggedIn?: Date; // Change to Date type for better date handling

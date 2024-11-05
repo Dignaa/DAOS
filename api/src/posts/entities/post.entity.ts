@@ -5,7 +5,6 @@ import {
   ManyToOne,
   CreateDateColumn,
 } from 'typeorm';
-import { User } from '../../users/entities/user.entity';
 import { PostType, Instrument } from './enum/post.enum';
 
 @Entity()
@@ -36,7 +35,4 @@ export class Post {
 
   @Column()
   userId: string;
-
-  @ManyToOne(() => User, (user) => user.posts)
-  user: User;
 }
