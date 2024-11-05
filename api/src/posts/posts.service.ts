@@ -4,7 +4,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from 'schemas/post.schema';
 import { Model, Types } from 'mongoose';
-import { User, UserDocument } from 'schemas/user.schema';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class PostsService {
@@ -23,22 +23,24 @@ export class PostsService {
     });
 
     // Save and return the user
-    return post.save();
+    return await post.save();
   }
 
-  findAll() {
-    return this.postModel.find({});
+  async findAll() {
+    return await this.postModel.find({});
   }
 
-  findOne(id: string) {
-    return this.postModel.findById(new Types.ObjectId(id)).exec();
+  async findOne(id: string) {
+    return await this.postModel.findById(new ObjectId(id)).exec();
   }
 
-  update(id: string, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  async update(id: string, updatePostDto: UpdatePostDto) {
+    return await this.postModel
+      .findByIdAndUpdate(new ObjectId(id), updatePostDto, { new: true })
+      .exec();
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} post`;
+  async remove(id: string) {
+    return await this.postModel.findByIdAndDelete(new ObjectId(id)).exec();
   }
 }

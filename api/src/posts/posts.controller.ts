@@ -24,28 +24,28 @@ export class PostsController {
     console.log('req user:', req.user);
     const userId = req.user.userId;
     createPostDto.author = userId;
-    return this.postsService.create({ ...createPostDto });
+    return await this.postsService.create({ ...createPostDto });
   }
 
   @Get()
   async findAll() {
-    return this.postsService.findAll();
+    return await this.postsService.findAll();
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.postsService.findOne(id);
+    return await this.postsService.findOne(id);
   }
 
   @Patch(':id')
   @UseGuards(AuthGuard)
   async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postsService.update(id, updatePostDto);
+    return await this.postsService.update(id, updatePostDto);
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard)
   async remove(@Param('id') id: string) {
-    return this.postsService.remove(id);
+    return await this.postsService.remove(id);
   }
 }

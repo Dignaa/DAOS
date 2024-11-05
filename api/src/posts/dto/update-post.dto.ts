@@ -3,10 +3,6 @@ import { PostType, Instrument } from '../entities/enum/post.enum';
 
 export class UpdatePostDto {
   @IsOptional()
-  @IsEnum(PostType)
-  type?: PostType;
-
-  @IsOptional()
   @IsString()
   @Length(3, 100)
   title?: string;
@@ -18,11 +14,7 @@ export class UpdatePostDto {
 
   @IsOptional()
   @IsString()
-  zipCode?: string;
-
-  @IsOptional()
-  @IsString()
-  city?: string;
+  group?: string;
 
   @IsOptional()
   @IsEnum(Instrument)
