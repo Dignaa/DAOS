@@ -2,13 +2,15 @@
   border: 1pt solid var(--color-lightGray);
   border-radius: 10pt;
   padding-bottom: 0;
-  display: flex;
-  flex-direction: column;
+  display: block;
   box-shadow: 0 2pt 4pt #00000014;
   width: 100%;
 }
 .link {
   font-weight: 400;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
@@ -18,6 +20,9 @@
   margin-bottom: 16pt;
   color: var(--color-blue);
   font-weight: 700;
+}
+.content {
+  flex-grow: 1;
 }
 .info {
   padding-inline: 20pt;

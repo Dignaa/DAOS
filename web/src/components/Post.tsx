@@ -28,14 +28,16 @@ export default function Section({
     <li className={styles.post}>
       <a className={styles.link} href="/">
         <header className={styles.header}>{title}</header>
-        <p className={styles.info}>
-          <img src="illustrations/icons/author-icon.svg" alt="" />
-          {user}
-        </p>
-        <p className={styles.info}>
-          <img src="illustrations/icons/instrument-icon.svg" alt="" />
-          {instrument}
-        </p>
+        <div className={styles.content}>
+          <p className={styles.info}>
+            <img src="illustrations/icons/author-icon.svg" alt="" />
+            {user}
+          </p>
+          <p className={styles.info}>
+            <img src="illustrations/icons/instrument-icon.svg" alt="" />
+            {instrument}
+          </p>
+        </div>
         <footer className={styles.footer}>
           <time dateTime={date}>{formattedDate}</time> •{' '}
           <address className={styles.address}>{address}</address>

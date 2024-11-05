@@ -3,7 +3,7 @@ import typographyStyles from './components/typographyStyles.module.css';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import Section from './components/Section';
-import Post from './components/Post';
+import PostGrid from './components/PostGrid';
 import instruments from './assets/instruments';
 import Select from 'react-select';
 
@@ -118,7 +118,7 @@ function App() {
             <h1 className={typographyStyles.red}>
               Stedet hvor amatørmusikere finder hinanden og spiller sammen
             </h1>
-            <Select options={options} />
+            <Select options={options} placeholder="Vælg instrument" />
           </div>
           <div>
             <img src="/illustrations/hero.svg" alt="" />
@@ -133,11 +133,7 @@ function App() {
           </div>
         </Section>
         <Section>
-          <div className="postGrid">
-            {posts.map(post => (
-              <Post key={post.id} {...post} />
-            ))}
-          </div>
+          <PostGrid posts={posts} />
         </Section>
       </main>
       <Footer />
