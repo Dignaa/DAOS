@@ -118,7 +118,11 @@ function App() {
             <h1 className={typographyStyles.red}>
               Stedet hvor amatørmusikere finder hinanden og spiller sammen
             </h1>
-            <Select options={options} placeholder="Vælg instrument" />
+            <Select
+              options={options}
+              placeholder="Vælg instrument"
+              noOptionsMessage={() => 'Ingen instrumenter fundet'}
+            />
           </div>
           <div>
             <img src="/illustrations/hero.svg" alt="" />
