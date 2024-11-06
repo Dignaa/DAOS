@@ -8,6 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { env } from 'node:process';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
+import { GroupsModule } from './groups/groups.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { UsersModule } from './users/users.module';
     }),
     PostsModule,
     UsersModule,
+    GroupsModule,
     AuthModule,
   ],
   controllers: [AppController],

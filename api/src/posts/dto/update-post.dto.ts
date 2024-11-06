@@ -1,6 +1,4 @@
-import { IsEnum, IsOptional, IsString, Length } from 'class-validator';
-import { PostType, Instrument } from '../entities/enum/post.enum';
-
+import { IsDate, IsOptional, IsString, Length } from 'class-validator';
 export class UpdatePostDto {
   @IsOptional()
   @IsString()
@@ -14,9 +12,8 @@ export class UpdatePostDto {
 
   @IsOptional()
   @IsString()
-  group?: string;
+  instrument?: string;
 
-  @IsOptional()
-  @IsEnum(Instrument)
-  instrument?: Instrument;
+  @IsDate()
+  date: Date;
 }

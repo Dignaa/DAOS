@@ -14,14 +14,8 @@ export class AuthGuard implements CanActivate {
   }
 
   private validateRequest(request: Request): boolean {
-    const authHeader = request.headers['authorization'];
-    console.log('auth header: ', authHeader);
     const token = request.headers['authorization']?.split(' ')[1]; // Assuming the format is "Bearer token"
-
-    console.log('JWT Secret:', env.JWT_SECRET);
-    if (!token) {
-      return false; // No authorization header
-    }
+    if (!token) return false; // No authorization header
 
     try {
       // Verify the token
@@ -31,6 +25,13 @@ export class AuthGuard implements CanActivate {
       return true; // Token is valid
     } catch (error) {
       console.error('Token verification failed:', error);
+      if (error instanceof jwt.TokenExpiredError) {
+        console.log('JWT Token has expired');
+        // Send a custom error response here
+      } else if (error instanceof jwt.JsonWebTokenError) {
+        console.log('Invalid JWT Token');
+        // Send a custom error response here
+      }
       return false; // Token is invalid or expired
     }
   }

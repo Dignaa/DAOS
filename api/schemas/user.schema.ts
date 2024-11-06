@@ -32,9 +32,14 @@ export class User {
   @IsString()
   avatarUrl?: string;
 
+  @Prop({ required: false })
+  @IsOptional()
+  @IsString()
+  address?: string;
+
   @Prop({
-    type: { type: String, enum: ['Point'], required: true },
-    coordinates: { type: [Number], required: true, index: '2dsphere' },
+    type: { type: String, enum: ['Point'], required: false },
+    coordinates: { type: [Number], required: false, index: '2dsphere' },
   })
   location: {
     type: 'Point';

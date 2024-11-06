@@ -12,10 +12,14 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { GroupsService } from 'src/groups/groups.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly groupsService: GroupsService,
+  ) {}
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
@@ -44,5 +48,12 @@ export class UsersController {
   @UseGuards(AuthGuard)
   async remove(@Param('id') id: string) {
     return await this.usersService.remove(id);
+  }
+
+  @Get(':userId/groups')
+  async getUserGroups(@Param('userId') userId: string) {
+    console.log('Getting groups for id: ', userId);
+    const groups = await this.groupsService.getGroupsForUser(userId);
+    return groups;
   }
 }

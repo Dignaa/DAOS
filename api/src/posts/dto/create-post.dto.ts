@@ -2,10 +2,12 @@ import {
   IsDate,
   IsEnum,
   IsNotEmpty,
+  IsObject,
   IsOptional,
   IsString,
   Length,
 } from 'class-validator';
+import { Types } from 'mongoose';
 
 export class CreatePostDto {
   @IsString()
@@ -22,7 +24,5 @@ export class CreatePostDto {
   @IsDate()
   date: Date;
 
-  @IsString()
-  @IsOptional()
-  author: string;
+  groupId: Types.ObjectId;
 }

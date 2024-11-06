@@ -21,9 +21,6 @@ export class PostsController {
   @Post()
   @UseGuards(AuthGuard)
   async create(@Request() req, @Body() createPostDto: CreatePostDto) {
-    console.log('req user:', req.user);
-    const userId = req.user.userId;
-    createPostDto.author = userId;
     return await this.postsService.create({ ...createPostDto });
   }
 
