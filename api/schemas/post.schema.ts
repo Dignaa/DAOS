@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
-import { User } from './user.schema';
+import { Types } from 'mongoose';
 
 export type PostDocument = Post & Document;
 
@@ -10,25 +9,16 @@ export class Post {
   id: string;
 
   @Prop({ required: true })
-  type: string;
-
-  @Prop({ required: true })
   title: string;
 
   @Prop({ required: true })
   description: string;
 
-  @Prop({ required: true })
-  zipCode: string;
-
-  @Prop({ required: true })
-  city: string;
-
-  @Prop({ type: Date, default: Date.now })
+  @Prop({ required: false, type: Date })
   createdAt: Date;
 
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  author: User;
+  @Prop({ type: Types.ObjectId, ref: 'Group', required: true })
+  groupId: Types.ObjectId;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

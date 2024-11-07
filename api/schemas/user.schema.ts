@@ -1,30 +1,63 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { IsBoolean, IsEmail, IsOptional, IsString } from 'class-validator';
+import { Document } from 'mongoose';
 
-export type UserDocument = HydratedDocument<User>;
+export type UserDocument = User & Document;
 
-@Schema({ timestamps: true })
+@Schema()
 export class User {
   @Prop({ required: true })
-  id: string;
-
-  @Prop({ required: true })
+  @IsString()
   name: string;
 
   @Prop({ required: true, unique: true })
+  @IsEmail()
   email: string;
 
   @Prop({ required: true })
-  passwordHash: string;
+  @IsString()
+  password: string;
 
-  @Prop()
+  @Prop({ required: false })
+  @IsOptional()
+  @IsString()
   phoneNumber?: string;
 
-  @Prop()
-  avatarURL?: string;
+  @Prop({ required: false })
+  @IsString()
+  description: string;
 
-  @Prop({ type: Date })
+  @Prop({ required: false })
+  @IsOptional()
+  @IsString()
+  avatarUrl?: string;
+
+  @Prop({ required: false })
+  @IsOptional()
+  @IsString()
+  address?: string;
+
+  @Prop({
+    type: { type: String, enum: ['Point'], required: false },
+    coordinates: { type: [Number], required: false, index: '2dsphere' },
+  })
+  location: {
+    type: 'Point';
+    coordinates: [number, number]; // [longitude, latitude]
+  };
+
+  @Prop({ required: true })
+  @IsBoolean()
+  seeking: boolean;
+
+  @Prop({ required: false, type: Date })
   lastLoggedIn?: Date;
+
+  @Prop({ required: false, type: Date })
+  createdAt?: Date;
+
+  @Prop({ required: false })
+  instruments: [string];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

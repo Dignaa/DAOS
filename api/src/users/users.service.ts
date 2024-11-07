@@ -31,14 +31,15 @@ export class UsersService {
     const user = new this.userModel({
       ...createUserDto,
       password: hashedPassword,
+      createdAt: new Date(),
     });
 
     // Save and return the user
-    return user.save();
+    return await user.save();
   }
 
-  findAll() {
-    return this.userModel.find({});
+  async findAll() {
+    return await this.userModel.find({});
   }
 
   async findOne(id: string) {
@@ -57,13 +58,13 @@ export class UsersService {
     return user;
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return this.userModel
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    return await this.userModel
       .findByIdAndUpdate(new ObjectId(id), UpdateUserDto, { new: true })
       .exec();
   }
 
-  remove(id: string) {
-    return this.userModel.findByIdAndDelete(new ObjectId(id)).exec();
+  async remove(id: string) {
+    return await this.userModel.findByIdAndDelete(new ObjectId(id)).exec();
   }
 }

@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -19,29 +20,29 @@ export class PostsController {
 
   @Post()
   @UseGuards(AuthGuard)
-  create(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.create(createPostDto);
+  async create(@Request() req, @Body() createPostDto: CreatePostDto) {
+    return await this.postsService.create({ ...createPostDto });
   }
 
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  async findAll() {
+    return await this.postsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.postsService.findOne(id);
   }
 
   @Patch(':id')
   @UseGuards(AuthGuard)
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postsService.update(+id, updatePostDto);
+  async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
+    return await this.postsService.update(id, updatePostDto);
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard)
-  remove(@Param('id') id: string) {
-    return this.postsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.postsService.remove(id);
   }
 }

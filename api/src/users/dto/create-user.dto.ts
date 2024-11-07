@@ -1,9 +1,10 @@
 import {
+  IsBoolean,
   IsEmail,
   IsOptional,
   IsString,
-  Length,
   IsNotEmpty,
+  Length,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -25,7 +26,6 @@ export class CreateUserDto {
   password: string;
 
   @IsOptional()
-  @IsString({ message: 'Phone number must be a string.' })
   @Length(10, 15, {
     message:
       'Phone number must be between 10 and 15 characters long, if provided.',
@@ -35,4 +35,16 @@ export class CreateUserDto {
   @IsOptional()
   @IsString({ message: 'Avatar URL must be a string.' })
   avatarUrl?: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @IsString()
+  address?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  seeking?: boolean;
 }

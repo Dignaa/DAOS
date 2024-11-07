@@ -6,6 +6,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { env } from 'node:process';
+import { PostsModule } from './posts/posts.module';
+import { UsersModule } from './users/users.module';
+import { GroupsModule } from './groups/groups.module';
 
 @Module({
   imports: [
@@ -21,6 +24,9 @@ import { env } from 'node:process';
         signOptions: { expiresIn: '24h' },
       }),
     }),
+    PostsModule,
+    UsersModule,
+    GroupsModule,
     AuthModule,
   ],
   controllers: [AppController],

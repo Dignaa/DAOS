@@ -1,11 +1,13 @@
-import { IsEnum, IsString, Length, IsNotEmpty, Matches } from 'class-validator';
-import { PostType, Instrument } from '../entities/enum/post.enum';
+import {
+  IsDate,
+  IsNotEmpty,
+  IsString,
+  Length,
+} from 'class-validator';
+import { Types } from 'mongoose';
 
 export class CreatePostDto {
-  @IsEnum(PostType)
-  @IsNotEmpty({ message: 'Post type is required' })
-  type: PostType;
-
+  @IsString()
   @Length(3, 100)
   @IsNotEmpty({ message: 'Title is required' })
   title: string;
@@ -15,16 +17,11 @@ export class CreatePostDto {
   @IsString({ message: 'Description must be a string' })
   description: string;
 
-  @IsNotEmpty({ message: 'ZIP code is required' })
-  @Matches(/^\d{4}$/, { message: 'ZIP code must be exactly 4 digits' })
-  @IsString({ message: 'ZIP code must be a string' })
-  zipCode: string;
+  @IsString()
+  instrument: string;
 
-  @IsNotEmpty({ message: 'City is required' })
-  @IsString({ message: 'City name must be a valid string' })
-  city: string;
+  @IsDate()
+  date: Date;
 
-  @IsEnum(Instrument)
-  @IsNotEmpty({ message: 'Instrument is required' })
-  instrument: Instrument;
+  groupId: Types.ObjectId;
 }
