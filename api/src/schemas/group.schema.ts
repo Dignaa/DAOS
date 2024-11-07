@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString, IsUrl } from 'class-validator';
 import { Types } from 'mongoose';
 
 export type GroupDocument = Group & Document;
@@ -12,7 +12,7 @@ export class Group {
 
   @Prop()
   @IsOptional()
-  @IsString()
+  @IsUrl()
   imageUrl?: string;
 
   @Prop()
@@ -20,7 +20,7 @@ export class Group {
   @IsString()
   description?: string;
 
-  @Prop({ required: false })
+  @Prop()
   @IsOptional()
   @IsString()
   address?: string;
@@ -36,7 +36,7 @@ export class Group {
 
   @Prop()
   @IsOptional()
-  @IsString()
+  @IsUrl()
   link?: string;
 
   @Prop({ default: 1 })

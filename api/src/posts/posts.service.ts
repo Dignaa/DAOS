@@ -1,18 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Post, PostDocument } from 'schemas/post.schema';
-import { Model, Types } from 'mongoose';
+import { Post, PostDocument } from 'src/schemas/post.schema';
+import { Model } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class PostsService {
   constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
 
+  // Create a post
   async create(createPostDto: CreatePostDto) {
-    //call to openmaps
-
     const post = new this.postModel({
       ...createPostDto,
       createdAt: Date.now(),
@@ -22,25 +25,41 @@ export class PostsService {
       },
     });
 
-    // Save and return the user
     return await post.save();
   }
 
+  // Find all posts
   async findAll() {
-    return await this.postModel.find({});
+    const posts = await this.postModel.find({});
+    return posts;
   }
 
+  // Find a post by ID
   async findOne(id: string) {
-    return await this.postModel.findById(new ObjectId(id)).exec();
+    if (!ObjectId.isValid(id)) {
+      throw new BadRequestException(`Invalid Post ID format: ${id}`);
+    }
+
+    const post = await this.postModel.findById(id).exec();
+    if (!post) {
+      throw new NotFoundException(`Post with ID ${id} not found`);
+    }
+    return post;
   }
 
+  // Update a post by ID
   async update(id: string, updatePostDto: UpdatePostDto) {
+    const post = await this.findOne(id);
+
     return await this.postModel
-      .findByIdAndUpdate(new ObjectId(id), updatePostDto, { new: true })
+      .findByIdAndUpdate(post.id, updatePostDto, { new: true })
       .exec();
   }
 
+  // Delete a post by ID
   async remove(id: string) {
-    return await this.postModel.findByIdAndDelete(new ObjectId(id)).exec();
+    const post = await this.findOne(id);
+
+    return await this.postModel.findByIdAndDelete(post.id).exec();
   }
 }

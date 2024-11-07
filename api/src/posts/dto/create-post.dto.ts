@@ -1,9 +1,4 @@
-import {
-  IsDate,
-  IsNotEmpty,
-  IsString,
-  Length,
-} from 'class-validator';
+import { IsNotEmpty, IsString, Length } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class CreatePostDto {
@@ -13,15 +8,12 @@ export class CreatePostDto {
   title: string;
 
   @Length(10, 500)
-  @IsNotEmpty({ message: 'Description is required' })
+  @IsNotEmpty({ message: 'Description cannot be empty' })
   @IsString({ message: 'Description must be a string' })
   description: string;
 
   @IsString()
   instrument: string;
-
-  @IsDate()
-  date: Date;
 
   groupId: Types.ObjectId;
 }

@@ -12,11 +12,11 @@ export class AuthService {
 
   async signIn(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findOneByEmail(email);
-    
+
     const isPasswordValid = await bcrypt.compare(pass, user?.password);
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Invalid email and/or password');
     }
 
     user.lastLoggedIn = new Date();
