@@ -1,69 +1,59 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import {
-  IsBoolean,
-  IsEmail,
-  IsOptional,
-  IsString,
-  IsUrl,
-} from 'class-validator';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export type UserDocument = User & Document;
 
 @Schema()
 export class User {
-  @Prop({ required: true })
-  @IsString()
+  @Prop({ required: true, type: String })
   name: string;
 
-  @Prop({ required: true, unique: true })
-  @IsEmail()
+  @Prop({ required: true, unique: true, type: String })
   email: string;
 
-  @Prop({ required: true })
-  @IsString()
+  @Prop({ required: true, type: String })
   password: string;
 
-  @Prop({ required: false })
-  @IsOptional()
-  @IsString()
+  @Prop({ type: String, required: false })
   phoneNumber?: string;
 
-  @Prop({ required: false })
-  @IsString()
-  description: string;
+  @Prop({ type: String, required: false })
+  description?: string;
 
-  @Prop({ required: false })
-  @IsOptional()
-  @IsUrl()
+  @Prop({ type: String, required: false })
   avatarUrl?: string;
 
-  @Prop({ required: false })
-  @IsOptional()
-  @IsString()
+  @Prop({ type: String, required: false })
   address?: string;
 
   @Prop({
-    type: { type: String, enum: ['Point'], required: false },
-    coordinates: { type: [Number], required: false, index: '2dsphere' },
+    type: {
+      type: String,
+      enum: ['Point'],
+      default: 'Point',
+    },
+    coordinates: {
+      type: [Number],
+      required: false,
+      index: '2dsphere',
+    },
   })
-  location: {
+  location?: {
     type: 'Point';
-    coordinates: [number, number]; // [longitude, latitude]
+    coordinates: [number, number];
   };
 
-  @Prop({ required: true })
-  @IsBoolean()
+  @Prop({ required: true, type: Boolean })
   seeking: boolean;
 
-  @Prop({ required: false, type: Date })
+  @Prop({ type: Date, required: false })
   lastLoggedIn?: Date;
 
-  @Prop({ required: false, type: Date })
+  @Prop({ type: Date, default: Date.now })
   createdAt?: Date;
 
-  @Prop({ required: false })
-  instruments: [string];
+  @Prop({ type: [String], required: false })
+  instruments?: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

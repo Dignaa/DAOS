@@ -52,7 +52,7 @@ export class GroupsService {
   async addUser(groupId: string, userId: string) {
     const group = await this.findOne(groupId);
     return await this.groupModel
-      .updateOne(
+      .findByIdAndUpdate(
         group.id,
         { $addToSet: { userIds: new Types.ObjectId(userId) } }, // use $addToSet to avoid duplicates
         { new: true },
@@ -63,7 +63,7 @@ export class GroupsService {
   async removeUser(groupId: string, userId: string) {
     const group = await this.findOne(groupId);
     return await this.groupModel
-      .updateOne(
+      .findByIdAndUpdate(
         group.id,
         { $pull: { userIds: new Types.ObjectId(userId) } },
         { new: true },
