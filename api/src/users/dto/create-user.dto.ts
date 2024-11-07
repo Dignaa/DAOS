@@ -5,6 +5,7 @@ import {
   IsString,
   IsNotEmpty,
   Length,
+  IsUrl,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -33,7 +34,7 @@ export class CreateUserDto {
   phoneNumber?: string;
 
   @IsOptional()
-  @IsString({ message: 'Avatar URL must be a string.' })
+  @IsUrl()
   avatarUrl?: string;
 
   @IsOptional()

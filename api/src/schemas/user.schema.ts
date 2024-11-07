@@ -1,5 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsBoolean, IsEmail, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsOptional,
+  IsString,
+  IsUrl,
+} from 'class-validator';
 import { Document } from 'mongoose';
 
 export type UserDocument = User & Document;
@@ -29,7 +35,7 @@ export class User {
 
   @Prop({ required: false })
   @IsOptional()
-  @IsString()
+  @IsUrl()
   avatarUrl?: string;
 
   @Prop({ required: false })
