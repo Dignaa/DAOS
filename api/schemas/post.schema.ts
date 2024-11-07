@@ -3,9 +3,9 @@ import { Types } from 'mongoose';
 
 export type PostDocument = Post & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Post {
-  @Prop()
+  @Prop({ required: true })
   id: string;
 
   @Prop({ required: true })
