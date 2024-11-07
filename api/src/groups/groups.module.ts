@@ -6,7 +6,7 @@ import { Group, GroupSchema } from 'schemas/group.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Group.name, schema: GroupSchema }]), // Import the Post schema
+    MongooseModule.forFeature([{ name: Group.name, schema: GroupSchema }]),
   ],
   controllers: [GroupsController],
   providers: [GroupsService],

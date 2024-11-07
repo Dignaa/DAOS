@@ -26,11 +26,9 @@ export class AuthGuard implements CanActivate {
     } catch (error) {
       console.error('Token verification failed:', error);
       if (error instanceof jwt.TokenExpiredError) {
-        console.log('JWT Token has expired');
-        // Send a custom error response here
+        console.error('JWT Token has expired');
       } else if (error instanceof jwt.JsonWebTokenError) {
-        console.log('Invalid JWT Token');
-        // Send a custom error response here
+        console.error('Invalid JWT Token');
       }
       return false; // Token is invalid or expired
     }

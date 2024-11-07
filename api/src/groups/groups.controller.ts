@@ -13,7 +13,6 @@ import { GroupsService } from './groups.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { Types } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
 @Controller('groups')
@@ -54,13 +53,13 @@ export class GroupsController {
     return await this.groupService.remove(id);
   }
 
-  @Post(':id/add-user')
+  @Post(':id/users')
   @UseGuards(AuthGuard)
   async addUser(@Param('id') groupId: string, @Body('userId') userId: string) {
     return await this.groupService.addUser(groupId, userId);
   }
 
-  @Delete(':id/remove-user')
+  @Delete(':id/users')
   @UseGuards(AuthGuard)
   async removeUser(
     @Param('id') groupId: string,

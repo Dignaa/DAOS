@@ -17,7 +17,7 @@ export class Post {
   @Prop({ required: false, type: Date })
   createdAt: Date;
 
-  @Prop({ type: Types.ObjectId, ref: 'Ensemble', required: true }) // change to group ref
+  @Prop({ type: Types.ObjectId, ref: 'Group', required: true })
   groupId: Types.ObjectId;
 }
 
