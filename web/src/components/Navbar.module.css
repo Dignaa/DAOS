@@ -1,0 +1,27 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.5pt solid var(--color-lightGray);
+  padding: 15pt 30pt;
+}
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 14pt;
+  color: var(--color-blue);
+}
+.logoTitle {
+  font-size: 27pt;
+  color: var(--color-red);
+  font-family: Oswald;
+  font-weight: 500;
+}
+.list {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  gap: 19pt;
+  color: var(--color-blue);
+}

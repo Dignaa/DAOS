@@ -1,0 +1,12 @@
+.red {
+  color: var(--color-red);
+}
+
+.title,
+h1,
+h2,
+h3 {
+  color: var(--color-blue);
+  font-family: Oswald;
+  font-weight: 700;
+}

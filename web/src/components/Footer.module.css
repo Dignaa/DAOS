@@ -1,0 +1,54 @@
+.footer {
+  padding: 15pt 30pt;
+  background-color: var(--color-red);
+  color: white;
+}
+.grid {
+  display: grid;
+  gap: 20pt;
+  margin-bottom: 20pt;
+  grid-template-columns: repeat(3, 1fr);
+}
+.column {
+  display: flex;
+  justify-content: center;
+  gap: 20pt;
+  flex-direction: column;
+}
+.links,
+.socials {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  gap: 15pt;
+}
+.title {
+  font-family: Oswald;
+  font-weight: 500;
+  font-size: 26pt;
+}
+.illustration {
+  display: block;
+  width: 70%;
+  margin: auto;
+}
+.card {
+  background-color: white;
+  color: black;
+  text-align: center;
+  font: 11pt;
+  display: flex;
+  flex-direction: column;
+  gap: 11pt;
+  padding: 12pt 0;
+  border-radius: 8pt;
+  text-transform: uppercase;
+}
+@media screen and (max-width: 500px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .links {
+    flex-direction: column;
+  }
+}
