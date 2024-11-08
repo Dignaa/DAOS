@@ -25,6 +25,7 @@ export class UsersController {
   ) {}
 
   @Post()
+  @UseGuards(AuthGuard)
   async create(
     @Body() createUserDto: CreateUserDto,
   ): Promise<UsersResponseDto> {
@@ -33,7 +34,6 @@ export class UsersController {
   }
 
   @Get()
-  @UseGuards(AuthGuard)
   async find(): Promise<UsersResponseDto[]> {
     const users = await this.usersService.findAll();
     return plainToInstance(UsersResponseDto, users);

@@ -5,15 +5,17 @@ export default function Navbar() {
   return (
     <nav className={styles.nav}>
       <div className={styles.logo}>
-        <p className={styles.logoTitle}>Musik Samspil</p>
-        <p>Skabt af DAOS - Dansk Amatørorkester Samvirke</p>
+        <a href="/" className={styles.logoTitle}>
+          Musik Samspil
+        </a>
+        <a href="https://daos.dk">Skabt af DAOS</a>
       </div>
       <ul className={styles.list}>
         <li>
-          <a href="/posts">Opslag</a>
+          <a href="/users">Find Musiker</a>
         </li>
         <li>
-          <a href="/profile">Profil</a>
+          <a href="/groups">Find Ensemble</a>
         </li>
         <li>
           <button className={`${buttonStyles.button} ${buttonStyles.blue}`}>
