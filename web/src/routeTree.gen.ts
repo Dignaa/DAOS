@@ -22,6 +22,8 @@ const ProfileIndexLazyImport = createFileRoute('/profile/')()
 const GroupsIndexLazyImport = createFileRoute('/groups/')()
 const UsersUserIdLazyImport = createFileRoute('/users/$userId')()
 const GroupsGroupIdLazyImport = createFileRoute('/groups/$groupId')()
+const signSignupLazyImport = createFileRoute('/(sign)/signup')()
+const signSigninLazyImport = createFileRoute('/(sign)/signin')()
 
 // Create/Update Routes
 
@@ -63,6 +65,22 @@ const GroupsGroupIdLazyRoute = GroupsGroupIdLazyImport.update({
   import('./routes/groups/$groupId.lazy').then((d) => d.Route),
 )
 
+const signSignupLazyRoute = signSignupLazyImport
+  .update({
+    id: '/(sign)/signup',
+    path: '/signup',
+    getParentRoute: () => rootRoute,
+  } as any)
+  .lazy(() => import('./routes/(sign)/signup.lazy').then((d) => d.Route))
+
+const signSigninLazyRoute = signSigninLazyImport
+  .update({
+    id: '/(sign)/signin',
+    path: '/signin',
+    getParentRoute: () => rootRoute,
+  } as any)
+  .lazy(() => import('./routes/(sign)/signin.lazy').then((d) => d.Route))
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -72,6 +90,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/(sign)/signin': {
+      id: '/(sign)/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof signSigninLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/(sign)/signup': {
+      id: '/(sign)/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof signSignupLazyImport
       parentRoute: typeof rootRoute
     }
     '/groups/$groupId': {
@@ -116,6 +148,8 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/signin': typeof signSigninLazyRoute
+  '/signup': typeof signSignupLazyRoute
   '/groups/$groupId': typeof GroupsGroupIdLazyRoute
   '/users/$userId': typeof UsersUserIdLazyRoute
   '/groups': typeof GroupsIndexLazyRoute
@@ -125,6 +159,8 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/signin': typeof signSigninLazyRoute
+  '/signup': typeof signSignupLazyRoute
   '/groups/$groupId': typeof GroupsGroupIdLazyRoute
   '/users/$userId': typeof UsersUserIdLazyRoute
   '/groups': typeof GroupsIndexLazyRoute
@@ -135,6 +171,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/(sign)/signin': typeof signSigninLazyRoute
+  '/(sign)/signup': typeof signSignupLazyRoute
   '/groups/$groupId': typeof GroupsGroupIdLazyRoute
   '/users/$userId': typeof UsersUserIdLazyRoute
   '/groups/': typeof GroupsIndexLazyRoute
@@ -146,6 +184,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/signin'
+    | '/signup'
     | '/groups/$groupId'
     | '/users/$userId'
     | '/groups'
@@ -154,6 +194,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/signin'
+    | '/signup'
     | '/groups/$groupId'
     | '/users/$userId'
     | '/groups'
@@ -162,6 +204,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/(sign)/signin'
+    | '/(sign)/signup'
     | '/groups/$groupId'
     | '/users/$userId'
     | '/groups/'
@@ -172,6 +216,8 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  signSigninLazyRoute: typeof signSigninLazyRoute
+  signSignupLazyRoute: typeof signSignupLazyRoute
   GroupsGroupIdLazyRoute: typeof GroupsGroupIdLazyRoute
   UsersUserIdLazyRoute: typeof UsersUserIdLazyRoute
   GroupsIndexLazyRoute: typeof GroupsIndexLazyRoute
@@ -181,6 +227,8 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  signSigninLazyRoute: signSigninLazyRoute,
+  signSignupLazyRoute: signSignupLazyRoute,
   GroupsGroupIdLazyRoute: GroupsGroupIdLazyRoute,
   UsersUserIdLazyRoute: UsersUserIdLazyRoute,
   GroupsIndexLazyRoute: GroupsIndexLazyRoute,
@@ -199,6 +247,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/(sign)/signin",
+        "/(sign)/signup",
         "/groups/$groupId",
         "/users/$userId",
         "/groups/",
@@ -208,6 +258,12 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/(sign)/signin": {
+      "filePath": "(sign)/signin.lazy.tsx"
+    },
+    "/(sign)/signup": {
+      "filePath": "(sign)/signup.lazy.tsx"
     },
     "/groups/$groupId": {
       "filePath": "groups/$groupId.lazy.tsx"

@@ -12,18 +12,23 @@ export default function Navbar() {
       </div>
       <ul className={styles.list}>
         <li>
-          <a href="/users">Find Musiker</a>
+          <a href="/users">Find musiker</a>
         </li>
         <li>
-          <a href="/groups">Find Ensemble</a>
+          <a href="/groups">Find ensemble</a>
         </li>
         <li>
-          <button className={`${buttonStyles.button} ${buttonStyles.blue}`}>
-            Opret Bruger
-          </button>
+          <a
+            href="/signup"
+            className={`${buttonStyles.button} ${buttonStyles.blue}`}
+          >
+            Opret bruger
+          </a>
         </li>
         <li>
-          <button className={buttonStyles.button}>Login</button>
+          <a href="/signin" className={buttonStyles.button}>
+            Login
+          </a>
         </li>
       </ul>
     </nav>

@@ -25,7 +25,6 @@ export class UsersController {
   ) {}
 
   @Post()
-  @UseGuards(AuthGuard)
   async create(
     @Body() createUserDto: CreateUserDto,
   ): Promise<UsersResponseDto> {
