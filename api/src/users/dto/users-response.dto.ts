@@ -1,9 +1,10 @@
 import { Exclude, Expose } from 'class-transformer';
+import { GroupDto } from './group-user-response.dto';
 
 @Exclude()
 export class UsersResponseDto {
   @Expose()
-  id: string;
+  _id: string;
 
   @Expose()
   email: string;
@@ -25,4 +26,16 @@ export class UsersResponseDto {
 
   @Expose()
   seeking?: boolean;
+
+  @Expose()
+  lastLoggedIn?: Date;
+
+  @Expose()
+  createdAt?: Date;
+
+  @Expose()
+  instruments?: string[];
+
+  @Expose()
+  groups?: GroupDto[];
 }
