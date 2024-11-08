@@ -27,7 +27,6 @@ export class UsersController {
   }
 
   @Get()
-  @UseGuards(AuthGuard)
   async find() {
     return await this.usersService.findAll();
   }
