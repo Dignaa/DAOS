@@ -18,7 +18,7 @@ interface User {
   seeking?: boolean;
   groups?: Group[];
   lastLoggedIn: string;
-  instruments: [],
+  instruments: [];
   createdAt: string;
 }
 
@@ -31,19 +31,22 @@ function UserPage() {
 
   const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState(true);
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzJhOThlMjE3YmU2YzkzMTA5YjYxOTkiLCJpYXQiOjE3MzEwNjE1OTgsImV4cCI6MTczMTE0Nzk5OH0.tuZIbIXssyPGi1jTheVOErtcQ71PcTymSrySMB668Hk"
-  useEffect(() => {
+    const token = localStorage.getItem("token");
+ useEffect(() => {
     fetch(`http://localhost:3000/users/${userId}`, {
-  method: 'GET',
-  headers: {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'},
-  })
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
       .then(response => {
         return response.json();
       })
       .then(data => {
-        if (data.error) {throw new Error(data.message)}
+        if (data.error) {
+          throw new Error(data.message);
+        }
         setUser(data);
         setLoading(false);
       })
@@ -51,7 +54,7 @@ function UserPage() {
         console.error(error);
         setLoading(false);
       });
-  }, [userId]);
+  }, [userId, token]);
 
   if (loading)
     return (
@@ -62,67 +65,76 @@ function UserPage() {
 
   return (
     <main>
-  <Section>
-    <h1>User Details</h1>
-    <ul>
-      {user && (
-        <li>
-          <div>
-            <strong>Name:</strong> {user.name}
-          </div>
-          <div>
-            <strong>Email:</strong> {user.email}
-          </div>
-          <div>
-            <strong>Phone Number:</strong> {user.phoneNumber || "N/A"}
-          </div>
-          <div>
-            <strong>Avatar:</strong> <img src={user.avatarUrl} alt="User Avatar" />
-          </div>
-          <div>
-            <strong>Description:</strong> {user.description || "No description provided"}
-          </div>
-          <div>
-            <strong>Address:</strong> {user.address || "No address provided"}
-          </div>
-          <div>
-            <strong>Seeking:</strong> {user.seeking ? "Yes" : "No"}
-          </div>
-          <div>
-            <strong>Last Logged In:</strong> {user.lastLoggedIn ? user.lastLoggedIn : "N/A"}
-          </div>
-          <div>
-            <strong>Created At:</strong> {user.createdAt ? user.createdAt : "N/A"}
-          </div>
-          <div>
-            <strong>Instruments:</strong> {user.instruments ? user.instruments.join(', ') : "N/A"}
-          </div>
+      <Section>
+        <h1>User Details</h1>
+        <ul>
+          {user && (
+            <li>
+              <div>
+                <strong>Name:</strong> {user.name}
+              </div>
+              <div>
+                <strong>Email:</strong> {user.email}
+              </div>
+              <div>
+                <strong>Phone Number:</strong> {user.phoneNumber || 'N/A'}
+              </div>
+              <div>
+                <strong>Avatar:</strong>{' '}
+                <img src={user.avatarUrl} alt="User Avatar" />
+              </div>
+              <div>
+                <strong>Description:</strong>{' '}
+                {user.description || 'No description provided'}
+              </div>
+              <div>
+                <strong>Address:</strong>{' '}
+                {user.address || 'No address provided'}
+              </div>
+              <div>
+                <strong>Seeking:</strong> {user.seeking ? 'Yes' : 'No'}
+              </div>
+              <div>
+                <strong>Last Logged In:</strong>{' '}
+                {user.lastLoggedIn ? user.lastLoggedIn : 'N/A'}
+              </div>
+              <div>
+                <strong>Created At:</strong>{' '}
+                {user.createdAt ? user.createdAt : 'N/A'}
+              </div>
+              <div>
+                <strong>Instruments:</strong>{' '}
+                {user.instruments ? user.instruments.join(', ') : 'N/A'}
+              </div>
 
-          {/* Render Groups */}
-          <div>
-            <strong>Groups:</strong>
-            <ul>
-              {user.groups && user.groups.length > 0 ? (
-                user.groups.map((group) => (
-                  <li key={group.id}>
-                    <div>
-                      <strong>{group.name}</strong>
-                    </div>
-                    <div>
-                      <img src={group.imageUrl} alt={`${group.name} Group Image`} width={50} />
-                    </div>
-                  </li>
-                ))
-              ) : (
-                <div>No groups available</div>
-              )}
-            </ul>
-          </div>
-        </li>
-      )}
-    </ul>
-  </Section>
-</main>
-
+              {/* Render Groups */}
+              <div>
+                <strong>Groups:</strong>
+                <ul>
+                  {user.groups && user.groups.length > 0 ? (
+                    user.groups.map(group => (
+                      <li key={group.id}>
+                        <div>
+                          <strong>{group.name}</strong>
+                        </div>
+                        <div>
+                          <img
+                            src={group.imageUrl}
+                            alt={`${group.name} Group Image`}
+                            width={50}
+                          />
+                        </div>
+                      </li>
+                    ))
+                  ) : (
+                    <div>No groups available</div>
+                  )}
+                </ul>
+              </div>
+            </li>
+          )}
+        </ul>
+      </Section>
+    </main>
   );
 }

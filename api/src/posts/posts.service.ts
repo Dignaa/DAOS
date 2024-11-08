@@ -7,7 +7,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from 'src/schemas/post.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
 @Injectable()
@@ -18,13 +18,14 @@ export class PostsService {
   async create(createPostDto: CreatePostDto) {
     const post = new this.postModel({
       ...createPostDto,
+      groupId: new Types.ObjectId(createPostDto.groupId),
       createdAt: Date.now(),
       location: {
         type: 'Point',
         coordinates: [-122.0838, 37.421998], // [longitude, latitude]
       },
     });
-
+    console.log(post.id);
     return await post.save();
   }
 

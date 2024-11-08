@@ -1,29 +1,29 @@
-import { createFileRoute } from '@tanstack/react-router'
-import Section from '../components/Section'
-import Select from 'react-select'
-import PostGrid from '../components/PostGrid'
+import { createFileRoute } from '@tanstack/react-router';
+import Section from '../components/Section';
+import Select from 'react-select';
+import PostGrid from '../components/PostGrid';
 
-import '../index.css'
-import typographyStyles from '../components/typographyStyles.module.css'
-import instruments from '../assets/instruments'
+import '../index.css';
+import typographyStyles from '../components/typographyStyles.module.css';
+import instruments from '../assets/instruments';
 
 interface Post {
-  id: string
-  title: string
-  user: string
-  instrument: string
-  date: string
-  address: string
+  id: string;
+  title: string;
+  user: string;
+  instrument: string;
+  date: string;
+  address: string;
 }
 
 interface SelectOption {
-  value: string
-  label: string
+  value: string;
+  label: string;
 }
 
 export const Route = createFileRoute('/')({
   component: Index,
-})
+});
 
 const posts: Post[] = [
   {
@@ -106,11 +106,11 @@ const posts: Post[] = [
     date: '2023-11-03T19:00:00',
     address: 'Nashville, TN',
   },
-]
+];
 const options: SelectOption[] = instruments.map((instrument: string) => ({
   value: instrument,
   label: instrument,
-}))
+}));
 
 function Index() {
   return (
@@ -142,5 +142,5 @@ function Index() {
         <PostGrid posts={posts} />
       </Section>
     </main>
-  )
+  );
 }
