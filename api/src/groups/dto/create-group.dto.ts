@@ -4,17 +4,17 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  ValidateNested,
+  IsUrl,
 } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class CreateGroupDto {
-  @IsNotEmpty()
+  @IsNotEmpty({ message: "The name can't be empty" })
   @IsString()
   name: string;
 
   @IsOptional()
-  @IsString()
+  @IsUrl()
   imageUrl?: string;
 
   @IsOptional()
@@ -26,7 +26,7 @@ export class CreateGroupDto {
   address?: string;
 
   @IsOptional()
-  @IsString()
+  @IsUrl()
   link?: string;
 
   @IsOptional()

@@ -1,4 +1,9 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 import * as jwt from 'jsonwebtoken';
 import { env } from 'node:process';
@@ -14,8 +19,11 @@ export class AuthGuard implements CanActivate {
   }
 
   private validateRequest(request: Request): boolean {
-    const token = request.headers['authorization']?.split(' ')[1]; // Assuming the format is "Bearer token"
-    if (!token) return false; // No authorization header
+    const token = request.headers['authorization']?.split(' ')[1];
+
+    if (!token) {
+      throw new UnauthorizedException('Authorization token is missing');
+    }
 
     try {
       // Verify the token
@@ -25,12 +33,19 @@ export class AuthGuard implements CanActivate {
       return true; // Token is valid
     } catch (error) {
       console.error('Token verification failed:', error);
+
       if (error instanceof jwt.TokenExpiredError) {
-        console.error('JWT Token has expired');
+        throw new UnauthorizedException(
+          'Token verification failed: JWT Token has expired',
+        );
       } else if (error instanceof jwt.JsonWebTokenError) {
-        console.error('Invalid JWT Token');
+        throw new UnauthorizedException(
+          'Token verification failed: Invalid JWT Token',
+        );
       }
-      return false; // Token is invalid or expired
+      throw new UnauthorizedException(
+        'Unauthorized: Token verification failed',
+      );
     }
   }
 }

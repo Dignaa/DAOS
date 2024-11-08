@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Group, GroupDocument } from 'schemas/group.schema';
+import { Group, GroupDocument } from 'src/schemas/group.schema';
 import { Model, Types } from 'mongoose';
-import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class GroupsService {
@@ -25,23 +28,32 @@ export class GroupsService {
   }
 
   async findOne(id: string) {
-    return await this.groupModel.findById(new ObjectId(id)).exec();
+    if (!Types.ObjectId.isValid(id))
+      throw new BadRequestException('Invalid ID');
+
+    const group = await this.groupModel.findById(id).exec();
+
+    if (!group) throw new NotFoundException('No group found with this ID');
+    return group;
   }
 
   async update(id: string, updateGroupDto: UpdateGroupDto) {
+    const group = await this.findOne(id);
     return await this.groupModel
-      .findByIdAndUpdate(new ObjectId(id), updateGroupDto, { new: true })
+      .findByIdAndUpdate(group.id, updateGroupDto, { new: true })
       .exec();
   }
 
   async remove(id: string) {
-    return await this.groupModel.findByIdAndDelete(new ObjectId(id)).exec();
+    const group = await this.findOne(id);
+    return await this.groupModel.deleteOne(group.id).exec();
   }
 
   async addUser(groupId: string, userId: string) {
+    const group = await this.findOne(groupId);
     return await this.groupModel
       .findByIdAndUpdate(
-        new ObjectId(groupId),
+        group.id,
         { $addToSet: { userIds: new Types.ObjectId(userId) } }, // use $addToSet to avoid duplicates
         { new: true },
       )
@@ -49,9 +61,10 @@ export class GroupsService {
   }
 
   async removeUser(groupId: string, userId: string) {
+    const group = await this.findOne(groupId);
     return await this.groupModel
       .findByIdAndUpdate(
-        new ObjectId(groupId),
+        group.id,
         { $pull: { userIds: new Types.ObjectId(userId) } },
         { new: true },
       )

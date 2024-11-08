@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Request,
+  HttpCode,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -49,6 +50,7 @@ export class GroupsController {
 
   @Delete(':id')
   @UseGuards(AuthGuard)
+  @HttpCode(204)
   async remove(@Param('id') id: string) {
     return await this.groupService.remove(id);
   }
@@ -61,6 +63,7 @@ export class GroupsController {
 
   @Delete(':id/users')
   @UseGuards(AuthGuard)
+  @HttpCode(204)
   async removeUser(
     @Param('id') groupId: string,
     @Body('userId') userId: string,

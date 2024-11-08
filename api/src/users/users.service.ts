@@ -5,11 +5,10 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User, UserDocument } from '../../schemas/user.schema';
+import { User, UserDocument } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose'; // Ensure this import is present
 import * as bcrypt from 'bcrypt';
-import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class UsersService {
@@ -21,7 +20,7 @@ export class UsersService {
       email: createUserDto.email,
     });
     if (existingUser) {
-      throw new BadRequestException('Email is already in use');
+      throw new BadRequestException('User with this email already exists');
     }
 
     // Hash the password before saving
@@ -46,25 +45,34 @@ export class UsersService {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException('Invalid ID format');
     }
+    const user = await this.userModel.findById(id).exec();
 
-    const user = await this.userModel.findById(new Types.ObjectId(id)).exec();
-    console.log(user);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
     return user;
   }
 
   async findOneByEmail(email: string) {
     const user = await this.userModel.findOne({ email });
-    console.log(user);
+
+    if (!user) {
+      throw new NotFoundException(`User with email - ${email} not found`);
+    }
+
     return user;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id);
     return await this.userModel
-      .findByIdAndUpdate(new ObjectId(id), UpdateUserDto, { new: true })
+      .findByIdAndUpdate(user.id, updateUserDto, { new: true })
       .exec();
   }
 
   async remove(id: string) {
-    return await this.userModel.findByIdAndDelete(new ObjectId(id)).exec();
+    const user = await this.findOne(id);
+
+    return await this.userModel.findByIdAndDelete(user.id).exec();
   }
 }

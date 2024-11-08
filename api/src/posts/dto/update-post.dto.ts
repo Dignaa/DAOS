@@ -1,19 +1,4 @@
-import { IsDate, IsOptional, IsString, Length } from 'class-validator';
-export class UpdatePostDto {
-  @IsOptional()
-  @IsString()
-  @Length(3, 100)
-  title?: string;
+import { CreatePostDto } from './create-post.dto';
+import { PartialType } from '@nestjs/mapped-types';
 
-  @IsOptional()
-  @IsString()
-  @Length(10, 500)
-  description?: string;
-
-  @IsOptional()
-  @IsString()
-  instrument?: string;
-
-  @IsDate()
-  date: Date;
-}
+export class UpdatePostDto extends PartialType(CreatePostDto) {}
