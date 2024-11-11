@@ -10,10 +10,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(email: string, pass: string): Promise<any> {
+  async signIn(email: string, password: string): Promise<any> {
     const user = await this.usersService.findOneByEmail(email);
 
-    const isPasswordValid = await bcrypt.compare(pass, user?.password);
+    const isPasswordValid = await bcrypt.compare(password, user?.password);
 
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid email and/or password');

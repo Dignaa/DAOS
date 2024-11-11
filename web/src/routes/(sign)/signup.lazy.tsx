@@ -1,6 +1,9 @@
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import Section from '../../components/Section';
+import Input from '../../components/Input';
+import buttonStyles from '../../components/buttonStyles.module.css';
+import Form from '../../components/Form';
 
 interface Error {
   field: string;
@@ -14,10 +17,10 @@ function SignUp() {
   const [seeking, setSeeking] = useState<boolean>(true);
   const navigate = useNavigate();
 
-  const signUpUser = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const signUpUser = (event: FormEvent) => {
     event.preventDefault();
 
-    const form = event.currentTarget.closest('form')!;
+    const form = document.querySelector('form')!;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
@@ -27,6 +30,7 @@ function SignUp() {
         data[key] = JSON.parse(data[key] as string);
       }
     }
+    console.log(data);
 
     fetch('http://localhost:3000/users/', {
       method: 'POST',
@@ -41,13 +45,13 @@ function SignUp() {
           return data;
         });
       })
-      .then(responseData => {
-        localStorage.setItem('token', responseData.access_token);
+      .then(() => {
         navigate({
           to: '/signin',
         });
       })
       .catch(errors => {
+        console.log(errors);
         errors.message.map((error: Error) => {
           const node = document.querySelector(`input[name="${error.field}"]`);
           node?.classList.add('error');
@@ -58,43 +62,32 @@ function SignUp() {
   return (
     <main>
       <Section>
-        <form>
-          <label>
-            Fulde Navn
-            <input type="text" name="name" required />
-          </label>
-          <label>
-            Email
-            <input type="email" name="email" required />
-          </label>
-          <label>
-            Adgangskode
-            <input type="password" name="password" required />
-          </label>
-          <label>
-            Søger efter ensamble
-            <input
-              type="radio"
-              name="seeking"
-              value="true"
-              checked={seeking === true}
-              onChange={() => setSeeking(true)}
-              required
-            />
-          </label>
-          <label>
-            Søger ikke efter ensamble
-            <input
-              type="radio"
-              name="seeking"
-              value="false"
-              checked={seeking === false}
-              onChange={() => setSeeking(false)}
-              required
-            />
-          </label>
-          <button onClick={signUpUser}>Opret bruger</button>
-        </form>
+        <Form onSubmit={signUpUser}>
+          <Input label="Fulde Navn" type="text" name="name" required />
+          <Input label="Email" type="email" name="email" required />
+          <Input label="Adgangskode" type="password" name="password" required />
+          <Input
+            label="Søger efter ensamble"
+            type="radio"
+            name="seeking"
+            value="true"
+            checked={seeking === true}
+            onChange={() => setSeeking(true)}
+            required
+          />
+          <Input
+            label="Søger ikke efter ensamble"
+            type="radio"
+            name="seeking"
+            value="false"
+            checked={seeking === false}
+            onChange={() => setSeeking(false)}
+            required
+          />
+          <button className={`${buttonStyles.button} ${buttonStyles.blue}`}>
+            Opret bruger
+          </button>
+        </Form>
       </Section>
     </main>
   );
