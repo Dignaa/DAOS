@@ -1,6 +1,7 @@
 import styles from './Post.module.css';
 
 interface PostProps {
+  _id: string;
   title: string;
   user: string;
   instrument: string;
@@ -8,7 +9,8 @@ interface PostProps {
   address: string;
 }
 
-export default function Section({
+export default function Post({
+  _id,
   title,
   user,
   instrument,
@@ -26,7 +28,7 @@ export default function Section({
 
   return (
     <li className={styles.post}>
-      <a className={styles.link} href="/">
+      <a className={styles.link} href={`/posts/${_id}`}>
         <header className={styles.header}>{title}</header>
         <div className={styles.content}>
           <p className={styles.info}>

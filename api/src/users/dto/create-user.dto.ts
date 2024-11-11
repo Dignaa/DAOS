@@ -6,31 +6,29 @@ import {
   IsNotEmpty,
   Length,
   IsUrl,
+  IsPhoneNumber,
 } from 'class-validator';
 
 export class CreateUserDto {
-  @IsEmail({}, { message: 'Email must be a valid email address.' })
+  @IsEmail({}, { message: 'Brug venligst en rigtig email adresse' })
   email: string;
 
-  @IsString({ message: 'Name must be a string.' })
-  @Length(3, 50, {
-    message: 'Name must be between 3 and 50 characters long.',
+  @IsString({ message: 'Indtast venligst dit navn' })
+  @Length(2, 100, {
+    message: 'Dit navn skal være mellem 2 og 100 bogstaver',
   })
-  @IsNotEmpty({ message: 'Name is required.' })
+  @IsNotEmpty({ message: 'Indtast venligst dit navn' })
   name: string;
 
-  @IsString({ message: 'Password must be a string.' })
+  @IsString({ message: 'Indtast venligsst en adgangskode' })
   @Length(8, 100, {
-    message: 'Password must be between 8 and 100 characters long.',
+    message: 'Din adgangskode skal være mellem 8 og 100 tegn',
   })
-  @IsNotEmpty({ message: 'Password is required.' })
+  @IsNotEmpty({ message: 'Indtast venligsst en adgangskode' })
   password: string;
 
+  @IsPhoneNumber('DK', { message: 'Brug venligst et rigtigt telefonnumme' })
   @IsOptional()
-  @Length(10, 15, {
-    message:
-      'Phone number must be between 10 and 15 characters long, if provided.',
-  })
   phoneNumber?: string;
 
   @IsOptional()
