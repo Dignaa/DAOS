@@ -29,13 +29,13 @@ export class GroupsService {
   async findAll() {
     const groups = await this.groupModel.find({});
 
-    const groupsWithPosts = await Promise.all(
+    const groupWithPosts = await Promise.all(
       groups.map(async (group) => {
         const posts = await this.getPostsForGroup(group.id);
         return { ...group.toObject(), posts: posts };
       }),
     );
-    return groupsWithPosts;
+    return groupWithPosts;
   }
 
   async findOne(id: string) {
