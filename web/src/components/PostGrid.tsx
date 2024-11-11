@@ -2,7 +2,7 @@ import styles from './PostGrid.module.css';
 import Post from './Post';
 
 interface PostProps {
-  id: string;
+  _id: string;
   title: string;
   user: string;
   instrument: string;
@@ -18,7 +18,7 @@ export default function PostGrid({ posts }: PostGridProps) {
   return (
     <ul className={styles.grid}>
       {posts.map(post => (
-        <Post key={post.id} {...post} />
+        <Post key={post._id} {...post} />
       ))}
     </ul>
   );

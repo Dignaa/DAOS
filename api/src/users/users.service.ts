@@ -59,7 +59,6 @@ export class UsersService {
   }
 
   async findOne(id: string) {
-    console.log('Stupid method');
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException('Invalid ID format');
     }

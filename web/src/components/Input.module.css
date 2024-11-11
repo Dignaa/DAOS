@@ -17,3 +17,9 @@
   font-family: inherit;
   padding: 16pt;
 }
+.label::after {
+  content: attr(data-error);
+  font-weight: 500;
+  color: red;
+  font-size: 14pt;
+}

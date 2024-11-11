@@ -4,10 +4,7 @@ import Form from '../../components/Form';
 import Input from '../../components/Input';
 import { FormEvent } from 'react';
 import buttonStyles from '../../components/buttonStyles.module.css';
-
-interface Error {
-  field: string;
-}
+import { setCurrentSession } from '../../utils/currentSession';
 
 export const Route = createLazyFileRoute('/(sign)/signin')({
   component: SignIn,
@@ -37,16 +34,14 @@ function SignIn() {
         });
       })
       .then(responseData => {
-        localStorage.setItem('token', responseData.access_token);
-        navigate({
+        setCurrentSession(responseData.access_token);
+        window.location.href = '/';
+        /*navigate({
           to: '/',
-        });
+        });*/
       })
-      .catch(errors => {
-        errors.message.map((error: Error) => {
-          const node = document.querySelector(`input[name="${error.field}"]`);
-          node?.classList.add('error');
-        });
+      .catch(() => {
+        alert('Forkert email eller adganskode!');
       });
   };
 

@@ -36,9 +36,7 @@ export class UsersController {
   @Get('profile')
   @UseGuards(AuthGuard)
   async getUserProfile(@Request() req) {
-    console.log('something stupid - CPH business');
     const userId: string = req.user.userId;
-    console.log('profile request: ', req.user);
     const user = await this.usersService.findOne(userId);
     return user;
   }

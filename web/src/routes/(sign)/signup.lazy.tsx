@@ -7,6 +7,7 @@ import Form from '../../components/Form';
 
 interface Error {
   field: string;
+  message: string;
 }
 
 export const Route = createLazyFileRoute('/(sign)/signup')({
@@ -30,7 +31,6 @@ function SignUp() {
         data[key] = JSON.parse(data[key] as string);
       }
     }
-    console.log(data);
 
     fetch('http://localhost:3000/users/', {
       method: 'POST',
@@ -54,7 +54,11 @@ function SignUp() {
         console.log(errors);
         errors.message.map((error: Error) => {
           const node = document.querySelector(`input[name="${error.field}"]`);
-          node?.classList.add('error');
+          node?.parentElement!.setAttribute('data-error', error.message);
+          /*
+          const errorMessage = document.createElement('p');
+          errorMessage.innerText = error.message;
+          node?.parentNode?.insertBefore(errorMessage, node);*/
         });
       });
   };
