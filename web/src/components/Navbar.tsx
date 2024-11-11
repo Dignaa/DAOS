@@ -15,7 +15,7 @@ export default function Navbar() {
           <a href="/users">Find musiker</a>
         </li>
         <li>
-          <a href="/groups">Find ensemble</a>
+          <a href="/posts">Find ensemble</a>
         </li>
         <li>
           <a
