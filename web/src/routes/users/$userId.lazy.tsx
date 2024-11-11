@@ -31,8 +31,8 @@ function UserPage() {
 
   const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState(true);
-    const token = localStorage.getItem("token");
- useEffect(() => {
+  const token = localStorage.getItem('token');
+  useEffect(() => {
     fetch(`http://localhost:3000/users/${userId}`, {
       method: 'GET',
       headers: {
