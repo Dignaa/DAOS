@@ -1,0 +1,19 @@
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 16pt;
+  font-size: 16pt;
+  color: var(--color-blue);
+  font-weight: 700;
+  margin-bottom: 32pt;
+}
+
+.input {
+  background-color: white;
+  border: 1pt solid #dddddd;
+  box-shadow: 0 2pt 4pt #00000014;
+  border-radius: 10pt;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 16pt;
+}

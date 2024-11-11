@@ -35,6 +35,7 @@ export class UsersService {
       ...createUserDto,
       password: hashedPassword,
       createdAt: new Date(),
+      seeking: Boolean(createUserDto.seeking),
     });
 
     // Save and return the user

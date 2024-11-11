@@ -45,7 +45,6 @@ export class CreateUserDto {
   @IsString()
   address?: string;
 
-  @IsOptional()
   @IsBoolean()
   seeking?: boolean;
 }
