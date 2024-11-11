@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   HttpCode,
+  Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -67,5 +68,13 @@ export class UsersController {
   async getUserGroups(@Param('userId') userId: string) {
     const groups = await this.groupsService.getGroupsForUser(userId);
     return groups;
+  }
+
+  @Get('profile')
+  @UseGuards(AuthGuard)
+  async getUserProfile(@Request() req) {
+    const userId: string = req.user.userId;
+    const user = await this.usersService.findOne(userId);
+    return user;
   }
 }
