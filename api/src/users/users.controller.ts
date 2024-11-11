@@ -34,6 +34,16 @@ export class UsersController {
     return plainToInstance(UsersResponseDto, user);
   }
 
+  @Get('profile')
+  @UseGuards(AuthGuard)
+  async getUserProfile(@Request() req) {
+    console.log('something stupid - CPH business');
+    const userId: string = req.user.userId;
+    console.log('profile request: ', req.user);
+    const user = await this.usersService.findOne(userId);
+    return user;
+  }
+
   @Get()
   async find(): Promise<UsersResponseDto[]> {
     const users = await this.usersService.findAll();
@@ -68,13 +78,5 @@ export class UsersController {
   async getUserGroups(@Param('userId') userId: string) {
     const groups = await this.groupsService.getGroupsForUser(userId);
     return groups;
-  }
-
-  @Get('profile')
-  @UseGuards(AuthGuard)
-  async getUserProfile(@Request() req) {
-    const userId: string = req.user.userId;
-    const user = await this.usersService.findOne(userId);
-    return user;
   }
 }
