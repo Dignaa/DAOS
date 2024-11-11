@@ -11,6 +11,9 @@ export class Post {
   @Prop({ required: true, type: String })
   description: string;
 
+  @Prop({ required: true, type: String })
+  instrument: string;
+
   @Prop({ required: true, type: Types.ObjectId, ref: 'Group' })
   groupId: Types.ObjectId;
 }

@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   HttpCode,
+  Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -30,6 +31,16 @@ export class UsersController {
   ): Promise<UsersResponseDto> {
     const user = await this.usersService.create(createUserDto);
     return plainToInstance(UsersResponseDto, user);
+  }
+
+  @Get('profile')
+  @UseGuards(AuthGuard)
+  async getUserProfile(@Request() req) {
+    console.log('something stupid - CPH business');
+    const userId: string = req.user.userId;
+    console.log('profile request: ', req.user);
+    const user = await this.usersService.findOne(userId);
+    return user;
   }
 
   @Get()

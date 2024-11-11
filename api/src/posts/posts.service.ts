@@ -7,31 +7,45 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from 'src/schemas/post.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ObjectId } from 'mongodb';
+import { Group } from 'src/schemas/group.schema';
 
 @Injectable()
 export class PostsService {
-  constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
+  constructor(
+    @InjectModel(Post.name) private postModel: Model<PostDocument>,
+    @InjectModel(Group.name) private readonly groupModel: Model<Group>,
+  ) {}
 
   // Create a post
   async create(createPostDto: CreatePostDto) {
-    const post = new this.postModel({
+    const newPost = new this.postModel({
       ...createPostDto,
+      groupId: new Types.ObjectId(createPostDto.groupId),
       createdAt: Date.now(),
       location: {
         type: 'Point',
         coordinates: [-122.0838, 37.421998], // [longitude, latitude]
       },
     });
+    const post = await newPost.save();
 
-    return await post.save();
+    const group = await this.getGroupForPost(post.groupId);
+    return { ...post.toObject(), group: { ...group } };
   }
 
   // Find all posts
   async findAll() {
     const posts = await this.postModel.find({});
-    return posts;
+
+    const postWithGroup = await Promise.all(
+      posts.map(async (post) => {
+        const group = await this.getGroupForPost(post.groupId);
+        return { ...post.toObject(), group: { ...group } };
+      }),
+    );
+    return postWithGroup;
   }
 
   // Find a post by ID
@@ -44,22 +58,37 @@ export class PostsService {
     if (!post) {
       throw new NotFoundException(`Post with ID ${id} not found`);
     }
-    return post;
+    const group = await this.getGroupForPost(post.groupId);
+    return { ...post.toObject(), group: { ...group } };
   }
 
   // Update a post by ID
   async update(id: string, updatePostDto: UpdatePostDto) {
     const post = await this.findOne(id);
 
-    return await this.postModel
-      .findByIdAndUpdate(post.id, updatePostDto, { new: true })
+    const toUpdate = await this.postModel
+      .findByIdAndUpdate(post._id, updatePostDto, { new: true })
       .exec();
+
+    const group = await this.getGroupForPost(post.groupId);
+    return { ...toUpdate.toObject(), group: { ...group } };
   }
 
   // Delete a post by ID
   async remove(id: string) {
     const post = await this.findOne(id);
 
-    return await this.postModel.findByIdAndDelete(post.id).exec();
+    return await this.postModel.findByIdAndDelete(post._id).exec();
+  }
+
+  // Get the group for a specific post
+  private async getGroupForPost(groupId: ObjectId) {
+    const group = await this.groupModel
+      .findOne({ _id: new ObjectId(groupId) })
+      .select('name address noOfActiveMembers')
+      .lean() //Returns plain JavaScript instead of a Mongoose document
+      .exec();
+
+    return group;
   }
 }
