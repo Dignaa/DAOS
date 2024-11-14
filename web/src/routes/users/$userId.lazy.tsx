@@ -1,7 +1,6 @@
-import { createLazyFileRoute, Link } from '@tanstack/react-router';
+import { createLazyFileRoute } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
 import Section from '../../components/Section';
-import List from '../../components/List/List';
 import User from '../../components/User/User';
 
 interface Group {

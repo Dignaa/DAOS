@@ -60,7 +60,9 @@ export default function UserOverview({ user }: Props) {
           ? `Online i dag`
           : daysSinceLastLogin === 1
             ? `Online i går`
-            : `Online for ${daysSinceLastLogin} dage siden`}
+            : isNaN(daysSinceLastLogin)
+              ? ''
+              : `Online for ${daysSinceLastLogin} dage siden`}
         <span
           className={
             daysSinceLastLogin === 0
