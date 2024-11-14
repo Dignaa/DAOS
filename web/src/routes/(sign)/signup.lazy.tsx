@@ -66,6 +66,7 @@ function SignUp() {
   return (
     <main>
       <Section>
+        <h1>Opret bruger</h1>
         <Form onSubmit={signUpUser}>
           <Input label="Fulde Navn" type="text" name="name" required />
           <Input label="Email" type="email" name="email" required />

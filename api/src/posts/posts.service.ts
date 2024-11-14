@@ -85,7 +85,7 @@ export class PostsService {
   private async getGroupForPost(groupId: ObjectId) {
     const group = await this.groupModel
       .findOne({ _id: new ObjectId(groupId) })
-      .select('name address noOfActiveMembers')
+      .select('name address noOfActiveMembers imageUrl')
       .lean() //Returns plain JavaScript instead of a Mongoose document
       .exec();
 

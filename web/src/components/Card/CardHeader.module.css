@@ -1,0 +1,32 @@
+.header {
+  padding: 16pt;
+  font-size: 14pt;
+  background-color: #f9f9f9;
+  border-bottom: 1pt solid var(--color-lightGray);
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 12pt;
+}
+.name {
+  font-size: 16pt;
+  font-weight: 700;
+  color: var(--color-red);
+}
+.address {
+  font-weight: 700;
+  font-style: normal;
+}
+.icon {
+  position: absolute;
+  bottom: 0;
+  right: 10pt;
+}
+.image {
+  display: block;
+  width: 40pt;
+  height: 40pt;
+  border-radius: 10pt;
+  border: 2pt solid white;
+  object-fit: cover;
+}

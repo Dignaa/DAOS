@@ -1,24 +1,16 @@
 import styles from './PostGrid.module.css';
-import Post from './Post';
-
-interface PostProps {
-  _id: string;
-  title: string;
-  user: string;
-  instrument: string;
-  date: string;
-  address: string;
-}
+import Card from './Card/Card';
 
 interface PostGridProps {
-  posts: PostProps[];
+  posts: any;
+  type: string;
 }
 
-export default function PostGrid({ posts }: PostGridProps) {
+export default function PostGrid({ posts, type }: PostGridProps) {
   return (
     <ul className={styles.grid}>
       {posts.map(post => (
-        <Post key={post._id} {...post} />
+        <Card key={post._id} {...post} type={type} />
       ))}
     </ul>
   );

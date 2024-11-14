@@ -1,6 +1,9 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
 import Section from '../../components/Section';
+import typographyStyles from '../../components/typographyStyles.module.css';
+import buttonStyles from '../../components/buttonStyles.module.css';
+import List from '../../components/List/List';
 
 interface Group {
   id: string;
@@ -18,7 +21,7 @@ interface User {
   seeking?: boolean;
   groups?: Group[];
   lastLoggedIn: string;
-  instruments: [];
+  instruments: string[];
   createdAt: string;
 }
 
@@ -29,9 +32,10 @@ export const Route = createLazyFileRoute('/users/$userId')({
 function UserPage() {
   const { userId } = Route.useParams();
 
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null | undefined>(undefined);
   const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem('token');
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzJhOTkwYjE3YmU2YzkzMTA5YjYxOWYiLCJpYXQiOjE3MzE2MTA1NzUsImV4cCI6MTczMTY5Njk3NX0.MWhEntQ2Uknlep8yPR-C-gtLlZ7bycYDsbsfWR_QapQ';
   useEffect(() => {
     fetch(`http://localhost:3000/users/${userId}`, {
       method: 'GET',
@@ -52,89 +56,72 @@ function UserPage() {
       })
       .catch(error => {
         console.error(error);
+        setUser(null);
         setLoading(false);
       });
-  }, [userId, token]);
+  }, []);
 
-  if (loading)
+  if (loading) {
     return (
       <Section>
-        <h1>Something, I guess its loading</h1>
+        <h1>Henter bruger</h1>
       </Section>
     );
+  }
 
   return (
     <main>
-      <Section>
-        <h1>User Details</h1>
-        <ul>
-          {user && (
-            <li>
-              <div>
-                <strong>Name:</strong> {user.name}
-              </div>
-              <div>
-                <strong>Email:</strong> {user.email}
-              </div>
-              <div>
-                <strong>Phone Number:</strong> {user.phoneNumber || 'N/A'}
-              </div>
-              <div>
-                <strong>Avatar:</strong>{' '}
-                <img src={user.avatarUrl} alt="User Avatar" />
-              </div>
-              <div>
-                <strong>Description:</strong>{' '}
-                {user.description || 'No description provided'}
-              </div>
-              <div>
-                <strong>Address:</strong>{' '}
-                {user.address || 'No address provided'}
-              </div>
-              <div>
-                <strong>Seeking:</strong> {user.seeking ? 'Yes' : 'No'}
-              </div>
-              <div>
-                <strong>Last Logged In:</strong>{' '}
-                {user.lastLoggedIn ? user.lastLoggedIn : 'N/A'}
-              </div>
-              <div>
-                <strong>Created At:</strong>{' '}
-                {user.createdAt ? user.createdAt : 'N/A'}
-              </div>
-              <div>
-                <strong>Instruments:</strong>{' '}
-                {user.instruments ? user.instruments.join(', ') : 'N/A'}
-              </div>
-
-              {/* Render Groups */}
-              <div>
-                <strong>Groups:</strong>
-                <ul>
-                  {user.groups && user.groups.length > 0 ? (
-                    user.groups.map(group => (
-                      <li key={group.id}>
-                        <div>
-                          <strong>{group.name}</strong>
-                        </div>
-                        <div>
-                          <img
-                            src={group.imageUrl}
-                            alt={`${group.name} Group Image`}
-                            width={50}
-                          />
-                        </div>
-                      </li>
-                    ))
-                  ) : (
-                    <div>No groups available</div>
-                  )}
-                </ul>
-              </div>
-            </li>
-          )}
-        </ul>
-      </Section>
+      {user ? (
+        <>
+          <Section>
+            <div>
+              {user.avatarUrl && <img src={user.avatarUrl} alt={user.name} />}
+              <h1 className={typographyStyles.red}>{user.name}</h1>
+              <p>
+                {user.description ||
+                  `${user.name} har ikke skrevet en brugerbeskrivelse endnu.`}
+              </p>
+              <button className={`${buttonStyles.button} ${buttonStyles.blue}`}>
+                Kontakt {user.name.split(' '[0])}
+              </button>
+            </div>
+            <ul>
+              <li>
+                <div>
+                  <strong>Address:</strong>{' '}
+                  {user.address || 'No address provided'}
+                </div>
+                <div>
+                  <strong>Last Logged In:</strong>{' '}
+                  {user.lastLoggedIn ? user.lastLoggedIn : 'N/A'}
+                </div>
+                <div>
+                  <strong>Created At:</strong>{' '}
+                  {user.createdAt ? user.createdAt : 'N/A'}
+                </div>
+              </li>
+            </ul>
+          </Section>
+          <Section>
+            <div>
+              <h2>
+                {user.instruments.length === 1
+                  ? 'Mit instrument'
+                  : 'Mine instrumenter'}
+              </h2>
+              {user.instruments ? (
+                <List items={user.instruments} />
+              ) : (
+                `${user.name} spiller ikke nogle instrumenter endnu.`
+              )}
+            </div>
+          </Section>
+        </>
+      ) : (
+        <Section>
+          <h1>Bruger ikke fundet</h1>
+        </Section>
+      )}
     </main>
   );
 }

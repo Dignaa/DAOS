@@ -35,10 +35,9 @@ function SignIn() {
       })
       .then(responseData => {
         setCurrentSession(responseData.access_token);
-        window.location.href = '/';
-        /*navigate({
+        navigate({
           to: '/',
-        });*/
+        });
       })
       .catch(() => {
         alert('Forkert email eller adganskode!');
@@ -48,6 +47,7 @@ function SignIn() {
   return (
     <main>
       <Section>
+        <h1>Login</h1>
         <Form onSubmit={signInUser}>
           <Input label="Email" type="email" name="email" required />
           <Input label="Adgangskode" type="password" name="password" required />
