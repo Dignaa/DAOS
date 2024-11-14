@@ -1,9 +1,8 @@
 import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
 import Section from '../../components/Section';
-import typographyStyles from '../../components/typographyStyles.module.css';
-import buttonStyles from '../../components/buttonStyles.module.css';
 import List from '../../components/List/List';
+import User from '../../components/User/User';
 
 interface Group {
   id: string;
@@ -72,51 +71,9 @@ function UserPage() {
   return (
     <main>
       {user ? (
-        <>
-          <Section>
-            <div>
-              {user.avatarUrl && <img src={user.avatarUrl} alt={user.name} />}
-              <h1 className={typographyStyles.red}>{user.name}</h1>
-              <p>
-                {user.description ||
-                  `${user.name} har ikke skrevet en brugerbeskrivelse endnu.`}
-              </p>
-              <button className={`${buttonStyles.button} ${buttonStyles.blue}`}>
-                Kontakt {user.name.split(' '[0])}
-              </button>
-            </div>
-            <ul>
-              <li>
-                <div>
-                  <strong>Address:</strong>{' '}
-                  {user.address || 'No address provided'}
-                </div>
-                <div>
-                  <strong>Last Logged In:</strong>{' '}
-                  {user.lastLoggedIn ? user.lastLoggedIn : 'N/A'}
-                </div>
-                <div>
-                  <strong>Created At:</strong>{' '}
-                  {user.createdAt ? user.createdAt : 'N/A'}
-                </div>
-              </li>
-            </ul>
-          </Section>
-          <Section>
-            <div>
-              <h2>
-                {user.instruments.length === 1
-                  ? 'Mit instrument'
-                  : 'Mine instrumenter'}
-              </h2>
-              {user.instruments ? (
-                <List items={user.instruments} />
-              ) : (
-                `${user.name} spiller ikke nogle instrumenter endnu.`
-              )}
-            </div>
-          </Section>
-        </>
+        <Section>
+          <User user={user} />
+        </Section>
       ) : (
         <Section>
           <h1>Bruger ikke fundet</h1>

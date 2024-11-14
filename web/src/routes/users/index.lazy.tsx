@@ -13,7 +13,7 @@ export const Route = createLazyFileRoute('/users/')({
 });
 
 function Users() {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
