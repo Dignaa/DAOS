@@ -1,6 +1,7 @@
 import typographyStyles from '../../components/typographyStyles.module.css';
 import buttonStyles from '../../components/buttonStyles.module.css';
 import styles from './UserOverview.module.css';
+import daysAgo from '../../utils/daysAgo';
 
 interface User {
   email: string;
@@ -20,10 +21,7 @@ interface Props {
 }
 
 export default function UserOverview({ user }: Props) {
-  const daysSinceLastLogin = Math.floor(
-    (new Date().getTime() - new Date(user.lastLoggedIn).getTime()) /
-      (1000 * 60 * 60 * 24)
-  );
+  const daysSinceLastLogin = daysAgo(user.lastLoggedIn);
   return (
     <div className={styles.box}>
       <div className={styles.content}>
@@ -70,7 +68,7 @@ export default function UserOverview({ user }: Props) {
             daysSinceLastLogin === 0
               ? `${styles.led} ${styles.ledGreen}`
               : daysSinceLastLogin === 1
-                ? `${styles.led} ${styles.ledOrangee}`
+                ? `${styles.led} ${styles.ledYellow}`
                 : `${styles.led} ${styles.ledRed}`
           }
         ></span>

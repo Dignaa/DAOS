@@ -1,7 +1,8 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
 import Section from '../../components/Section';
 import PostOverview from '../../components/Post/PostOverview';
+import buttonStyles from '../../components/buttonStyles.module.css';
 
 interface Group {
   _id: string;
@@ -63,22 +64,30 @@ function PostPage() {
   if (loading) {
     return (
       <Section>
-        <h1>Henter post</h1>
+        <h1>Henter opslag</h1>
+        <p>Vent venligst mens opslaget hentes fra databasen...</p>
       </Section>
     );
   }
 
+  if (!post)
+    return (
+      <Section>
+        <h1>Opslag ikke fundet</h1>
+        <Link
+          className={`${buttonStyles.button} ${buttonStyles.blue}`}
+          to="/posts"
+        >
+          Se alle opslag
+        </Link>
+      </Section>
+    );
+
   return (
     <main>
-      {post ? (
-        <Section>
-          <PostOverview post={post} />
-        </Section>
-      ) : (
-        <Section>
-          <h1>Post ikke fundet</h1>
-        </Section>
-      )}
+      <Section>
+        <PostOverview post={post} />
+      </Section>
     </main>
   );
 }

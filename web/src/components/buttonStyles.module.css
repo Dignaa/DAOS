@@ -1,4 +1,8 @@
 .button {
+  display: inline-block;
+  width: fit-content;
+  font-family: inherit;
+  text-align: center;
   background-color: white;
   color: var(--color-blue);
   font-size: 16pt;

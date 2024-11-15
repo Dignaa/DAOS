@@ -38,6 +38,6 @@
   background-color: #f9f9f9;
   border-top: 1pt solid var(--color-lightGray);
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
 }

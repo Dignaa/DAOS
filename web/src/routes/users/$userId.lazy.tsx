@@ -1,7 +1,8 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
 import Section from '../../components/Section';
 import User from '../../components/User/User';
+import buttonStyles from '../../components/buttonStyles.module.css';
 
 interface Group {
   id: string;
@@ -33,7 +34,7 @@ function UserPage() {
   const [user, setUser] = useState<User | null | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzJhOTkwYjE3YmU2YzkzMTA5YjYxOWYiLCJpYXQiOjE3MzE2MTA1NzUsImV4cCI6MTczMTY5Njk3NX0.MWhEntQ2Uknlep8yPR-C-gtLlZ7bycYDsbsfWR_QapQ';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzJhOTkwYjE3YmU2YzkzMTA5YjYxOWYiLCJpYXQiOjE3MzE2OTg5ODgsImV4cCI6MTczMTc4NTM4OH0.v3ElajjXWx_cQHHgcHDLV-eDcBKN8Bmnz6KuBN-g6d0';
   useEffect(() => {
     fetch(`http://localhost:3000/users/${userId}`, {
       method: 'GET',
@@ -62,22 +63,30 @@ function UserPage() {
   if (loading) {
     return (
       <Section>
-        <h1>Henter bruger</h1>
+        <h1>Henter musiker</h1>
+        <p>Vent venligst mens musikeren hentes fra databasen...</p>
       </Section>
     );
   }
 
+  if (!user)
+    return (
+      <Section>
+        <h1>Musiker ikke fundet</h1>
+        <Link
+          className={`${buttonStyles.button} ${buttonStyles.blue}`}
+          to="/users"
+        >
+          Se alle musikere
+        </Link>
+      </Section>
+    );
+
   return (
     <main>
-      {user ? (
-        <Section>
-          <User user={user} />
-        </Section>
-      ) : (
-        <Section>
-          <h1>Bruger ikke fundet</h1>
-        </Section>
-      )}
+      <Section>
+        <User user={user} />
+      </Section>
     </main>
   );
 }

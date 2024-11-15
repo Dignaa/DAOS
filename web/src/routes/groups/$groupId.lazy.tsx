@@ -1,6 +1,7 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
 import Section from '../../components/Section';
+import buttonStyles from '../../components/buttonStyles.module.css';
 
 interface Post {
   id: string;
@@ -50,33 +51,29 @@ function GroupPage() {
   if (loading)
     return (
       <Section>
-        <h1>Loading...</h1>
+        <h1>Henter ensemble</h1>
+        <p>Vent venligst mens ensemble hentes fra databasen...</p>
       </Section>
     );
 
   if (!group)
     return (
       <Section>
-        <h1>Group not found</h1>
+        <h1>Ensemble ikke fundet</h1>
+        <Link
+          className={`${buttonStyles.button} ${buttonStyles.blue}`}
+          to="/posts"
+        >
+          Find ensembles
+        </Link>
       </Section>
     );
 
   return (
     <main>
       <Section>
-        <h1>Group Details</h1>
-        <div>
-          <strong>Name:</strong> {group.name}
-        </div>
-        {group.imageUrl && (
-          <div>
-            <img
-              src={group.imageUrl}
-              alt={`${group.name} Group Image`}
-              width={100}
-            />
-          </div>
-        )}
+        <h1>{group.name}</h1>
+        {group.imageUrl && <img src={group.imageUrl} alt={`${group.name}`} />}
         <div>
           <strong>Description:</strong>{' '}
           {group.description || 'No description provided'}
