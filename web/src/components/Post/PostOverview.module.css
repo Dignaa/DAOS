@@ -41,19 +41,3 @@
   justify-content: flex-end;
   align-items: center;
 }
-.led {
-  display: inline-block;
-  margin-left: 6pt;
-  width: 10pt;
-  height: 10pt;
-  border-radius: 50%;
-}
-.ledGreen {
-  background-color: green;
-}
-.ledYellow {
-  background-color: yellow;
-}
-.ledRed {
-  background-color: var(--color-darkGray);
-}

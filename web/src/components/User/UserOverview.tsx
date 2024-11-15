@@ -1,8 +1,6 @@
 import typographyStyles from '../../components/typographyStyles.module.css';
 import buttonStyles from '../../components/buttonStyles.module.css';
 import styles from './UserOverview.module.css';
-import { Link } from '@tanstack/react-router';
-import { IsPhoneNumber } from 'class-validator';
 
 interface User {
   email: string;
@@ -34,7 +32,9 @@ export default function UserOverview({ user }: Props) {
         )}
         <div className={styles.column}>
           <h1 className={typographyStyles.red}>{user.name}</h1>
-          <address>{user.address || 'Ingen adresse givet'}</address>
+          <address className={styles.address}>
+            {user.address || 'Ingen adresse givet'}
+          </address>
           <p>
             {user.description ||
               `${user.name} har ikke skrevet en brugerbeskrivelse endnu.`}
@@ -55,14 +55,16 @@ export default function UserOverview({ user }: Props) {
           )}
         </div>
       </div>
-      <p className={styles.footer}>
-        {daysSinceLastLogin === 0
-          ? `Online i dag`
-          : daysSinceLastLogin === 1
-            ? `Online i går`
-            : isNaN(daysSinceLastLogin)
-              ? ''
-              : `Online for ${daysSinceLastLogin} dage siden`}
+      <div className={styles.footer}>
+        <p>
+          {daysSinceLastLogin === 0
+            ? `Online i dag`
+            : daysSinceLastLogin === 1
+              ? `Online i går`
+              : isNaN(daysSinceLastLogin)
+                ? ''
+                : `Online for ${daysSinceLastLogin} dage siden`}
+        </p>
         <span
           className={
             daysSinceLastLogin === 0
@@ -72,7 +74,7 @@ export default function UserOverview({ user }: Props) {
                 : `${styles.led} ${styles.ledRed}`
           }
         ></span>
-      </p>
+      </div>
     </div>
   );
 }
