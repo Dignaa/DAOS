@@ -1,6 +1,7 @@
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
 import Section from '../../components/Section';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface Group {
   id: string;
@@ -31,12 +32,13 @@ function UserPage() {
 
   const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem('token');
+  const { session } = useAuth();
+
   useEffect(() => {
     fetch(`http://localhost:3000/users/${userId}`, {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${session?.token}`,
         'Content-Type': 'application/json',
       },
     })
@@ -54,7 +56,7 @@ function UserPage() {
         console.error(error);
         setLoading(false);
       });
-  }, [userId, token]);
+  }, [userId, session?.token]);
 
   if (loading)
     return (
