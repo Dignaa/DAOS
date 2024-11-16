@@ -1,9 +1,9 @@
 import styles from './Navbar.module.css';
 import buttonStyles from './buttonStyles.module.css';
-import { getCurrentSession } from '../utils/currentSession';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Navbar() {
-  const token = getCurrentSession();
+  const { session } = useAuth();
 
   return (
     <nav className={styles.nav}>
@@ -20,7 +20,7 @@ export default function Navbar() {
         <li>
           <a href="/posts">Find ensemble</a>
         </li>
-        {token ? (
+        {session ? (
           <li>
             {' '}
             <a

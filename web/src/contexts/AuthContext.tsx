@@ -6,32 +6,73 @@ import React, {
   useState,
   ReactNode,
 } from 'react';
-import { getCurrentSession } from '../utils/currentSession';
+import {
+  clearSession,
+  getCurrentSession,
+  setCurrentSession,
+} from '../utils/currentSession';
 
 interface Session {
   token: string;
   expires: number;
 }
 
-const AuthContext = createContext<Session | null>(null);
+interface AuthContextType {
+  session: Session | null;
+  setSession: (session: Session | null) => void;
+  clearSession: () => void;
+}
 
-export const useAuth = () => useContext(AuthContext);
+const AuthContext = createContext<AuthContextType | null>(null);
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+
+  return context;
+};
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSessionState] = useState<Session | null>(null);
+
+  // Update the session state and local storage
+  const setSession = (newSession: Session | null) => {
+    console.log('Context set session: ', newSession);
+    if (newSession) {
+      console.log('NEW SESSION TRUEEEEEEEEEE: ', newSession.token);
+      setCurrentSession(newSession.token); // Save to localStorage
+    } else {
+      console.log('NEW SESSION FAAAAAAAAAAALLLLLSSSSSSSSSSSSE');
+
+      clearSession(); // Remove from localStorage
+    }
+    setSessionState(newSession); // Update React state
+    console.log('Updated session: ', newSession);
+  };
+
+  const handleClearSession = () => {
+    setSession(null);
+  };
 
   useEffect(() => {
     const currentSession = getCurrentSession();
     if (currentSession) {
-      setSession(currentSession);
+      setSessionState(currentSession);
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={session}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{ session, setSession, clearSession: handleClearSession }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 };

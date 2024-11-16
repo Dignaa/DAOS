@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { createLazyFileRoute, redirect } from '@tanstack/react-router';
 import Section from '../../components/Section';
-import { getCurrentSession } from '../../utils/currentSession';
 import buttonStyles from '../../components/buttonStyles.module.css';
 import { clearSession } from '../../utils/currentSession';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface Profile {
   _id: string;
@@ -32,9 +32,9 @@ function Profile() {
   const [profile, setProfile] = useState<Profile>();
   const [loading, setLoading] = useState(true);
 
-  const token = getCurrentSession();
+  const { session } = useAuth();
 
-  if (token == null) {
+  if (session == null) {
     window.location.href = '/signin';
   }
 
@@ -45,7 +45,7 @@ function Profile() {
 
   useEffect(() => {
     fetch('http://localhost:3000/users/profile', {
-      headers: { Authorization: 'Bearer ' + token },
+      headers: { Authorization: 'Bearer ' + session?.token },
     })
       .then(response => {
         return response.json();
