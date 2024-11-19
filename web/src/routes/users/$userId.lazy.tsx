@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Section from '../../components/Section';
 import User from '../../components/User/User';
 import buttonStyles from '../../components/buttonStyles.module.css';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface Group {
   id: string;
@@ -33,13 +34,13 @@ function UserPage() {
 
   const [user, setUser] = useState<User | null | undefined>(undefined);
   const [loading, setLoading] = useState(true);
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzJhOTkwYjE3YmU2YzkzMTA5YjYxOWYiLCJpYXQiOjE3MzE2OTg5ODgsImV4cCI6MTczMTc4NTM4OH0.v3ElajjXWx_cQHHgcHDLV-eDcBKN8Bmnz6KuBN-g6d0';
+  const { session } = useAuth();
+
   useEffect(() => {
     fetch(`http://localhost:3000/users/${userId}`, {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${session?.token}`,
         'Content-Type': 'application/json',
       },
     })
@@ -58,7 +59,7 @@ function UserPage() {
         setUser(null);
         setLoading(false);
       });
-  }, []);
+  }, [userId, session?.token]);
 
   if (loading) {
     return (

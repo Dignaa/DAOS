@@ -23,35 +23,87 @@ interface Post {
   instrument: string;
   title: string;
 }
+import { createLazyFileRoute } from '@tanstack/react-router';
+import Section from '../../components/Section';
+import { useAuth } from '../../contexts/AuthContext';
+import { useEffect, useState } from 'react';
+import buttonStyles from '../../components/buttonStyles.module.css';
 
 export const Route = createLazyFileRoute('/posts/$postId')({
   component: PostPage,
 });
 
+export interface Group {
+  id: string;
+  name: string;
+  imageUrl?: string;
+  description?: string;
+  address?: string;
+  location?: {
+    type: 'Point';
+    coordinates: [number, number];
+  };
+  link?: string;
+  noOfActiveMembers?: number;
+  adminId: string;
+  userIds: string[];
+}
+
+export interface Post {
+  id: string;
+  title: string;
+  description: string;
+  instrument: string;
+  groupId: string;
+  createdAt: string;
+  updatedAt: string;
+  group: Group;
+}
+
 function PostPage() {
   const { postId } = Route.useParams();
+  const { session } = useAuth();
 
-  const [post, setPost] = useState<Post | null | undefined>(undefined);
+  const [post, setPost] = useState<Post>();
   const [loading, setLoading] = useState(true);
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzJhOTkwYjE3YmU2YzkzMTA5YjYxOWYiLCJpYXQiOjE3MzE2MTA1NzUsImV4cCI6MTczMTY5Njk3NX0.MWhEntQ2Uknlep8yPR-C-gtLlZ7bycYDsbsfWR_QapQ';
+  const [joined, setJoined] = useState(false);
+
+  const joinGroup = () => {
+    fetch(`http://localhost:3000/groups/${post?.groupId}/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + session?.token,
+      },
+    })
+      .then(response => {
+        return response.json().then(data => {
+          if (!response.ok) {
+            return Promise.reject(data);
+          }
+          return data;
+        });
+      })
+      .then(responseData => {
+        console.log(responseData);
+        alert('Joined group id: ' + post?.groupId);
+        setJoined(true);
+      })
+      .catch(() => {
+        alert('Error');
+      });
+  };
+
   useEffect(() => {
     fetch(`http://localhost:3000/posts/${postId}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
+      headers: { Authorization: 'Bearer ' + session?.token },
     })
       .then(response => {
         return response.json();
       })
       .then(data => {
-        if (data.error) {
-          throw new Error(data.message);
-        }
-        console.log(data);
         setPost(data);
+        console.log(data);
         setLoading(false);
       })
       .catch(error => {
@@ -87,6 +139,17 @@ function PostPage() {
     <main>
       <Section>
         <PostOverview post={post} />
+      <Section>
+        {joined ? (
+          <p>Du er allerede med i {post?.group.name}</p>
+        ) : (
+          <button
+            className={`${buttonStyles.button} ${buttonStyles.blue}`}
+            onClick={joinGroup}
+          >
+            Tilslut dig {post?.group.name}
+          </button>
+        )}
       </Section>
     </main>
   );

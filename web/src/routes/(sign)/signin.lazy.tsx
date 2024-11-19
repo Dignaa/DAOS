@@ -4,13 +4,19 @@ import Form from '../../components/Form';
 import Input from '../../components/Input';
 import { FormEvent } from 'react';
 import buttonStyles from '../../components/buttonStyles.module.css';
-import { setCurrentSession } from '../../utils/currentSession';
+import { useAuth } from '../../contexts/AuthContext';
+
+interface Session {
+  token: string;
+  expires: number;
+}
 
 export const Route = createLazyFileRoute('/(sign)/signin')({
   component: SignIn,
 });
 
 function SignIn() {
+  const { setSession } = useAuth();
   const navigate = useNavigate();
 
   const signInUser = (event: FormEvent) => {
@@ -34,10 +40,11 @@ function SignIn() {
         });
       })
       .then(responseData => {
-        setCurrentSession(responseData.access_token);
-        navigate({
-          to: '/',
-        });
+        const session: Session = {
+          token: responseData.access_token, // Access token from the API response
+          expires: Date.now() + 86400000, // Set expiry to 24 hours from now
+        };
+        setSession(session);
       })
       .catch(() => {
         alert('Forkert email eller adganskode!');

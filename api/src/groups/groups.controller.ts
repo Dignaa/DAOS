@@ -9,6 +9,7 @@ import {
   UseGuards,
   Request,
   HttpCode,
+  Req,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -57,7 +58,9 @@ export class GroupsController {
 
   @Post(':id/users')
   @UseGuards(AuthGuard)
-  async addUser(@Param('id') groupId: string, @Body('userId') userId: string) {
+  async addUser(@Param('id') groupId: string, @Req() req: any) {
+    const userId = req.user.userId;
+    console.log('JOIN GROUP USER ID: ', userId);
     return await this.groupService.addUser(groupId, userId);
   }
 

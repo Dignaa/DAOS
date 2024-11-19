@@ -2,9 +2,10 @@ import styles from './Navbar.module.css';
 import buttonStyles from './buttonStyles.module.css';
 import { getCurrentSession } from '../utils/currentSession';
 import { Link } from '@tanstack/react-router';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Navbar() {
-  const token = getCurrentSession();
+  const { session } = useAuth();
 
   return (
     <nav className={styles.nav}>
@@ -21,7 +22,7 @@ export default function Navbar() {
         <li>
           <Link to="/posts">Find ensemble</Link>
         </li>
-        {token ? (
+        {session ? (
           <li>
             <Link
               to="/profile"
