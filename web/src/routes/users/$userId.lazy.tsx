@@ -40,7 +40,7 @@ function UserPage() {
     fetch(`http://localhost:3000/users/${userId}`, {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${session?.token}`,
+        Authorization: `Bearer ${session}`,
         'Content-Type': 'application/json',
       },
     })
@@ -59,7 +59,7 @@ function UserPage() {
         setUser(null);
         setLoading(false);
       });
-  }, [userId, session?.token]);
+  }, [userId, session]);
 
   if (loading) {
     return (

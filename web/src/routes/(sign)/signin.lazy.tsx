@@ -45,6 +45,9 @@ function SignIn() {
           expires: Date.now() + 86400000, // Set expiry to 24 hours from now
         };
         setSession(session);
+        navigate({
+          to: '/',
+        });
       })
       .catch(() => {
         alert('Forkert email eller adganskode!');

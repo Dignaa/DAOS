@@ -16,6 +16,13 @@
   &:hover {
     background-color: #f9f9f9;
   }
+  &:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+    &:hover {
+      background-color: darkgray;
+    }
+  }
 }
 .blue {
   background-color: var(--color-blue);

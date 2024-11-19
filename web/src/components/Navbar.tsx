@@ -1,6 +1,5 @@
 import styles from './Navbar.module.css';
 import buttonStyles from './buttonStyles.module.css';
-import { getCurrentSession } from '../utils/currentSession';
 import { Link } from '@tanstack/react-router';
 import { useAuth } from '../contexts/AuthContext';
 

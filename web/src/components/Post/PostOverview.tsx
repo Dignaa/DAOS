@@ -3,6 +3,8 @@ import typographyStyles from '../../components/typographyStyles.module.css';
 import buttonStyles from '../../components/buttonStyles.module.css';
 import { Link } from '@tanstack/react-router';
 import daysAgo from '../../utils/daysAgo';
+import { useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface Group {
   _id: string;
@@ -10,7 +12,6 @@ interface Group {
   imageUrl: string;
   name: string;
   noOfActiveMembers: number;
-  groupId: string;
 }
 interface Post {
   __v: number;
@@ -28,6 +29,35 @@ interface Props {
 
 export default function Overview({ post }: Props) {
   const postedDaysAgo = daysAgo(post.createdAt);
+  const [joined, setJoined] = useState(false);
+  const { session } = useAuth();
+
+  const joinGroup = () => {
+    fetch(`http://localhost:3000/groups/${post?.group._id}/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + session,
+      },
+    })
+      .then(response => {
+        return response.json().then(data => {
+          if (!response.ok) {
+            return Promise.reject(data);
+          }
+          return data;
+        });
+      })
+      .then(responseData => {
+        console.log(responseData);
+        alert('Du har tilsluttet dig dette ensemble');
+        setJoined(true);
+      })
+      .catch(() => {
+        alert('Error');
+      });
+  };
+
   return (
     <div className={styles.box}>
       <div className={styles.content}>
@@ -44,10 +74,22 @@ export default function Overview({ post }: Props) {
             {post.group.address || 'Ingen adresse givet'}
           </address>
           <p>{post.description || `Ingen beskrivelse endnu.`}</p>
-          <button className={`${buttonStyles.button} ${buttonStyles.blue}`}>
-            Jeg vil spille {post.instrument.toLocaleLowerCase()} hos{' '}
-            {post.group.name}
-          </button>
+          {joined ? (
+            <button
+              className={`${buttonStyles.button} ${buttonStyles.blue}`}
+              onClick={joinGroup}
+              disabled
+            >
+              Tilsluttet {post?.group.name}
+            </button>
+          ) : (
+            <button
+              className={`${buttonStyles.button} ${buttonStyles.blue}`}
+              onClick={joinGroup}
+            >
+              Tilslut dig {post?.group.name}
+            </button>
+          )}
           <Link
             to="/groups/$groupId"
             params={{ groupId: post.group._id }}
