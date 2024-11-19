@@ -14,7 +14,7 @@ export class CreateGroupDto {
   name: string;
 
   @IsOptional()
-  @IsUrl()
+  @IsUrl({}, { message: 'Indtast venligst et link' })
   imageUrl?: string;
 
   @IsOptional()
@@ -26,11 +26,11 @@ export class CreateGroupDto {
   address?: string;
 
   @IsOptional()
-  @IsUrl()
+  @IsUrl({}, { message: 'Indtast venligst et link' })
   link?: string;
 
   @IsOptional()
-  @IsNumber()
+  @IsNumber({}, { message: 'Indtast venligst et nummer' })
   noOfActiveMembers?: number;
 
   @IsOptional()

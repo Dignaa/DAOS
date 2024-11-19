@@ -52,13 +52,12 @@ function SignUp() {
       })
       .catch(errors => {
         console.log(errors);
+        document.querySelectorAll('[data-error]').forEach(node => {
+          node.removeAttribute('data-error');
+        });
         errors.message.map((error: Error) => {
           const node = document.querySelector(`input[name="${error.field}"]`);
           node?.parentElement!.setAttribute('data-error', error.message);
-          /*
-          const errorMessage = document.createElement('p');
-          errorMessage.innerText = error.message;
-          node?.parentNode?.insertBefore(errorMessage, node);*/
         });
       });
   };
