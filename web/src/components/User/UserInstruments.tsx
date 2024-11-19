@@ -5,7 +5,6 @@ interface Props {
 }
 
 export default function UserInstruments({ instruments }: Props) {
-  console.log(instruments);
   return (
     <div>
       <h2>

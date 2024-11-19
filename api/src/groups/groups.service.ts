@@ -95,7 +95,6 @@ export class GroupsService {
     const posts = await this.postModel
       .find({ groupId: new ObjectId(groupId) })
       .exec();
-    console.log(posts);
     return posts;
   }
 }

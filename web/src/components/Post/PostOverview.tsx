@@ -49,7 +49,6 @@ export default function Overview({ post }: Props) {
         });
       })
       .then(responseData => {
-        console.log(responseData);
         alert('Du har tilsluttet dig dette ensemble');
         setJoined(true);
       })

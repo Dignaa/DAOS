@@ -4,7 +4,6 @@ export function setCurrentSession(token: string) {
     expires: Date.now() + 86400000, //one day 24 hours
   };
   localStorage.setItem('token', JSON.stringify(session));
-  console.log('Local storage token: ', session);
 }
 
 export function getCurrentSession() {
