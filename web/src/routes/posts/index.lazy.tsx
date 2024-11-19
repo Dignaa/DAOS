@@ -43,7 +43,7 @@ function Posts() {
         {loading ? (
           <p>Vent venligst mens opslag hentes fra databasen...</p>
         ) : (
-          <PostGrid posts={posts} type="post" />
+          <PostGrid posts={posts} />
         )}
       </Section>
     </main>

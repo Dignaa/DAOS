@@ -47,7 +47,7 @@ type CardProps = PostProps | UserProps;
 // Type guard function to check if props are PostProps
 function isPostProps(props: CardProps): props is PostProps {
   // Check for properties unique to PostProps
-  return 'title' in props && 'group' in props && 'instrument' in props;
+  return 'title' in props && 'instrument' in props;
 }
 
 // Card component definition
