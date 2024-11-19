@@ -41,6 +41,14 @@ export class UsersController {
     return user;
   }
 
+  @Get('groups')
+  @UseGuards(AuthGuard)
+  async getGroups(@Request() req) {
+    const userId: string = req.user.userId;
+    const groups = await this.groupsService.getGroupsForUser(userId);
+    return groups;
+  }
+
   @Get()
   async find(): Promise<UsersResponseDto[]> {
     const users = await this.usersService.findAll();

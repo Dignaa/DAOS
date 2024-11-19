@@ -3,7 +3,7 @@ import styles from './Input.module.css';
 
 interface InputProps {
   label: string;
-  type: 'text' | 'email' | 'password' | 'radio';
+  type: 'text' | 'email' | 'password' | 'radio' | 'number';
   name: string;
   required?: boolean;
   value?: string;
