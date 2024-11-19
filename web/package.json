@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@rollup/rollup-win32-x64-msvc": "^4.24.4",
     "@tanstack/react-router": "^1.79.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

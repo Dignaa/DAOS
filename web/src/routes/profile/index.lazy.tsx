@@ -45,7 +45,7 @@ function Profile() {
 
   useEffect(() => {
     fetch('http://localhost:3000/users/profile', {
-      headers: { Authorization: 'Bearer ' + session?.token },
+      headers: { Authorization: 'Bearer ' + session },
     })
       .then(response => {
         return response.json();
