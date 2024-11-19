@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConsoleLogger,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -93,12 +94,8 @@ export class GroupsService {
   private async getPostsForGroup(groupId: string) {
     const posts = await this.postModel
       .find({ groupId: new ObjectId(groupId) })
-      .select('id title instrument')
       .exec();
-    return posts.map((post) => ({
-      id: post.id,
-      title: post.title,
-      instrument: post.instrument,
-    }));
+    console.log(posts);
+    return posts;
   }
 }

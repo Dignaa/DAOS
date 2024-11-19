@@ -2,21 +2,8 @@ import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
 import Section from '../../components/Section';
 import buttonStyles from '../../components/buttonStyles.module.css';
-
-interface Post {
-  id: string;
-  title: string;
-  instrument: string;
-}
-
-interface Group {
-  id: string;
-  name: string;
-  imageUrl?: string;
-  description?: string;
-  address?: string;
-  posts?: Post[];
-}
+import GroupOverview from '../../components/GroupPage';
+import { IGroup } from '../../components/GroupPage';
 
 export const Route = createLazyFileRoute('/groups/$groupId')({
   component: GroupPage,
@@ -24,7 +11,7 @@ export const Route = createLazyFileRoute('/groups/$groupId')({
 
 function GroupPage() {
   const { groupId } = Route.useParams();
-  const [group, setGroup] = useState<Group>();
+  const [group, setGroup] = useState<IGroup>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -72,36 +59,7 @@ function GroupPage() {
   return (
     <main>
       <Section>
-        <h1>{group.name}</h1>
-        {group.imageUrl && <img src={group.imageUrl} alt={`${group.name}`} />}
-        <div>
-          <strong>Description:</strong>{' '}
-          {group.description || 'No description provided'}
-        </div>
-        <div>
-          <strong>Address:</strong> {group.address || 'No address provided'}
-        </div>
-
-        {/* Render Posts for this Group */}
-        <div>
-          <strong>Posts:</strong>
-          <ul>
-            {group.posts && group.posts.length > 0 ? (
-              group.posts.map(post => (
-                <li key={post.id}>
-                  <div>
-                    <strong>Title:</strong> {post.title}
-                  </div>
-                  <div>
-                    <strong>Instrument:</strong> {post.instrument}
-                  </div>
-                </li>
-              ))
-            ) : (
-              <li>No posts available for this group</li>
-            )}
-          </ul>
-        </div>
+        <GroupOverview group={group} />
       </Section>
     </main>
   );
