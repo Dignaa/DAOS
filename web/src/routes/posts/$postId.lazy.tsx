@@ -44,7 +44,6 @@ function PostPage() {
       })
       .then(data => {
         setPost(data);
-        console.log(data);
         setLoading(false);
       })
       .catch(error => {

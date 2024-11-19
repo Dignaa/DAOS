@@ -140,9 +140,10 @@ function CreatePost() {
         <Form onSubmit={createNewPost}>
           <Select
             required
+            name="groupId"
             options={userGroupOptions}
-            placeholder="Vælg instrument"
-            noOptionsMessage={() => 'Ingen instrumenter fundet'}
+            placeholder="Vælg ensemble"
+            noOptionsMessage={() => 'Ingen ensemble fundet'}
           />
           <Input label="Titel" type="text" name="title" required />
           <Input label="Beskrivelse" type="text" name="description" required />

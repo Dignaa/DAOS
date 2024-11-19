@@ -15,5 +15,5 @@ export class CreatePostDto {
   @IsString()
   instrument: string;
 
-  groupId: Types.ObjectId;
+  groupId: string;
 }

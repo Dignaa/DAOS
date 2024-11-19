@@ -9,13 +9,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from 'src/schemas/post.schema';
 import { Model, Types } from 'mongoose';
 import { ObjectId } from 'mongodb';
-import { Group } from 'src/schemas/group.schema';
+import { Group, GroupDocument } from 'src/schemas/group.schema';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectModel(Post.name) private postModel: Model<PostDocument>,
-    @InjectModel(Group.name) private readonly groupModel: Model<Group>,
+    @InjectModel(Group.name) private readonly groupModel: Model<GroupDocument>,
   ) {}
 
   // Create a post
@@ -59,7 +59,7 @@ export class PostsService {
       throw new NotFoundException(`Post with ID ${id} not found`);
     }
     const group = await this.getGroupForPost(post.groupId);
-    return { ...post.toObject(), group: { ...group } };
+    return { ...post.toObject(), group };
   }
 
   // Update a post by ID
@@ -83,12 +83,7 @@ export class PostsService {
 
   // Get the group for a specific post
   private async getGroupForPost(groupId: ObjectId) {
-    const group = await this.groupModel
-      .findOne({ _id: new ObjectId(groupId) })
-      .select('name address noOfActiveMembers imageUrl')
-      .lean() //Returns plain JavaScript instead of a Mongoose document
-      .exec();
-
+    const group = await this.groupModel.findOne({ _id: groupId }).exec();
     return group;
   }
 }
