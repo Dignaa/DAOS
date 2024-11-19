@@ -39,7 +39,7 @@ function Users() {
         {loading ? (
           <p>Vent venligst mens brugere hentes fra databasen...</p>
         ) : (
-          <PostGrid posts={users} type="user" />
+          <PostGrid posts={users} />
         )}
       </Section>
     </main>
