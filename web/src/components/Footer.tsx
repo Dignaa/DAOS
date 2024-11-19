@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -8,27 +9,21 @@ export default function Footer() {
           <p className={styles.title}>Musik Samspil</p>
           <ul className={styles.links}>
             <li>
-              <a href="/">Se opslag</a>
+              <Link to="/posts">Se opslag</Link>
             </li>
             <li>
-              <a href="/">Profil</a>
+              <Link to="/profile">Profil</Link>
             </li>
           </ul>
           <ul className={styles.socials}>
             <li>
-              <a href="">
-                <img src="/illustrations/icons/footer-facebook.svg" alt="" />
-              </a>
+              <img src="/illustrations/icons/footer-facebook.svg" alt="" />
             </li>
             <li>
-              <a href="">
-                <img src="/illustrations/icons/footer-instagram.svg" alt="" />
-              </a>
+              <img src="/illustrations/icons/footer-instagram.svg" alt="" />
             </li>
             <li>
-              <a href="">
-                <img src="/illustrations/icons/footer-linkedin.svg" alt="" />
-              </a>
+              <img src="/illustrations/icons/footer-linkedin.svg" alt="" />
             </li>
           </ul>
         </div>
@@ -50,7 +45,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <p>Privatlivspolitik </p>
+      <p>Privatlivspolitik</p>
     </footer>
   );
 }

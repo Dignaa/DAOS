@@ -1,6 +1,8 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
 import Section from '../../components/Section';
+import User from '../../components/User/User';
+import buttonStyles from '../../components/buttonStyles.module.css';
 import { useAuth } from '../../contexts/AuthContext';
 
 interface Group {
@@ -19,7 +21,7 @@ interface User {
   seeking?: boolean;
   groups?: Group[];
   lastLoggedIn: string;
-  instruments: [];
+  instruments: string[];
   createdAt: string;
 }
 
@@ -30,7 +32,7 @@ export const Route = createLazyFileRoute('/users/$userId')({
 function UserPage() {
   const { userId } = Route.useParams();
 
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const { session } = useAuth();
 
@@ -54,88 +56,37 @@ function UserPage() {
       })
       .catch(error => {
         console.error(error);
+        setUser(null);
         setLoading(false);
       });
   }, [userId, session?.token]);
 
-  if (loading)
+  if (loading) {
     return (
       <Section>
-        <h1>Something, I guess its loading</h1>
+        <h1>Henter musiker</h1>
+        <p>Vent venligst mens musikeren hentes fra databasen...</p>
+      </Section>
+    );
+  }
+
+  if (!user)
+    return (
+      <Section>
+        <h1>Musiker ikke fundet</h1>
+        <Link
+          className={`${buttonStyles.button} ${buttonStyles.blue}`}
+          to="/users"
+        >
+          Se alle musikere
+        </Link>
       </Section>
     );
 
   return (
     <main>
       <Section>
-        <h1>User Details</h1>
-        <ul>
-          {user && (
-            <li>
-              <div>
-                <strong>Name:</strong> {user.name}
-              </div>
-              <div>
-                <strong>Email:</strong> {user.email}
-              </div>
-              <div>
-                <strong>Phone Number:</strong> {user.phoneNumber || 'N/A'}
-              </div>
-              <div>
-                <strong>Avatar:</strong>{' '}
-                <img src={user.avatarUrl} alt="User Avatar" />
-              </div>
-              <div>
-                <strong>Description:</strong>{' '}
-                {user.description || 'No description provided'}
-              </div>
-              <div>
-                <strong>Address:</strong>{' '}
-                {user.address || 'No address provided'}
-              </div>
-              <div>
-                <strong>Seeking:</strong> {user.seeking ? 'Yes' : 'No'}
-              </div>
-              <div>
-                <strong>Last Logged In:</strong>{' '}
-                {user.lastLoggedIn ? user.lastLoggedIn : 'N/A'}
-              </div>
-              <div>
-                <strong>Created At:</strong>{' '}
-                {user.createdAt ? user.createdAt : 'N/A'}
-              </div>
-              <div>
-                <strong>Instruments:</strong>{' '}
-                {user.instruments ? user.instruments.join(', ') : 'N/A'}
-              </div>
-
-              {/* Render Groups */}
-              <div>
-                <strong>Groups:</strong>
-                <ul>
-                  {user.groups && user.groups.length > 0 ? (
-                    user.groups.map(group => (
-                      <li key={group.id}>
-                        <div>
-                          <strong>{group.name}</strong>
-                        </div>
-                        <div>
-                          <img
-                            src={group.imageUrl}
-                            alt={`${group.name} Group Image`}
-                            width={50}
-                          />
-                        </div>
-                      </li>
-                    ))
-                  ) : (
-                    <div>No groups available</div>
-                  )}
-                </ul>
-              </div>
-            </li>
-          )}
-        </ul>
+        <User user={user} />
       </Section>
     </main>
   );

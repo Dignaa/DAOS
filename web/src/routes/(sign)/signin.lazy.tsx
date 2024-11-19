@@ -45,10 +45,6 @@ function SignIn() {
           expires: Date.now() + 86400000, // Set expiry to 24 hours from now
         };
         setSession(session);
-        /*window.location.href = '/';
-        navigate({
-          to: '/',
-        });*/
       })
       .catch(() => {
         alert('Forkert email eller adganskode!');
@@ -58,6 +54,7 @@ function SignIn() {
   return (
     <main>
       <Section>
+        <h1>Login</h1>
         <Form onSubmit={signInUser}>
           <Input label="Email" type="email" name="email" required />
           <Input label="Adgangskode" type="password" name="password" required />

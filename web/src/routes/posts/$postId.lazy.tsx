@@ -1,3 +1,28 @@
+import { createLazyFileRoute, Link } from '@tanstack/react-router';
+import { useState, useEffect } from 'react';
+import Section from '../../components/Section';
+import PostOverview from '../../components/Post/PostOverview';
+import buttonStyles from '../../components/buttonStyles.module.css';
+
+interface Group {
+  _id: string;
+  address: string;
+  imageUrl: string;
+  name: string;
+  noOfActiveMembers: number;
+  groupId: string;
+}
+
+interface Post {
+  __v: number;
+  _id: string;
+  createdAt: string;
+  date: string;
+  description: string;
+  group: Group;
+  instrument: string;
+  title: string;
+}
 import { createLazyFileRoute } from '@tanstack/react-router';
 import Section from '../../components/Section';
 import { useAuth } from '../../contexts/AuthContext';
@@ -83,39 +108,46 @@ function PostPage() {
       })
       .catch(error => {
         console.error(error);
+        setPost(null);
         setLoading(false);
       });
   }, []);
 
-  if (loading)
+  if (loading) {
     return (
       <Section>
-        <h1>Henter Post</h1>
-        <p>Vent venligst mens din post hentes fra databasen.</p>
+        <h1>Henter opslag</h1>
+        <p>Vent venligst mens opslaget hentes fra databasen...</p>
+      </Section>
+    );
+  }
+
+  if (!post)
+    return (
+      <Section>
+        <h1>Opslag ikke fundet</h1>
+        <Link
+          className={`${buttonStyles.button} ${buttonStyles.blue}`}
+          to="/posts"
+        >
+          Se alle opslag
+        </Link>
       </Section>
     );
 
   return (
     <main>
       <Section>
-        <h1>{post?.title}</h1>
-      </Section>
-      <Section>
-        <p>Group: {post?.group.name}</p>
-        <p>{post?.description}</p>
-      </Section>
-      <Section>
-        <p>{post?.instrument}</p>
-      </Section>
+        <PostOverview post={post} />
       <Section>
         {joined ? (
-          <p>Joined the group</p>
+          <p>Du er allerede med i {post?.group.name}</p>
         ) : (
           <button
             className={`${buttonStyles.button} ${buttonStyles.blue}`}
             onClick={joinGroup}
           >
-            Join {post?.group.name}
+            Tilslut dig {post?.group.name}
           </button>
         )}
       </Section>

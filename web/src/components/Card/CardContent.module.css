@@ -1,0 +1,22 @@
+.content {
+  padding: 16pt;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  color: var(--color-blue);
+  font-weight: 700;
+  padding-bottom: 12pt;
+}
+
+.instrument {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12pt;
+  color: var(--color-blue);
+  font-family: Oswald;
+  font-weight: 500;
+  font-size: 20pt;
+}

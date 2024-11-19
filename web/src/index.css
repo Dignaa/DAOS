@@ -14,12 +14,11 @@ body {
   font-family: Montserrat;
   font-size: 16pt;
   color: var(--color-darkGray);
+  background-color: white;
 }
 a {
   text-decoration: none;
   color: inherit;
-  font-weight: 700;
-  font-size: 16pt;
 }
 h1 {
   font-size: 50pt;

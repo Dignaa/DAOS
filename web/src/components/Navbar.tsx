@@ -1,5 +1,7 @@
 import styles from './Navbar.module.css';
 import buttonStyles from './buttonStyles.module.css';
+import { getCurrentSession } from '../utils/currentSession';
+import { Link } from '@tanstack/react-router';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Navbar() {
@@ -8,42 +10,41 @@ export default function Navbar() {
   return (
     <nav className={styles.nav}>
       <div className={styles.logo}>
-        <a href="/" className={styles.logoTitle}>
+        <Link className={styles.logoTitle} to="/">
           Musik Samspil
-        </a>
-        <a href="https://daos.dk">Skabt af DAOS</a>
+        </Link>
+        <p>Skabt af DAOS</p>
       </div>
       <ul className={styles.list}>
         <li>
-          <a href="/users">Find musiker</a>
+          <Link to="/users">Find musiker</Link>
         </li>
         <li>
-          <a href="/posts">Find ensemble</a>
+          <Link to="/posts">Find ensemble</Link>
         </li>
         {session ? (
           <li>
-            {' '}
-            <a
-              href="/profile"
+            <Link
+              to="/profile"
               className={`${buttonStyles.button} ${buttonStyles.blue}`}
             >
               Profil
-            </a>
+            </Link>
           </li>
         ) : (
           <>
             <li>
-              <a
-                href="/signup"
+              <Link
+                to="/signup"
                 className={`${buttonStyles.button} ${buttonStyles.blue}`}
               >
                 Opret bruger
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/signin" className={buttonStyles.button}>
+              <Link to="/signin" className={buttonStyles.button}>
                 Login
-              </a>
+              </Link>
             </li>
           </>
         )}

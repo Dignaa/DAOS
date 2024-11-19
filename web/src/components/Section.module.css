@@ -1,7 +1,11 @@
 .section {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   padding: 30pt 60pt;
   margin: auto;
   gap: 60pt;
+}
+
+.sectionRow {
+  flex-direction: row;
 }

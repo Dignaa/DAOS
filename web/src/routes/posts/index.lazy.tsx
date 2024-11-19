@@ -36,21 +36,15 @@ function Posts() {
       });
   }, []);
 
-  if (loading)
-    return (
-      <Section>
-        <h1>Henter Musikere</h1>
-        <p>Vent venligst mens brugere hentes fra databasen.</p>
-      </Section>
-    );
-
   return (
     <main>
       <Section>
         <h1>Find ensemble</h1>
-      </Section>
-      <Section>
-        <PostGrid posts={posts} />7
+        {loading ? (
+          <p>Vent venligst mens opslag hentes fra databasen...</p>
+        ) : (
+          <PostGrid posts={posts} type="post" />
+        )}
       </Section>
     </main>
   );
