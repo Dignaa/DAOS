@@ -60,7 +60,6 @@ export class GroupsController {
   @UseGuards(AuthGuard)
   async addUser(@Param('id') groupId: string, @Req() req: any) {
     const userId = req.user.userId;
-    console.log('JOIN GROUP USER ID: ', userId);
     return await this.groupService.addUser(groupId, userId);
   }
 
