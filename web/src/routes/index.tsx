@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import Section from '../components/Section';
 import Select from 'react-select';
-import PostGrid from '../components/PostGrid';
+import Grid from '../components/Grid';
 
 import '../index.css';
 import typographyStyles from '../components/typographyStyles.module.css';
@@ -49,6 +49,7 @@ function Index() {
         setLoading(false);
       });
   }, []);
+  console.log(posts);
 
   return (
     <main>
@@ -75,7 +76,7 @@ function Index() {
         {loading ? (
           <p>Vent venligst mens seneste opslag hentes fra databasen...</p>
         ) : (
-          <PostGrid posts={posts} type="post" />
+          <Grid cards={posts || []} />
         )}
       </Section>
     </main>

@@ -38,7 +38,9 @@ export class UsersController {
   async getUserProfile(@Request() req) {
     const userId: string = req.user.userId;
     const user = await this.usersService.findOne(userId);
-    return user;
+    const posts = await this.usersService.getPosts(userId);
+    const usersResponseDto = { ...user, posts };
+    return plainToInstance(UsersResponseDto, usersResponseDto);
   }
 
   @Get('groups')

@@ -22,9 +22,13 @@ function CreateGroup() {
   const createNewGroup = (event: FormEvent) => {
     event.preventDefault();
 
-    const form = document.querySelector('form')!;
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+  const form = document.querySelector('form')!;
+  const formData = new FormData(form);
+  const data: Record<string, unknown> = Object.fromEntries(formData.entries());
+
+ if (data.noOfActiveMembers !== undefined) {
+    data.noOfActiveMembers = Number(data.noOfActiveMembers);
+  }
 
     for (const key in data) {
       if (data[key] === '') {

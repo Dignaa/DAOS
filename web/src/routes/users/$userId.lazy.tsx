@@ -6,7 +6,7 @@ import buttonStyles from '../../components/buttonStyles.module.css';
 import { useAuth } from '../../contexts/AuthContext';
 
 interface Group {
-  id: string;
+  _id: string;
   name: string;
   imageUrl: string;
 }

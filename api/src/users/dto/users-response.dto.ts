@@ -38,4 +38,7 @@ export class UsersResponseDto {
 
   @Expose()
   groups?: GroupDto[];
+
+  @Expose()
+  posts?: string[];
 }

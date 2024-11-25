@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import Section from '../../components/Section';
-import PostGrid from '../../components/PostGrid';
+import Grid from '../../components/Grid';
 
 interface Post {
   _id: string;
@@ -42,8 +42,10 @@ function Posts() {
         <h1>Find ensemble</h1>
         {loading ? (
           <p>Vent venligst mens opslag hentes fra databasen...</p>
+        ) : posts ? (
+          <Grid cards={posts} />
         ) : (
-          <PostGrid posts={posts} />
+          <h2>Ingen opslag</h2>
         )}
       </Section>
     </main>

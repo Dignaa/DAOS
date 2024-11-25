@@ -19,7 +19,7 @@ export class PostsService {
   ) {}
 
   // Create a post
-  async create(createPostDto: CreatePostDto) {
+  async create(createPostDto: CreatePostDto, userId: string) {
     const newPost = new this.postModel({
       ...createPostDto,
       groupId: new Types.ObjectId(createPostDto.groupId),
@@ -28,11 +28,12 @@ export class PostsService {
         type: 'Point',
         coordinates: [-122.0838, 37.421998], // [longitude, latitude]
       },
+      userId: new Types.ObjectId(userId),
     });
     const post = await newPost.save();
 
     const group = await this.getGroupForPost(post.groupId);
-    return { ...post.toObject(), group: { ...group } };
+    return { ...post.toObject(), ...group };
   }
 
   // Find all posts
@@ -71,7 +72,7 @@ export class PostsService {
       .exec();
 
     const group = await this.getGroupForPost(post.groupId);
-    return { ...toUpdate.toObject(), group: { ...group } };
+    return { ...toUpdate.toObject(), group: { group } };
   }
 
   // Delete a post by ID

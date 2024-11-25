@@ -1,9 +1,9 @@
 import styles from './Post/PostOverview.module.css';
 import typographyStyles from '../components/typographyStyles.module.css';
 import buttonStyles from '../components/buttonStyles.module.css';
-import PostGrid from './PostGrid';
+import Grid from './Grid';
 
-export interface IGroup {
+export interface Group {
   _id: string;
   name: string;
   imageUrl?: string;
@@ -17,24 +17,27 @@ export interface IGroup {
   noOfActiveMembers?: number;
   adminId: string;
   userIds: string[];
-  posts?: IPost[];
+  posts?: Post[];
 }
 
-export interface IPost {
+export interface Post {
   _id: string;
   createdAt: string;
   date: string;
   description: string;
   instrument: string;
   title: string;
-  group: IGroup;
+  group: Group;
 }
 
-export interface IGroupProps {
-  group: IGroup;
+export interface GroupProps {
+  group: Group;
 }
 
-export default function GroupOverview({ group }: IGroupProps) {
+export default function GroupOverview({ group }: GroupProps) {
+  group.posts?.forEach(post => {
+        post.group = group;
+      })
   return (
     <>
       <div className={styles.box}>
@@ -63,10 +66,7 @@ export default function GroupOverview({ group }: IGroupProps) {
         </div>
       </div>
       <h2 className={typographyStyles.title}>Group Posts</h2>
-      {group.posts?.forEach(post => {
-        post.group = group;
-      })}
-      <PostGrid posts={group.posts} />
+      <Grid cards={group.posts || []} />
     </>
   );
 }
