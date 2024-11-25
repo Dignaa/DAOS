@@ -35,6 +35,9 @@ export default function Overview({ post }: Props) {
   const joinGroup = () => {
     fetch(`http://localhost:3000/groups/${post?.group._id}/users`, {
       method: 'POST',
+      body: JSON.stringify({
+        "postId": post._id
+      }),
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + session,

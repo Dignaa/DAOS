@@ -77,7 +77,6 @@ export class PostsService {
   // Delete a post by ID
   async remove(id: string) {
     const post = await this.findOne(id);
-
     return await this.postModel.findByIdAndDelete(post._id).exec();
   }
 

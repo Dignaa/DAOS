@@ -12,6 +12,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
+import { PostsService } from '../posts/posts.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -19,7 +20,7 @@ import { ObjectId } from 'mongodb';
 
 @Controller('groups')
 export class GroupsController {
-  constructor(private readonly groupService: GroupsService) {}
+  constructor(private readonly groupService: GroupsService, private readonly postService: PostsService) {}
 
   @Post()
   @UseGuards(AuthGuard)
@@ -58,9 +59,15 @@ export class GroupsController {
 
   @Post(':id/users')
   @UseGuards(AuthGuard)
-  async addUser(@Param('id') groupId: string, @Req() req: any) {
+  async addUser(@Param('id') groupId: string, @Body('postId') postId: string, @Req() req: any) {
     const userId = req.user.userId;
-    return await this.groupService.addUser(groupId, userId);
+    const group = await this.groupService.addUser(groupId, userId);
+    const foundMemeber = group.userIds.find(user => user._id.toString() === userId);
+    if( foundMemeber !== null) {
+      const i = await this.postService.remove(postId);
+      return group;
+    }
+    return null;
   }
 
   @Delete(':id/users')

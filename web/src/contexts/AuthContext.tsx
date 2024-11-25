@@ -12,14 +12,9 @@ import {
   setCurrentSession,
 } from '../utils/currentSession';
 
-interface Session {
-  token: string;
-  expires: number;
-}
-
 interface AuthContextType {
-  session: Session | null;
-  setSession: (session: Session | null) => void;
+  session: string | null;
+  setSession: (session: string | null) => void;
   clearSession: () => void;
 }
 
@@ -40,15 +35,16 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [session, setSessionState] = useState<Session | null>(null);
+  const [session, setSessionState] = useState<string | null>(null);
 
   // Update the session state and local storage
-  const setSession = (newSession: Session | null) => {
-    if (newSession) {
-      setCurrentSession(newSession.token); // Save to localStorage
-    } else {
+  const setSession = (newSession: string | null) => {
+    if(newSession === null) {
       clearSession(); // Remove from localStorage
+      return;
     }
+    setCurrentSession(newSession); // Save to localStorage
+  
     setSessionState(newSession); // Update React state
   };
 

@@ -43,6 +43,9 @@ function PostPage() {
         return response.json();
       })
       .then(data => {
+        if (data.error) {
+          throw new Error(data.message);
+        }
         setPost(data);
         setLoading(false);
       })
@@ -60,7 +63,7 @@ function PostPage() {
       </Section>
     );
   }
-
+  console.log(post);
   if (!post)
     return (
       <Section>
