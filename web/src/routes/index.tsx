@@ -1,11 +1,9 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import Section from '../components/Section';
-import Select from 'react-select';
 import Grid from '../components/Grid';
 
 import '../index.css';
 import typographyStyles from '../components/typographyStyles.module.css';
-import instruments from '../assets/instruments';
 import { useEffect, useState } from 'react';
 
 interface Post {
@@ -17,19 +15,9 @@ interface Post {
   address: string;
 }
 
-interface SelectOption {
-  value: string;
-  label: string;
-}
-
 export const Route = createFileRoute('/')({
   component: Index,
 });
-
-const options: SelectOption[] = instruments.map((instrument: string) => ({
-  value: instrument,
-  label: instrument,
-}));
 
 function Index() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -58,11 +46,6 @@ function Index() {
           <h1 className={typographyStyles.red}>
             Stedet hvor amatørmusikere finder hinanden og spiller sammen
           </h1>
-          <Select
-            options={options}
-            placeholder="Vælg instrument"
-            noOptionsMessage={() => 'Ingen instrumenter fundet'}
-          />
         </div>
         <img src="/illustrations/hero.svg" alt="" />
       </Section>
