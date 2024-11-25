@@ -4,6 +4,7 @@ import Section from '../../components/Section';
 import buttonStyles from '../../components/buttonStyles.module.css';
 import GroupOverview from '../../components/GroupPage';
 import { Group } from '../../components/GroupPage';
+import { useAuth } from '../../contexts/AuthContext';
 
 export const Route = createLazyFileRoute('/groups/$groupId')({
   component: GroupPage,
@@ -13,8 +14,29 @@ function GroupPage() {
   const { groupId } = Route.useParams();
   const [group, setGroup] = useState<Group>();
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { session } = useAuth();
+
+  const checkIsAdmin = () => {
+    fetch(`http://localhost:3000/groups/${groupId}/isAdmin`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + session,
+      },
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        setIsAdmin(data ? true : false);
+      })
+      .catch(() => {
+        alert('Error');
+      });
+  };
 
   useEffect(() => {
+    checkIsAdmin();
     fetch(`http://localhost:3000/groups/${groupId}`, {
       method: 'GET',
       headers: {
@@ -59,7 +81,7 @@ function GroupPage() {
   return (
     <main>
       <Section>
-        <GroupOverview group={group} />
+        <GroupOverview group={group} isAdmin={isAdmin}/>
       </Section>
     </main>
   );

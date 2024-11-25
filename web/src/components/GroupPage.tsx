@@ -32,9 +32,10 @@ export interface Post {
 
 export interface GroupProps {
   group: Group;
+  isAdmin: boolean;
 }
 
-export default function GroupOverview({ group }: GroupProps) {
+export default function GroupOverview({ group, isAdmin }: GroupProps) {
   group.posts?.forEach(post => {
         post.group = group;
       })
@@ -56,6 +57,12 @@ export default function GroupOverview({ group }: GroupProps) {
             </address>
             <p>{group.description || `Ingen beskrivelse endnu.`}</p>
             <p>{group.noOfActiveMembers} active members</p>
+            {isAdmin && <a
+              className={`${buttonStyles.button}`}
+              href={`/groups/edit/${group._id}`}
+            >
+              Edit group
+            </a>}
             {group.link && <a
               className={`${buttonStyles.button} ${buttonStyles.blue}`}
               href={group.link}
