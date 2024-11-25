@@ -153,22 +153,24 @@ export default function EditProfile() {
             value={profile.address}
             onChange={handleChange}
           />
-          <Input
-            label="Søger efter ensemble"
-            type="radio"
-            name="seeking"
-            value={profile.seeking.toString()}
-            checked={seeking === true}
-            onChange={() => setSeeking(true)}
-          />
-          <Input
-            label="Søger ikke efter ensemble"
-            type="radio"
-            name="seeking"
-            value={profile.seeking.toString()}
-            checked={seeking === false}
-            onChange={() => setSeeking(false)}
-          />
+          <div>
+            <Input
+              label="Søger efter ensemble"
+              type="radio"
+              name="seeking"
+              value={profile.seeking.toString()}
+              checked={seeking === true}
+              onChange={() => setSeeking(true)}
+            />
+            <Input
+              label="Søger ikke efter ensemble"
+              type="radio"
+              name="seeking"
+              value={profile.seeking.toString()}
+              checked={seeking === false}
+              onChange={() => setSeeking(false)}
+            />
+          </div>
           <button
             type="submit"
             className={`${buttonStyles.button} ${buttonStyles.blue}`}

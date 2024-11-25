@@ -21,10 +21,10 @@ export default function Input({
   onChange,
 }: InputProps) {
   return (
-    <label className={styles.label}>
-      {label} {required && "*"}
+    <label className={type === 'radio' ? styles.radioLabel : styles.label}>
+      {label} {required && type !== 'radio' && '*'}
       <input
-        className={type === 'radio' ? styles.radio : styles.input}
+        className={type === 'radio' ? styles.radioInput : styles.input}
         type={type}
         name={name}
         value={value}
