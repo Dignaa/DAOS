@@ -6,11 +6,6 @@ import { FormEvent } from 'react';
 import buttonStyles from '../../components/buttonStyles.module.css';
 import { useAuth } from '../../contexts/AuthContext';
 
-interface Session {
-  token: string;
-  expires: number;
-}
-
 export const Route = createLazyFileRoute('/(sign)/signin')({
   component: SignIn,
 });
@@ -40,11 +35,8 @@ function SignIn() {
         });
       })
       .then(responseData => {
-        const session: Session = {
-          token: responseData.access_token, // Access token from the API response
-          expires: Date.now() + 86400000, // Set expiry to 24 hours from now
-        };
-        setSession(session);
+        console.log("responseData.access_token: ", responseData.access_token)
+        setSession(responseData.access_token);
         navigate({
           to: '/',
         });
