@@ -3,7 +3,7 @@ import typographyStyles from '../../components/typographyStyles.module.css';
 import buttonStyles from '../../components/buttonStyles.module.css';
 import { Link } from '@tanstack/react-router';
 import daysAgo from '../../utils/daysAgo';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 
 interface Group {
@@ -30,7 +30,46 @@ interface Props {
 export default function Overview({ post }: Props) {
   const postedDaysAgo = daysAgo(post.createdAt);
   const [joined, setJoined] = useState(false);
+  const [isAlreadyJoined, setIsAlreadyJoined] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
   const { session } = useAuth();
+
+  const checkIsInGroup = () => {
+    fetch(`http://localhost:3000/groups/${post?.group._id}/isUserInGroup`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + session,
+      },
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        setIsAlreadyJoined(data ? true : false);
+      })
+      .catch(() => {
+        alert('Error');
+      });
+  };
+
+  const checkIsAdmin = () => {
+    fetch(`http://localhost:3000/groups/${post?.group._id}/isAdmin`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + session,
+      },
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        setIsAdmin(data ? true : false);
+      })
+      .catch(() => {
+        alert('Error');
+      });
+  };
 
   const joinGroup = () => {
     fetch(`http://localhost:3000/groups/${post?.group._id}/users`, {
@@ -45,6 +84,11 @@ export default function Overview({ post }: Props) {
     })
       .then(response => {
         return response.json().then(data => {
+          if (data.error) {
+            throw new Error(data.message);
+          }
+          console.log("response: ", response);
+
           if (!response.ok) {
             return Promise.reject(data);
           }
@@ -59,6 +103,11 @@ export default function Overview({ post }: Props) {
         alert('Error');
       });
   };
+
+  useEffect(() => {
+    checkIsAdmin();
+    checkIsInGroup();
+  }, []);
 
   return (
     <div className={styles.box}>
@@ -76,7 +125,7 @@ export default function Overview({ post }: Props) {
             {post.group.address || 'Ingen adresse givet'}
           </address>
           <p>{post.description || `Ingen beskrivelse endnu.`}</p>
-          {joined ? (
+          {isAlreadyJoined ? <p>Du er allerede med i denne gruppe.</p> : joined ? (
             <button
               className={`${buttonStyles.button} ${buttonStyles.blue}`}
               onClick={joinGroup}
@@ -92,6 +141,13 @@ export default function Overview({ post }: Props) {
               Tilslut dig {post?.group.name}
             </button>
           )}
+          {isAdmin && <Link
+            to="/edit/$postId"
+            params={{ postId: post._id }}
+            className={`${buttonStyles.button} ${buttonStyles.blue}`}
+          >
+            Opdater opslag
+          </Link>}
           <Link
             to="/groups/$groupId"
             params={{ groupId: post.group._id }}

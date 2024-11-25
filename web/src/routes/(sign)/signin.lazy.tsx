@@ -35,7 +35,6 @@ function SignIn() {
         });
       })
       .then(responseData => {
-        console.log("responseData.access_token: ", responseData.access_token)
         setSession(responseData.access_token);
         navigate({
           to: '/',

@@ -22,7 +22,7 @@ export default function Input({
 }: InputProps) {
   return (
     <label className={styles.label}>
-      {label}
+      {label} {required && "*"}
       <input
         className={type === 'radio' ? styles.radio : styles.input}
         type={type}

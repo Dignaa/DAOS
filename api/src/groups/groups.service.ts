@@ -97,4 +97,20 @@ export class GroupsService {
       .exec();
     return posts;
   }
+
+  async isUserAdmin(groupId: string, userId: string): Promise<boolean | null> {
+    const group = await this.groupModel.findById(groupId);
+    if (!group) {
+      return null;     
+    }
+    return group.adminId === (new ObjectId(userId));
+  }
+
+  async isUserInGroup(groupId: string, userId: string): Promise<boolean | null> {
+    const group = await this.groupModel.findById(groupId);
+    if (!group) {
+      return null;     
+    }
+    return group.userIds.find(user => user._id === new ObjectId(userId)) !== null;
+  }
 }

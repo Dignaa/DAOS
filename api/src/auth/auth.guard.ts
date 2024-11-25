@@ -20,7 +20,6 @@ export class AuthGuard implements CanActivate {
 
   private validateRequest(request: Request): boolean {
     const token = request.headers['authorization']?.split(' ')[1];
-
     if (!token) {
       throw new UnauthorizedException('Authorization token is missing');
     }

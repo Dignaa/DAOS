@@ -63,7 +63,6 @@ function PostPage() {
       </Section>
     );
   }
-  console.log(post);
   if (!post)
     return (
       <Section>

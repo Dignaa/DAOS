@@ -53,12 +53,12 @@ export default function GroupOverview({ group }: IGroupProps) {
             </address>
             <p>{group.description || `Ingen beskrivelse endnu.`}</p>
             <p>{group.noOfActiveMembers} active members</p>
-            <a
+            {group.link && <a
               className={`${buttonStyles.button} ${buttonStyles.blue}`}
               href={group.link}
             >
               Group website
-            </a>
+            </a>}
           </div>
         </div>
       </div>
