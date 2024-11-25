@@ -11,12 +11,14 @@ import { Model, Types } from 'mongoose'; // Ensure this import is present
 import * as bcrypt from 'bcrypt';
 import { Group } from 'src/schemas/group.schema';
 import { ObjectId } from 'mongodb';
+import { Post } from 'src/schemas/post.schema';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
     @InjectModel(Group.name) private readonly groupModel: Model<Group>,
+    @InjectModel(Post.name) private readonly postModel: Model<Post>,
   ) {}
   async create(createUserDto: CreateUserDto) {
     // Check if a user with the same email already exists
@@ -102,12 +104,52 @@ export class UsersService {
   private async getUsersGroups(userId: string) {
     const groups = await this.groupModel
       .find({ userIds: new ObjectId(userId) })
-      .select('id name imageUrl')
+      .select('_id name imageUrl noOfActiveMembers address')
       .exec();
     return groups.map((group) => ({
-      id: group.id,
+      _id: group.id,
       name: group.name,
       imageUrl: group.imageUrl,
+      noOfActiveMembers: group.noOfActiveMembers,
+      address: group.address,
     }));
+  }
+
+  public async getPosts(userId) {
+    const posts = await this.postModel
+      .find({ userId: new ObjectId(userId) })
+      .select('')
+      .exec();
+
+    // Wait for all posts to be resolved and group data processed correctly
+    const resolvedPosts = await Promise.all(
+      posts.map(async (post) => {
+        // Fetch group data for each post (this should be a single object, not an array)
+        const groupData = await this.groupModel
+          .find({ _id: new ObjectId(post.groupId) })
+          .select('_id name imageUrl noOfActiveMembers address')
+          .exec();
+
+        const processedGroup = groupData.length > 0 ? groupData[0] : null; // Extract the first group object if exists
+
+        return {
+          _id: post.id,
+          title: post.title,
+          instrument: post.instrument,
+          description: post.description,
+          group: processedGroup
+            ? {
+                _id: processedGroup.id,
+                name: processedGroup.name,
+                imageUrl: processedGroup.imageUrl,
+                noOfActiveMembers: processedGroup.noOfActiveMembers,
+                address: processedGroup.address,
+              }
+            : null,
+        };
+      }),
+    );
+
+    return resolvedPosts;
   }
 }

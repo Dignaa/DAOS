@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Section from '../../components/Section';
 import buttonStyles from '../../components/buttonStyles.module.css';
 import GroupOverview from '../../components/GroupPage';
-import { IGroup } from '../../components/GroupPage';
+import { Group } from '../../components/GroupPage';
 
 export const Route = createLazyFileRoute('/groups/$groupId')({
   component: GroupPage,
@@ -11,7 +11,7 @@ export const Route = createLazyFileRoute('/groups/$groupId')({
 
 function GroupPage() {
   const { groupId } = Route.useParams();
-  const [group, setGroup] = useState<IGroup>();
+  const [group, setGroup] = useState<Group>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

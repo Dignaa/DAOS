@@ -16,6 +16,9 @@ export class Post {
 
   @Prop({ required: true, type: Types.ObjectId, ref: 'Group' })
   groupId: Types.ObjectId;
+
+  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
+  userId: Types.ObjectId;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

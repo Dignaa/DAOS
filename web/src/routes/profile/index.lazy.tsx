@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
-import { createLazyFileRoute, redirect } from '@tanstack/react-router';
+import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import Section from '../../components/Section';
 import buttonStyles from '../../components/buttonStyles.module.css';
 import { clearSession } from '../../utils/currentSession';
+import UserProfile from '../../components/UserProfile';
+import Grid from '../../components/Grid';
 import { useAuth } from '../../contexts/AuthContext';
+import GroupGrid from '../../components/Group/GroupGrid';
+//import InstrumentGrid from '../../components/IntrumentGrid';
 
 interface Profile {
   _id: string;
   name: string;
   email: string;
-  password: string;
   phoneNumber?: string;
   description?: string;
   avatarUrl?: string;
@@ -19,9 +22,11 @@ interface Profile {
     coordinates: [number, number];
   };
   seeking: boolean;
-  lastLoggedIn?: Date;
-  createdAt?: Date;
+  lastLoggedIn: Date;
+  createdAt: Date;
   instruments?: string[];
+  posts?: [];
+  groups?: [];
 }
 
 export const Route = createLazyFileRoute('/profile/')({
@@ -33,7 +38,6 @@ function Profile() {
   const [loading, setLoading] = useState(true);
 
   const { session } = useAuth();
-
   if (session == null) {
     window.location.href = '/signin';
   }
@@ -59,8 +63,7 @@ function Profile() {
         console.error(error);
         setLoading(false);
       });
-  }, []);
-
+  }, [session]);
   if (loading)
     return (
       <Section>
@@ -68,26 +71,45 @@ function Profile() {
         <p>Vent venligst mens din profil hentes fra databasen.</p>
       </Section>
     );
-
-  return (
-    <main>
-      <Section>
-        <h1>{profile?.name}</h1>
-      </Section>
-      <Section>
-        <p>{profile?.address}</p>
-        <p>{profile?.description}</p>
-      </Section>
-      <Section>
-        <button
-          className={`${buttonStyles.button} ${buttonStyles.blue}`}
-          onClick={signUserOut}
-        >
-          Log ud
-        </button>
-      </Section>
-    </main>
-  );
+  if (profile) {
+    console.log('POSTS', profile.posts)
+    return (
+      <main>
+        <UserProfile {...profile} />
+        <div>
+          <Section>
+            <h2>Mine opslag</h2>
+            <Link to="/create/post" className={buttonStyles.button}>
+              Opret nyt opslag
+            </Link>
+            <Grid cards={profile.posts || []}></Grid>
+          </Section>
+          <Section>
+            <h2>Mine ensenbler</h2>
+            <GroupGrid groups={profile.groups || []}></GroupGrid>
+            <Link to="/create/group" className={buttonStyles.button}>
+              Opret nyt ensemble
+            </Link>
+          </Section>
+          {/* <Section>
+            <h2>Mine instrumenter</h2>
+            <a className={buttonStyles.button} href="">
+            Tilfoej
+          </a>
+            {profile.instruments ? <InstrumentGrid instruments={profile.instruments}></InstrumentGrid> : <p>Ingen instrumenter</p>}
+          </Section> */}
+        </div>
+        <Section>
+          <button
+            className={`${buttonStyles.button} ${buttonStyles.blue}`}
+            onClick={signUserOut}
+          >
+            Log ud
+          </button>
+        </Section>
+      </main>
+    );
+  }
 }
 
 export default Profile;
