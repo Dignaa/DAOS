@@ -42,7 +42,7 @@ export class PostsService {
     const postWithGroup = await Promise.all(
       posts.map(async (post) => {
         const group = await this.getGroupForPost(post.groupId);
-        return { ...post.toObject(), group: { ...group } };
+        return { ...post.toObject(), group };
       }),
     );
     return postWithGroup;
