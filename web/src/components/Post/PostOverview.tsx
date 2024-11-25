@@ -142,7 +142,7 @@ export default function Overview({ post }: Props) {
             </button>
           )}
           {isAdmin && <Link
-            to="/edit/$postId"
+            to="/posts/edit/$postId"
             params={{ postId: post._id }}
             className={`${buttonStyles.button} ${buttonStyles.blue}`}
           >
