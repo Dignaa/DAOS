@@ -48,9 +48,11 @@ export class UsersService {
     // Get all users
     const users = await this.userModel.find({}).exec();
 
+    const seekingUsers = users.filter((user) => user.seeking === true);
+
     // Fetch groups for each user using Promise.all
     const usersWithGroups = await Promise.all(
-      users.map(async (user) => {
+      seekingUsers.map(async (user) => {
         // Get groups for each user
         const groups = await this.getUsersGroups(user.id);
         // Return the user along with their groups

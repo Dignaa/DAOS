@@ -70,24 +70,26 @@ function SignUp() {
           <Input label="Fulde Navn" type="text" name="name" required />
           <Input label="Email" type="email" name="email" required />
           <Input label="Adgangskode" type="password" name="password" required />
-          <Input
-            label="Søger efter ensamble"
-            type="radio"
-            name="seeking"
-            value="true"
-            checked={seeking === true}
-            onChange={() => setSeeking(true)}
-            required
-          />
-          <Input
-            label="Søger ikke efter ensamble"
-            type="radio"
-            name="seeking"
-            value="false"
-            checked={seeking === false}
-            onChange={() => setSeeking(false)}
-            required
-          />
+          <div>
+            <Input
+              label="Søger efter ensamble"
+              type="radio"
+              name="seeking"
+              value="true"
+              checked={seeking === true}
+              onChange={() => setSeeking(true)}
+              required
+            />
+            <Input
+              label="Søger ikke efter ensamble"
+              type="radio"
+              name="seeking"
+              value="false"
+              checked={seeking === false}
+              onChange={() => setSeeking(false)}
+              required
+            />
+          </div>
           <button className={`${buttonStyles.button} ${buttonStyles.blue}`}>
             Opret bruger
           </button>

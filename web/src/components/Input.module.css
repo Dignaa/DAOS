@@ -23,3 +23,29 @@
   color: red;
   font-size: 14pt;
 }
+
+.radioLabel {
+  display: inline-block;
+  margin-bottom: 32pt;
+  background-color: white;
+  border: 1pt solid #dddddd;
+  box-shadow: 0 2pt 4pt #00000014;
+  padding: 16pt;
+  cursor: pointer;
+  &:has(input:checked) {
+    background-color: var(--color-blue);
+    color: white;
+    font-weight: 700;
+  }
+}
+.radioLabel:first-of-type {
+  border-top-left-radius: 10pt;
+  border-bottom-left-radius: 10pt;
+}
+.radioLabel:last-of-type {
+  border-top-right-radius: 10pt;
+  border-bottom-right-radius: 10pt;
+}
+.radioInput {
+  display: none;
+}
