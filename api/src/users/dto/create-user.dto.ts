@@ -27,7 +27,10 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'Indtast venligsst en adgangskode' })
   password: string;
 
-  @IsPhoneNumber('DK', { message: 'Brug venligst et rigtigt telefonnumme' })
+  @IsString({ message: 'Indtast venligsst et telefonnummer' })
+  @Length(6, 12, {
+    message: 'Dit telefonnummer skal være mellem 6 og 12 tegn',
+  })
   @IsOptional()
   phoneNumber?: string;
 
