@@ -56,8 +56,8 @@ export default function Card(props: CardProps) {
     <li className={styles.card}>
       <Link
         to={isPostProps(props) ? `/posts/$postId` : `/users/$userId`}
-        params={{ postId: props._id, userId: props._id }}
-      >
+        params={{ postId: props._id, userId: props._id }}>
+
         <CardHeader
           name={isPostProps(props) ? props.group.name : props.name}
           address={isPostProps(props) ? props.group.address : props.address}

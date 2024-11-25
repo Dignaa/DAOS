@@ -22,7 +22,10 @@ export class PostsController {
   @Post()
   @UseGuards(AuthGuard)
   async create(@Request() req, @Body() createPostDto: CreatePostDto) {
-    return await this.postsService.create({ ...createPostDto });
+    return await this.postsService.create(
+      { ...createPostDto },
+      req.user.userId,
+    );
   }
 
   @Get()

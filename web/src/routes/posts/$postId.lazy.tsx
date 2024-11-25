@@ -14,8 +14,8 @@ interface Group {
 }
 
 interface Post {
-  __v: number;
   _id: string;
+  __v: number;
   createdAt: string;
   date: string;
   description: string;

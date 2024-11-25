@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import Section from '../../components/Section';
-import PostGrid from '../../components/PostGrid';
+import PostGrid from '../../components/Grid';
 
 interface User {
   _id: string;
@@ -13,7 +13,7 @@ export const Route = createLazyFileRoute('/users/')({
 });
 
 function Users() {
-  const [users, setUsers] = useState<User[]>();
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function Users() {
         {loading ? (
           <p>Vent venligst mens brugere hentes fra databasen...</p>
         ) : (
-          <PostGrid posts={users} />
+          <PostGrid cards={users} />
         )}
       </Section>
     </main>

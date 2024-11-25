@@ -23,13 +23,14 @@
 }
 
 .image {
-  width: 25%;
+  width: 5%;
   align-self: flex-start;
   aspect-ratio: 1;
   display: block;
   object-fit: cover;
   border-radius: 10pt;
   border: 2pt solid white;
+  margin: 20pt;
 }
 
 .footer {

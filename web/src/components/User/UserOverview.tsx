@@ -25,9 +25,7 @@ export default function UserOverview({ user }: Props) {
   return (
     <div className={styles.box}>
       <div className={styles.content}>
-        {user.avatarUrl && (
-          <img src={user.avatarUrl} alt={user.name} className={styles.image} />
-        )}
+          <img src={user.avatarUrl || '/illustrations/icons/user-icon.svg'} alt={user.name} className={styles.image} />
         <div className={styles.column}>
           <h1 className={typographyStyles.red}>{user.name}</h1>
           <address className={styles.address}>

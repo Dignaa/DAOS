@@ -11,15 +11,13 @@ export default function CardHeader({ name, address, info, image }: Props) {
   const shortAddress = address?.split(/[.,]/)[0];
   return (
     <header className={styles.header}>
-      {image && (
         <img
           className={styles.image}
-          src={image}
+          src={image || '/illustrations/icons/user-icon.svg'}
           width={40}
           height={40}
           alt=""
         />
-      )}
       <div>
         <p className={styles.name}>{name}</p>
         <div>

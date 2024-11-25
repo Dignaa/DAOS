@@ -1,0 +1,27 @@
+.card {
+  list-style: none;
+  border: 1px solid #DDDDDD;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardImageWrapper {
+  flex-shrink: 0;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: #f0f0f0; 
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+}
+
+.cardTitle {
+  margin: 20px;
+  font-size: 20pt;
+}
+
