@@ -13,7 +13,6 @@
   border: 1pt solid var(--color-lightGray);
   transition: 0.3s;
   margin-right: 20pt;
-  width:274pt;
   padding: 15pt 30pt;
 
   &:hover {

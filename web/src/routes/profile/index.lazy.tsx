@@ -72,17 +72,17 @@ function Profile() {
       </Section>
     );
   if (profile) {
-    console.log('POSTS', profile.posts)
+    console.log('POSTS', profile.posts);
     return (
       <main>
         <UserProfile {...profile} />
         <div>
           <Section>
             <h2>Mine opslag</h2>
+            <Grid cards={profile.posts || []}></Grid>
             <Link to="/create/post" className={buttonStyles.button}>
               Opret nyt opslag
             </Link>
-            <Grid cards={profile.posts || []}></Grid>
           </Section>
           <Section>
             <h2>Mine ensenbler</h2>
