@@ -32,3 +32,10 @@
     background-color: #4a4e6e;
   }
 }
+
+@media screen and (max-width: 700px) {
+  .button {
+    padding: 10pt 15pt;
+    font-size: 14pt;
+  }
+}
