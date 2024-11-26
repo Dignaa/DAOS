@@ -36,19 +36,21 @@ export default function EditProfile() {
   }
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/users/profile', {
-          headers: { Authorization: 'Bearer ' + session },
+    const fetchProfile = () => {
+      fetch('http://localhost:3000/users/profile', {
+        headers: { Authorization: 'Bearer ' + session },
+      })
+        .then(response => response.json())
+        .then(data => {
+          setProfile(data);
+          setSeeking(data.seeking);
+        })
+        .catch(error => {
+          console.error('Error fetching profile:', error);
+        })
+        .finally(() => {
+          setLoading(false);
         });
-        const data = await response.json();
-        setProfile(data);
-        setSeeking(data.seeking);
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-      } finally {
-        setLoading(false);
-      }
     };
 
     fetchProfile();
@@ -62,35 +64,34 @@ export default function EditProfile() {
     setProfile(prev => (prev ? { ...prev, [name]: value } : null));
   };
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     setSaving(true);
 
-    // Convert seeking to a boolean
     profile!.seeking = seeking;
 
-    try {
-      const response = await fetch(
-        `http://localhost:3000/users/${profile?._id}`,
-        {
-          method: 'PATCH',
-          headers: {
-            Authorization: `Bearer ${session}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(profile),
+    fetch(`http://localhost:3000/users/${profile?._id}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${session}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(profile),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to update profile');
         }
-      );
-
-      if (!response.ok) throw new Error('Failed to update profile');
-    } catch (error) {
-      console.error('Error updating profile:', error);
-    } finally {
-      setSaving(false);
-      navigate({
-        to: '/profile',
+      })
+      .catch(error => {
+        console.error('Error updating profile:', error);
+      })
+      .finally(() => {
+        setSaving(false);
+        navigate({
+          to: '/profile',
+        });
       });
-    }
   };
 
   if (loading) {
