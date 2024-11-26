@@ -1,4 +1,4 @@
-import { createLazyFileRoute, Link } from '@tanstack/react-router';
+import { createLazyFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
 import Section from '../../components/Section';
 import buttonStyles from '../../components/buttonStyles.module.css';
@@ -16,6 +16,25 @@ function GroupPage() {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const { session } = useAuth();
+  const navigate = useNavigate();
+
+  const deleteGroup = () => {
+    fetch(`http://localhost:3000/groups/${groupId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + session,
+      },
+    })
+      .then(() => {
+        navigate({
+          to: '/profile',
+        });
+      })
+      .catch(error => {
+        alert('Error: ' + error.message);
+      });
+  };
 
   const checkIsAdmin = () => {
     fetch(`http://localhost:3000/groups/${groupId}/isAdmin`, {
@@ -81,7 +100,11 @@ function GroupPage() {
   return (
     <main>
       <Section>
-        <GroupOverview group={group} isAdmin={isAdmin}/>
+        <GroupOverview
+          group={group}
+          isAdmin={isAdmin}
+          deletePostFunction={deleteGroup}
+        />
       </Section>
     </main>
   );

@@ -37,5 +37,11 @@
   .button {
     padding: 10pt 15pt;
     font-size: 14pt;
+
+.red {
+  background-color: var(--color-red);
+  color: white;
+  &:hover {
+    background-color: #790808;
   }
 }
