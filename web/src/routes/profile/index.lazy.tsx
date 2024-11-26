@@ -75,30 +75,30 @@ function Profile() {
     console.log('POSTS', profile.posts);
     return (
       <main>
-        <UserProfile {...profile} />
-        <div>
-          <Section>
-            <h2>Mine opslag</h2>
-            <Grid cards={profile.posts || []}></Grid>
-            <Link to="/posts/create" className={buttonStyles.button}>
-              Opret nyt opslag
-            </Link>
-          </Section>
-          <Section>
-            <h2>Mine ensenbler</h2>
-            <GroupGrid groups={profile.groups || []}></GroupGrid>
-            <Link to="/groups/create" className={buttonStyles.button}>
-              Opret nyt ensemble
-            </Link>
-          </Section>
-          {/* <Section>
+        <Section>
+          <UserProfile {...profile} />
+        </Section>
+        <Section>
+          <h2>Mine opslag</h2>
+          <Grid cards={profile.posts || []}></Grid>
+          <Link to="/posts/create" className={buttonStyles.button}>
+            Opret nyt opslag
+          </Link>
+        </Section>
+        <Section>
+          <h2>Mine ensenbler</h2>
+          <GroupGrid groups={profile.groups || []}></GroupGrid>
+          <Link to="/groups/create" className={buttonStyles.button}>
+            Opret nyt ensemble
+          </Link>
+        </Section>
+        {/* <Section>
             <h2>Mine instrumenter</h2>
             <a className={buttonStyles.button} href="">
             Tilfoej
           </a>
             {profile.instruments ? <InstrumentGrid instruments={profile.instruments}></InstrumentGrid> : <p>Ingen instrumenter</p>}
           </Section> */}
-        </div>
         <Section>
           <button
             className={`${buttonStyles.button} ${buttonStyles.blue}`}

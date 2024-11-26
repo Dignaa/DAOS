@@ -26,3 +26,17 @@
   color: var(--color-blue);
   font-weight: 700;
 }
+
+@media screen and (max-width: 700px) {
+  .nav {
+    flex-direction: column;
+  }
+  .logo {
+    align-self: flex-start;
+  }
+  .list {
+    width: 100%;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+}
