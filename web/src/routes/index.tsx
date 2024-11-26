@@ -5,6 +5,7 @@ import Grid from '../components/Grid';
 import '../index.css';
 import typographyStyles from '../components/typographyStyles.module.css';
 import { useEffect, useState } from 'react';
+import Hero from '../components/Hero/Hero';
 
 interface Post {
   _id: string;
@@ -47,7 +48,7 @@ function Index() {
             Stedet hvor amatørmusikere finder hinanden og spiller sammen
           </h1>
         </div>
-        <img src="/illustrations/hero.svg" alt="" />
+        <Hero src="/illustrations/hero.svg" />
       </Section>
       <Section>
         <div>
