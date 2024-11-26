@@ -33,6 +33,17 @@ h2 {
 h3 {
   font-size: 26pt;
 }
+@media screen and (max-width: 700px) {
+  h1 {
+    font-size: 26pt;
+  }
+  h2 {
+    font-size: 24pt;
+  }
+  h3 {
+    font-size: 20pt;
+  }
+}
 
 /* oswald-200 - latin */
 @font-face {

@@ -33,6 +33,11 @@
   }
 }
 
+@media screen and (max-width: 700px) {
+  .button {
+    padding: 10pt 15pt;
+    font-size: 14pt;
+
 .red {
   background-color: var(--color-red);
   color: white;
