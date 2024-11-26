@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -64,21 +65,40 @@ export class PostsService {
   }
 
   // Update a post by ID
-  async update(id: string, updatePostDto: UpdatePostDto) {
+  async update(userId: string, id: string, updatePostDto: UpdatePostDto) {
     const post = await this.findOne(id);
+    if (post === null) {
+      throw new BadRequestException();
+    }
 
-    const toUpdate = await this.postModel
-      .findByIdAndUpdate(post._id, updatePostDto, { new: true })
-      .exec();
+    if (
+      post.userId.toString() === userId ||
+      post.group.adminId.toString() === userId
+    ) {
+      const toUpdate = await this.postModel
+        .findByIdAndUpdate(post._id, updatePostDto, { new: true })
+        .exec();
 
-    const group = await this.getGroupForPost(post.groupId);
-    return { ...toUpdate.toObject(), group: { group } };
+      const group = await this.getGroupForPost(post.groupId);
+      return { ...toUpdate.toObject(), group: { group } };
+    }
+    throw new UnauthorizedException();
   }
 
   // Delete a post by ID
-  async remove(id: string) {
+  async remove(userId: string, id: string) {
     const post = await this.findOne(id);
-    return await this.postModel.findByIdAndDelete(post._id).exec();
+    if (post === null) {
+      throw new BadRequestException();
+    }
+
+    if (
+      post.userId.toString() === userId ||
+      post.group.adminId.toString() === userId
+    ) {
+      return await this.postModel.findByIdAndDelete(post._id).exec();
+    }
+    throw new UnauthorizedException();
   }
 
   // Get the group for a specific post

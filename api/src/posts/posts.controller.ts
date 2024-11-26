@@ -40,14 +40,20 @@ export class PostsController {
 
   @Patch(':id')
   @UseGuards(AuthGuard)
-  async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return await this.postsService.update(id, updatePostDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updatePostDto: UpdatePostDto,
+    @Request() req,
+  ) {
+    const userId = req.user.userId;
+    return await this.postsService.update(userId, id, updatePostDto);
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard)
   @HttpCode(204)
-  async remove(@Param('id') id: string) {
-    return await this.postsService.remove(id);
+  async remove(@Param('id') id: string, @Request() req) {
+    const userId = req.user.userId;
+    return await this.postsService.remove(userId, id);
   }
 }

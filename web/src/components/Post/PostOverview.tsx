@@ -65,7 +65,9 @@ export default function Overview({ post, deletePostFunction }: Props) {
         return response.json();
       })
       .then(data => {
-        setIsAdmin(data ? true : false);
+        setIsAdmin(data.isAdmin ? true : false);
+        console.log(data);
+        console.log(isAdmin);
       })
       .catch(() => {
         alert('Error');

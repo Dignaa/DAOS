@@ -47,7 +47,7 @@ function GroupPage() {
         return response.json();
       })
       .then(data => {
-        setIsAdmin(data ? true : false);
+        setIsAdmin(data.isAdmin ? true : false);
       })
       .catch(() => {
         alert('Error');

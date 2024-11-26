@@ -29,6 +29,7 @@ export default function EditGroup() {
   const [group, setGroup] = useState<Group | null>();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { session } = useAuth();
   const navigate = useNavigate();
 
@@ -37,7 +38,26 @@ export default function EditGroup() {
     window.location.href = '/signin';
   }
 
+  const checkIsAdmin = () => {
+    fetch(`http://localhost:3000/groups/${groupId}/isAdmin`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + session,
+      },
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        setIsAdmin(data.isAdmin ? true : false);
+      })
+      .catch(() => {
+        alert('Error');
+      });
+  };
+
   useEffect(() => {
+    checkIsAdmin();
     fetch(`http://localhost:3000/groups/${groupId}`, {
       headers: { Authorization: 'Bearer ' + session },
     })
@@ -116,6 +136,8 @@ export default function EditGroup() {
   }
 
   if (!group) return <p>Unable to load group.</p>;
+
+  if (!isAdmin) return <p>You do not have the permission to do this action!</p>;
 
   return (
     <main>

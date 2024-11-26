@@ -3,6 +3,7 @@ import {
   ConsoleLogger,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
@@ -51,26 +52,35 @@ export class GroupsService {
     return { ...group.toObject(), posts: posts };
   }
 
-  async update(id: string, updateGroupDto: UpdateGroupDto) {
+  async update(userId: string, id: string, updateGroupDto: UpdateGroupDto) {
     const group = await this.findOne(id);
-    const toUpdate = await this.groupModel
-      .findByIdAndUpdate(group._id, updateGroupDto, { new: true })
-      .exec();
-    const posts = await this.getPostsForGroup(toUpdate.id);
-    return { ...toUpdate.toObject(), posts: posts };
+
+    if (group === null) {
+      throw new BadRequestException();
+    }
+
+    if (group.adminId.toString() === userId) {
+      const toUpdate = await this.groupModel
+        .findByIdAndUpdate(group._id, updateGroupDto, { new: true })
+        .exec();
+      const posts = await this.getPostsForGroup(toUpdate.id);
+      return { ...toUpdate.toObject(), posts: posts };
+    }
+    throw new UnauthorizedException();
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(userId: string, id: string): Promise<void> {
     const group = await this.findOne(id);
+
     if (!group) {
       throw new NotFoundException(`Group with ID ${id} not found`);
     }
 
-    // Delete all posts associated with this group
-    await this.postModel.deleteMany({ groupId: group._id }).exec();
-
-    // Delete the group
-    await this.groupModel.deleteOne({ _id: group._id }).exec();
+    if (group.adminId.toString() === userId) {
+      await this.postModel.deleteMany({ groupId: group._id }).exec();
+      await this.groupModel.deleteOne({ _id: group._id }).exec();
+    }
+    throw new UnauthorizedException();
   }
 
   async addUser(groupId: string, userId: string) {
@@ -111,7 +121,7 @@ export class GroupsService {
     if (!group) {
       return null;
     }
-    return group.adminId === new ObjectId(userId);
+    return group.adminId.toString() === userId;
   }
 
   async isUserInGroup(
