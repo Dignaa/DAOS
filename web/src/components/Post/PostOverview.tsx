@@ -25,9 +25,10 @@ interface Post {
 }
 interface Props {
   post: Post;
+  deletePostFunction: () => void;
 }
 
-export default function Overview({ post }: Props) {
+export default function Overview({ post, deletePostFunction }: Props) {
   const postedDaysAgo = daysAgo(post.createdAt);
   const [joined, setJoined] = useState(false);
   const [isAlreadyJoined, setIsAlreadyJoined] = useState(false);
@@ -75,7 +76,7 @@ export default function Overview({ post }: Props) {
     fetch(`http://localhost:3000/groups/${post?.group._id}/users`, {
       method: 'POST',
       body: JSON.stringify({
-        "postId": post._id
+        postId: post._id,
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -87,7 +88,7 @@ export default function Overview({ post }: Props) {
           if (data.error) {
             throw new Error(data.message);
           }
-          console.log("response: ", response);
+          console.log('response: ', response);
 
           if (!response.ok) {
             return Promise.reject(data);
@@ -95,7 +96,7 @@ export default function Overview({ post }: Props) {
           return data;
         });
       })
-      .then(responseData => {
+      .then(() => {
         alert('Du har tilsluttet dig dette ensemble');
         setJoined(true);
       })
@@ -125,7 +126,9 @@ export default function Overview({ post }: Props) {
             {post.group.address || 'Ingen adresse givet'}
           </address>
           <p>{post.description || `Ingen beskrivelse endnu.`}</p>
-          {isAlreadyJoined ? <p>Du er allerede med i denne gruppe.</p> : joined ? (
+          {isAlreadyJoined ? (
+            <p>Du er allerede med i denne gruppe.</p>
+          ) : joined ? (
             <button
               className={`${buttonStyles.button} ${buttonStyles.blue}`}
               onClick={joinGroup}
@@ -141,13 +144,23 @@ export default function Overview({ post }: Props) {
               Tilslut dig {post?.group.name}
             </button>
           )}
-          {isAdmin && <Link
-            to="/posts/edit/$postId"
-            params={{ postId: post._id }}
-            className={`${buttonStyles.button} ${buttonStyles.blue}`}
-          >
-            Opdater opslag
-          </Link>}
+          {isAdmin && (
+            <>
+              <Link
+                to="/posts/edit/$postId"
+                params={{ postId: post._id }}
+                className={`${buttonStyles.button} ${buttonStyles.blue}`}
+              >
+                Opdater opslag
+              </Link>
+              <a
+                className={`${buttonStyles.button} ${buttonStyles.red}`}
+                onClick={() => deletePostFunction()}
+              >
+                Delete post
+              </a>
+            </>
+          )}
           <Link
             to="/groups/$groupId"
             params={{ groupId: post.group._id }}
