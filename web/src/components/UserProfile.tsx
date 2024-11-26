@@ -25,32 +25,22 @@ export default function UserProfile({
   createdAtString =
     createdAtString.charAt(0).toUpperCase() + createdAtString.slice(1);
   return (
-    <div>
-      <div className={styles.container}>
-        <div className={styles.profileBox}>
-          <img
-            className={styles.img}
-            src={avatarUrl}
-            alt=""
-          />
-          <div className={styles.text}>
-            <h1 className={styles.h1}>{name}</h1>
-            {createdAt && (
-              <p className={styles.p}>Oprettet {createdAtString}</p>
-            )}
-            {lastLoggedIn && (
-              <p className={styles.p}>{formatLastLoggedIn(lastLoggedIn)}</p>
-            )}
-          </div>
-        </div>
-        <div className={styles.buttons}>
-          <Link to="/profile/edit" className={buttonStyles.button}>
-            Rediger profil
-          </Link>
+    <div className={styles.container}>
+      <div className={styles.profileBox}>
+        <img className={styles.img} src={avatarUrl} alt="" />
+        <div className={styles.text}>
+          <h1 className={styles.h1}>{name}</h1>
+          {createdAt && <p className={styles.p}>Oprettet {createdAtString}</p>}
+          {lastLoggedIn && (
+            <p className={styles.p}>{formatLastLoggedIn(lastLoggedIn)}</p>
+          )}
         </div>
       </div>
-
-      <hr className={styles.dividor} />
+      <div className={styles.buttons}>
+        <Link to="/profile/edit" className={buttonStyles.button}>
+          Rediger profil
+        </Link>
+      </div>
     </div>
   );
 }
