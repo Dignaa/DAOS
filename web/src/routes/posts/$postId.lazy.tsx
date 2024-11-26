@@ -1,4 +1,4 @@
-import { createLazyFileRoute, Link } from '@tanstack/react-router';
+import { createLazyFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
 import Section from '../../components/Section';
 import PostOverview from '../../components/Post/PostOverview';
@@ -34,6 +34,25 @@ function PostPage() {
   const [post, setPost] = useState<Post>();
   const [loading, setLoading] = useState(true);
   const { session } = useAuth();
+  const navigate = useNavigate();
+
+  const deletePost = () => {
+    fetch(`http://localhost:3000/posts/${postId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + session,
+      },
+    })
+      .then(() => {
+        navigate({
+          to: '/posts',
+        });
+      })
+      .catch(error => {
+        alert('Error: ' + error.message);
+      });
+  };
 
   useEffect(() => {
     fetch(`http://localhost:3000/posts/${postId}`, {
@@ -79,7 +98,7 @@ function PostPage() {
   return (
     <main>
       <Section>
-        <PostOverview post={post} />
+        <PostOverview post={post} deletePostFunction={deletePost} />
       </Section>
     </main>
   );
