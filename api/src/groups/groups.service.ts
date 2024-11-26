@@ -60,9 +60,17 @@ export class GroupsService {
     return { ...toUpdate.toObject(), posts: posts };
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<void> {
     const group = await this.findOne(id);
-    return await this.groupModel.deleteOne(group._id).exec();
+    if (!group) {
+      throw new NotFoundException(`Group with ID ${id} not found`);
+    }
+
+    // Delete all posts associated with this group
+    await this.postModel.deleteMany({ groupId: group._id }).exec();
+
+    // Delete the group
+    await this.groupModel.deleteOne({ _id: group._id }).exec();
   }
 
   async addUser(groupId: string, userId: string) {
@@ -101,16 +109,21 @@ export class GroupsService {
   async isUserAdmin(groupId: string, userId: string): Promise<boolean | null> {
     const group = await this.groupModel.findById(groupId);
     if (!group) {
-      return null;     
+      return null;
     }
-    return group.adminId === (new ObjectId(userId));
+    return group.adminId === new ObjectId(userId);
   }
 
-  async isUserInGroup(groupId: string, userId: string): Promise<boolean | null> {
+  async isUserInGroup(
+    groupId: string,
+    userId: string,
+  ): Promise<boolean | null> {
     const group = await this.groupModel.findById(groupId);
     if (!group) {
-      return null;     
+      return null;
     }
-    return group.userIds.find(user => user._id === new ObjectId(userId)) !== null;
+    return (
+      group.userIds.find((user) => user._id === new ObjectId(userId)) !== null
+    );
   }
 }

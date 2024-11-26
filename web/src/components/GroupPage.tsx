@@ -33,12 +33,17 @@ export interface Post {
 export interface GroupProps {
   group: Group;
   isAdmin: boolean;
+  deletePostFunction: Function;
 }
 
-export default function GroupOverview({ group, isAdmin }: GroupProps) {
+export default function GroupOverview({
+  group,
+  isAdmin,
+  deletePostFunction,
+}: GroupProps) {
   group.posts?.forEach(post => {
-        post.group = group;
-      })
+    post.group = group;
+  });
   return (
     <>
       <div className={styles.box}>
@@ -57,18 +62,30 @@ export default function GroupOverview({ group, isAdmin }: GroupProps) {
             </address>
             <p>{group.description || `Ingen beskrivelse endnu.`}</p>
             <p>{group.noOfActiveMembers} active members</p>
-            {isAdmin && <a
-              className={`${buttonStyles.button}`}
-              href={`/groups/edit/${group._id}`}
-            >
-              Edit group
-            </a>}
-            {group.link && <a
-              className={`${buttonStyles.button} ${buttonStyles.blue}`}
-              href={group.link}
-            >
-              Group website
-            </a>}
+            {isAdmin && (
+              <>
+                <a
+                  className={`${buttonStyles.button}`}
+                  href={`/groups/edit/${group._id}`}
+                >
+                  Edit group
+                </a>
+                <a
+                  className={`${buttonStyles.button} ${buttonStyles.red}`}
+                  onClick={() => deletePostFunction()}
+                >
+                  Delete group
+                </a>
+              </>
+            )}
+            {group.link && (
+              <a
+                className={`${buttonStyles.button} ${buttonStyles.blue}`}
+                href={group.link}
+              >
+                Group website
+              </a>
+            )}
           </div>
         </div>
       </div>

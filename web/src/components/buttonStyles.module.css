@@ -33,3 +33,11 @@
     background-color: #4a4e6e;
   }
 }
+
+.red {
+  background-color: var(--color-red);
+  color: white;
+  &:hover {
+    background-color: #790808;
+  }
+}
