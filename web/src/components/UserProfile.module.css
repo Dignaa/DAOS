@@ -1,52 +1,44 @@
 .container {
-    padding-top: 80pt;
-    padding-left: 105pt;
+  border-bottom: 1pt solid #f0f0f0;
+  padding-bottom: 30pt;
+  display: flex;
+  flex-direction: column;
+  gap: 15pt;
 }
 .img {
-    width: 98pt;
-    height: 98pt;
-    border: #FFFFFF;
-    border-radius: 4pt;
+  width: 100pt;
+  height: 100pt;
+  border: #ffffff;
+  border-radius: 10pt;
 }
-.h1{
-    color: #BF1E2F;
-    font-family: Oswald;
-    font-size: 38pt;
-    font-weight: 500;
-    left: 227pt;
-    top: 183pt;
-    width: 446pt;
-    height: 56pt;
-    padding-bottom: 70pt;
+.h1 {
+  color: #bf1e2f;
+  font-family: Oswald;
+  font-size: 38pt;
+  font-weight: 500;
 }
-.p{
-    color: #777777;
-    font-family: 'Montserrat';
-    font-size: 16pt;
-    height: 30pt;
-    font-weight: 400;
-    
+.p {
+  color: #777777;
+  font-family: 'Montserrat';
+  font-size: 16pt;
+  font-weight: 400;
 }
-.text{
-    margin-bottom: 30pt;
-    margin-left: 24pt;
+.profileBox {
+  display: flex;
+  gap: 15pt;
 }
-.profileBox{
-    display: flex;
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 15pt;
 }
-.buttons{
-    margin-right: 20pt;
-}
-.dividor{
-margin-left: 105pt;
-  margin-right: 105pt;
-  border: 1pt solid #F0F0F0;
-  height: 0;
-  border-radius: 1pt;
-  margin-top: 80pt;
-  margin-bottom: 70pt;
-}
-.posts{
-    padding-left: 105pt;
-    padding-right: 105pt;
+
+@media screen and (max-width: 700px) {
+  .profileBox {
+    flex-direction: column;
+  }
+  .img {
+    margin: auto;
+  }
 }
