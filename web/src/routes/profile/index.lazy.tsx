@@ -80,14 +80,14 @@ function Profile() {
           <Section>
             <h2>Mine opslag</h2>
             <Grid cards={profile.posts || []}></Grid>
-            <Link to="/create/post" className={buttonStyles.button}>
+            <Link to="/posts/create" className={buttonStyles.button}>
               Opret nyt opslag
             </Link>
           </Section>
           <Section>
             <h2>Mine ensenbler</h2>
             <GroupGrid groups={profile.groups || []}></GroupGrid>
-            <Link to="/create/group" className={buttonStyles.button}>
+            <Link to="/groups/create" className={buttonStyles.button}>
               Opret nyt ensemble
             </Link>
           </Section>
