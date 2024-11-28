@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate, createLazyFileRoute } from '@tanstack/react-router';
+import { useNavigate, createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useState, useEffect, FormEvent } from 'react';
 import Section from '../../../components/Section';
 import Input from '../../../components/Input';
@@ -7,7 +7,7 @@ import buttonStyles from '../../../components/buttonStyles.module.css';
 import Form from '../../../components/Form';
 import { useAuth } from '../../../contexts/AuthContext';
 import Select from 'react-select';
-import instruments from '../../../assets/instruments';
+import UserInstruments from '../../../components/User/UserInstruments';
 
 export const Route = createLazyFileRoute('/posts/edit/$postId')({
   component: EditPost,
@@ -20,6 +20,15 @@ interface Post {
   title: string;
 }
 
+interface Instrument {
+  type: string;
+}
+
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
 export default function EditPost() {
   const { postId } = Route.useParams();
 
@@ -28,11 +37,39 @@ export default function EditPost() {
   const [saving, setSaving] = useState(false);
   const { session } = useAuth();
   const navigate = useNavigate();
+  const [instruments, setInstruments] = useState<SelectOption[]>([]);
 
   // Redirect if no session exists
   if (!session) {
-    window.location.href = '/signin';
+    navigate({
+      to: '/signin',
+    });
   }
+
+  const fetchInstruments = () => {
+    fetch('http://localhost:3000/instruments/', {
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const instruments: SelectOption[] = data.map(
+          (instrument: Instrument) => ({
+            value: instrument.type,
+            label: instrument.type,
+          })
+        );
+        setInstruments(instruments);
+      })
+      .catch(errors => {
+        alert('Instrumenter ikke fundet');
+        navigate({
+          to: '/profile',
+        });
+        console.log(errors);
+      });
+  };
 
   useEffect(() => {
     fetch(`http://localhost:3000/posts/${postId}`, {
@@ -56,17 +93,9 @@ export default function EditPost() {
       });
   }, [session]);
 
-  interface SelectOption {
-    value: string;
-    label: string;
-  }
-
-  const instrumentOptions: SelectOption[] = instruments.map(
-    (instrument: string) => ({
-      value: instrument,
-      label: instrument,
-    })
-  );
+  useEffect(() => {
+    fetchInstruments();
+  }, []);
 
   // Handle input changes
   const handleChange = (
@@ -118,14 +147,24 @@ export default function EditPost() {
   if (loading) {
     return (
       <Section>
-        <h1>Loading Post...</h1>
-        <p>Please wait while we fetch the post data.</p>
+        <h1>Henter opslag</h1>
+        <p>Vent venligst mens opslaget hentes fra databasen...</p>
       </Section>
     );
   }
 
-  if (!post) return <p>Unable to load the post data.</p>;
-
+  if (!post)
+    return (
+      <Section>
+        <h1>Opslag ikke fundet</h1>
+        <Link
+          className={`${buttonStyles.button} ${buttonStyles.blue}`}
+          to="/posts"
+        >
+          Se alle opslag
+        </Link>
+      </Section>
+    );
   return (
     <main>
       <Section>
@@ -149,7 +188,7 @@ export default function EditPost() {
           <Select
             required
             name="instrument"
-            options={instrumentOptions}
+            options={instruments}
             placeholder="Vælg instrument"
             noOptionsMessage={() => 'Ingen instrumenter fundet'}
           />

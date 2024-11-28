@@ -11,12 +11,15 @@ import { Post, PostDocument } from 'src/schemas/post.schema';
 import { Model, Types } from 'mongoose';
 import { ObjectId } from 'mongodb';
 import { Group, GroupDocument } from 'src/schemas/group.schema';
+import { Instrument } from 'src/schemas/instrument.schema';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectModel(Post.name) private postModel: Model<PostDocument>,
     @InjectModel(Group.name) private readonly groupModel: Model<GroupDocument>,
+    @InjectModel(Instrument.name)
+    private readonly instrumentModel: Model<Instrument>,
   ) {}
 
   // Create a post
@@ -30,6 +33,7 @@ export class PostsService {
         coordinates: [-122.0838, 37.421998], // [longitude, latitude]
       },
       userId: new Types.ObjectId(userId),
+      instrument: await this.transformInstrument(createPostDto.instrument),
     });
     const post = await newPost.save();
 
@@ -75,6 +79,9 @@ export class PostsService {
       post.userId.toString() === userId ||
       post.group.adminId.toString() === userId
     ) {
+      updatePostDto.instrument = await this.transformInstrument(
+        updatePostDto.instrument,
+      );
       const toUpdate = await this.postModel
         .findByIdAndUpdate(post._id, updatePostDto, { new: true })
         .exec();
@@ -105,5 +112,15 @@ export class PostsService {
   private async getGroupForPost(groupId: ObjectId) {
     const group = await this.groupModel.findOne({ _id: groupId }).exec();
     return group;
+  }
+
+  private async transformInstrument(instrument: string) {
+    const existsInDb = await this.instrumentModel.findOne({
+      type: instrument,
+    });
+    if (existsInDb === null) {
+      throw BadRequestException;
+    }
+    return instrument;
   }
 }

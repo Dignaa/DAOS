@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { Group } from 'src/schemas/group.schema';
 import { ObjectId } from 'mongodb';
 import { Post } from 'src/schemas/post.schema';
+import { Instrument } from 'src/schemas/instrument.schema';
 
 @Injectable()
 export class UsersService {
@@ -19,6 +20,8 @@ export class UsersService {
     @InjectModel(User.name) private readonly userModel: Model<User>,
     @InjectModel(Group.name) private readonly groupModel: Model<Group>,
     @InjectModel(Post.name) private readonly postModel: Model<Post>,
+    @InjectModel(Instrument.name)
+    private readonly instrumentModel: Model<Instrument>,
   ) {}
   async create(createUserDto: CreateUserDto) {
     // Check if a user with the same email already exists
@@ -88,6 +91,19 @@ export class UsersService {
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.findOne(id);
+
+    if (updateUserDto.instruments) {
+      for (let index = 0; index < updateUserDto.instruments.length; index++) {
+        const instrument = updateUserDto.instruments[index];
+        const existsInDb = await this.instrumentModel.findOne({
+          type: instrument,
+        });
+        if (existsInDb === null) {
+          updateUserDto.instruments.splice(index, 1);
+        }
+      }
+    }
+
     const toUpdate = await this.userModel
       .findByIdAndUpdate(user._id, updateUserDto, { new: true })
       .exec();
@@ -105,7 +121,7 @@ export class UsersService {
   // Get the groups for a specific user
   private async getUsersGroups(userId: string) {
     const groups = await this.groupModel
-      .find({ userIds: new ObjectId(userId) })
+      .find({ userIds: userId })
       .select('_id name imageUrl noOfActiveMembers address')
       .exec();
     return groups.map((group) => ({

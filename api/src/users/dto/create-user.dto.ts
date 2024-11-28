@@ -48,4 +48,7 @@ export class CreateUserDto {
 
   @IsBoolean()
   seeking?: boolean;
+
+  @IsOptional()
+  instruments?: string[];
 }
