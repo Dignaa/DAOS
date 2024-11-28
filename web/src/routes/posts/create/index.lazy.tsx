@@ -6,7 +6,6 @@ import buttonStyles from '../../../components/buttonStyles.module.css';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import Select from 'react-select';
-import instruments from '../../../assets/instruments';
 import { Group } from '../../../components/GroupPage';
 
 interface Error {
@@ -15,6 +14,15 @@ interface Error {
 }
 
 interface Option {
+  value: string;
+  label: string;
+}
+
+interface Instrument {
+  type: string;
+}
+
+interface SelectOption {
   value: string;
   label: string;
 }
@@ -28,6 +36,32 @@ function CreatePost() {
   const { session } = useAuth();
   const [userGroupOptions, setUserGroupOptions] = useState<Option[]>([]);
   const [loading, setLoading] = useState(true);
+  const [instruments, setInstruments] = useState<SelectOption[]>([]);
+
+  const fetchInstruments = () => {
+    fetch('http://localhost:3000/instruments/', {
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const instruments: SelectOption[] = data.map(
+          (instrument: Instrument) => ({
+            value: instrument.type,
+            label: instrument.type,
+          })
+        );
+        setInstruments(instruments);
+      })
+      .catch(errors => {
+        alert('Instrumenter ikke fundet');
+        navigate({
+          to: '/profile',
+        });
+        console.log(errors);
+      });
+  };
 
   // Fetch user groups
   const getUserGroups = async (): Promise<Group[]> => {
@@ -44,6 +78,8 @@ function CreatePost() {
       }
 
       const groups = await response.json();
+
+      console.log(groups);
 
       if (!groups || groups.length === 0) {
         alert('Ingen grupper fundet. Du bliver omdirigeret til din profil.');
@@ -68,20 +104,9 @@ function CreatePost() {
       }));
       setUserGroupOptions(options);
       setLoading(false);
+      fetchInstruments();
     })();
   }, []);
-
-  interface SelectOption {
-    value: string;
-    label: string;
-  }
-
-  const instrumentOptions: SelectOption[] = instruments.map(
-    (instrument: string) => ({
-      value: instrument,
-      label: instrument,
-    })
-  );
 
   const createNewPost = async (event: FormEvent) => {
     event.preventDefault();
@@ -156,7 +181,7 @@ function CreatePost() {
           <Select
             required
             name="instrument"
-            options={instrumentOptions}
+            options={instruments}
             placeholder="Vælg instrument"
             noOptionsMessage={() => 'Ingen instrumenter fundet'}
           />

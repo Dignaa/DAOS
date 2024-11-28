@@ -7,7 +7,7 @@ import UserProfile from '../../components/UserProfile';
 import Grid from '../../components/Grid';
 import { useAuth } from '../../contexts/AuthContext';
 import GroupGrid from '../../components/Group/GroupGrid';
-//import InstrumentGrid from '../../components/IntrumentGrid';
+import InstrumentGrid from '../../components/IntrumentGrid';
 
 interface Profile {
   _id: string;
@@ -91,13 +91,17 @@ function Profile() {
             Opret nyt ensemble
           </Link>
         </Section>
-        {/* <Section>
-            <h2>Mine instrumenter</h2>
-            <a className={buttonStyles.button} href="">
-            Tilfoej
-          </a>
-            {profile.instruments ? <InstrumentGrid instruments={profile.instruments}></InstrumentGrid> : <p>Ingen instrumenter</p>}
-          </Section> */}
+        <Section>
+          <h2>Mine instrumenter</h2>
+          <Link href="/profile/edit" className={buttonStyles.button}>
+            Tilføj instrument til profil
+          </Link>
+          {profile.instruments ? (
+            <InstrumentGrid instruments={profile.instruments}></InstrumentGrid>
+          ) : (
+            <p>Ingen instrumenter</p>
+          )}
+        </Section>
         <Section>
           <button
             className={`${buttonStyles.button} ${buttonStyles.blue}`}
