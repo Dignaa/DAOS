@@ -3,10 +3,10 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../schemas/user.schema';
-import { GroupsService } from 'src/groups/groups.service';
-import { Group, GroupSchema } from 'src/schemas/group.schema';
-import { Post, PostSchema } from 'src/schemas/post.schema';
-import { Instrument, InstrumentSchema } from 'src/schemas/instrument.schema';
+import { GroupsService } from '../groups/groups.service';
+import { Group, GroupSchema } from '../schemas/group.schema';
+import { Post, PostSchema } from '../schemas/post.schema';
+import { Instrument, InstrumentSchema } from '../schemas/instrument.schema';
 
 @Module({
   imports: [

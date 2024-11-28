@@ -18,7 +18,7 @@ import { GroupsService } from './groups.service';
 import { PostsService } from '../posts/posts.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { ObjectId } from 'mongodb';
 
 @Controller('groups')

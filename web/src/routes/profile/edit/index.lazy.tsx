@@ -33,7 +33,7 @@ export const Route = createLazyFileRoute('/profile/edit/')({
 });
 
 export default function EditProfile() {
-  const [profile, setProfile] = useState<Profile | null>();
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [seeking, setSeeking] = useState(true);
@@ -82,7 +82,7 @@ export default function EditProfile() {
         .then(response => response.json())
         .then(data => {
           setProfile(data);
-          setUserinstruments(data.instruments);
+          setUserinstruments(data.instruments || []);
           setSeeking(data.seeking);
         })
         .catch(error => {
@@ -119,33 +119,35 @@ export default function EditProfile() {
     event.preventDefault();
     setSaving(true);
 
-    profile!.seeking = seeking;
-    profile!.instruments = userInstruments;
+    if (profile) {
+      profile.seeking = seeking;
+      profile.instruments = userInstruments;
 
-    console.log(profile);
+      console.log(profile);
 
-    fetch(`http://localhost:3000/users/${profile?._id}`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${session}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(profile),
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to update profile');
-        }
+      fetch(`http://localhost:3000/users/${profile._id}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${session}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profile),
       })
-      .catch(error => {
-        console.error('Error updating profile:', error);
-      })
-      .finally(() => {
-        setSaving(false);
-        navigate({
-          to: '/profile',
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to update profile');
+          }
+        })
+        .catch(error => {
+          console.error('Error updating profile:', error);
+        })
+        .finally(() => {
+          setSaving(false);
+          navigate({
+            to: '/profile',
+          });
         });
-      });
+    }
   };
 
   if (loading) {
@@ -160,12 +162,14 @@ export default function EditProfile() {
   }
 
   if (!profile) {
-    <main>
-      <Section>
-        <h1>Fejl</h1>
-        <p>Profil kunne ikke hentes fra databasen.</p>
-      </Section>
-    </main>;
+    return (
+      <main>
+        <Section>
+          <h1>Fejl</h1>
+          <p>Profil kunne ikke hentes fra databasen.</p>
+        </Section>
+      </main>
+    );
   }
 
   return (
@@ -193,28 +197,28 @@ export default function EditProfile() {
             label="Mobilnummer"
             type="text"
             name="phoneNumber"
-            value={profile.phoneNumber}
+            value={profile.phoneNumber || ''}
             onChange={handleChange}
           />
           <Input
             label="Profilbeskrivelse"
             type="text"
             name="description"
-            value={profile.description}
+            value={profile.description || ''}
             onChange={handleChange}
           />
           <Input
             label="Profilbillede URL"
             type="text"
             name="avatarUrl"
-            value={profile.avatarUrl}
+            value={profile.avatarUrl || ''}
             onChange={handleChange}
           />
           <Input
             label="Område"
             type="text"
             name="address"
-            value={profile.address}
+            value={profile.address || ''}
             onChange={handleChange}
           />
           <Select
@@ -251,7 +255,7 @@ export default function EditProfile() {
               label="Søger efter ensemble"
               type="radio"
               name="seeking"
-              value={profile.seeking.toString()}
+              value="true"
               checked={seeking === true}
               onChange={() => setSeeking(true)}
             />
@@ -259,7 +263,7 @@ export default function EditProfile() {
               label="Søger ikke efter ensemble"
               type="radio"
               name="seeking"
-              value={profile.seeking.toString()}
+              value="false"
               checked={seeking === false}
               onChange={() => setSeeking(false)}
             />

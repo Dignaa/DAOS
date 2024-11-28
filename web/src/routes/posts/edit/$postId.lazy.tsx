@@ -7,7 +7,6 @@ import buttonStyles from '../../../components/buttonStyles.module.css';
 import Form from '../../../components/Form';
 import { useAuth } from '../../../contexts/AuthContext';
 import Select from 'react-select';
-import UserInstruments from '../../../components/User/UserInstruments';
 
 export const Route = createLazyFileRoute('/posts/edit/$postId')({
   component: EditPost,

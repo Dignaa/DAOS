@@ -13,8 +13,8 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { GroupsService } from 'src/groups/groups.service';
+import { AuthGuard } from '../auth/auth.guard';
+import { GroupsService } from '../groups/groups.service';
 import { UsersResponseDto } from './dto/users-response.dto';
 import { plainToInstance } from 'class-transformer';
 

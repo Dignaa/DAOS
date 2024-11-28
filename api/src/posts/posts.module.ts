@@ -3,8 +3,8 @@ import { PostsService } from './posts.service';
 import { PostsController } from './posts.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Post, PostSchema } from '../schemas/post.schema';
-import { Group, GroupSchema } from 'src/schemas/group.schema';
-import { Instrument, InstrumentSchema } from 'src/schemas/instrument.schema';
+import { Group, GroupSchema } from '../schemas/group.schema';
+import { Instrument, InstrumentSchema } from '../schemas/instrument.schema';
 
 @Module({
   imports: [

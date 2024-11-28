@@ -5,10 +5,10 @@ import {
   INestApplication,
   ValidationPipe,
 } from '@nestjs/common';
-import { TestModule } from 'src/test.module';
+import { TestModule } from '../test.module';
 import { CreateGroupDto } from '../groups/dto/create-group.dto';
-import { UsersService } from 'src/users/users.service';
-import { GroupsService } from 'src/groups/groups.service';
+import { UsersService } from '../users/users.service';
+import { GroupsService } from '../groups/groups.service';
 
 describe('GroupsController (e2e)', () => {
   let app: INestApplication;
