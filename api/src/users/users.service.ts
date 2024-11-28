@@ -124,6 +124,7 @@ export class UsersService {
       .find({ userIds: userId })
       .select('_id name imageUrl noOfActiveMembers address')
       .exec();
+
     return groups.map((group) => ({
       _id: group.id,
       name: group.name,
