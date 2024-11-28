@@ -97,6 +97,7 @@ export default function EditGroup() {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setSaving(true);
+    console.log(group);
 
     fetch(`http://localhost:3000/groups/${group?._id}`, {
       method: 'PATCH',

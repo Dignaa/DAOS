@@ -38,7 +38,6 @@ function Index() {
         setLoading(false);
       });
   }, []);
-  console.log(posts);
 
   return (
     <main>

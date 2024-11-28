@@ -170,4 +170,7 @@ export class UsersService {
 
     return resolvedPosts;
   }
+  async deleteMany() {
+    await this.userModel.deleteMany({});
+  }
 }

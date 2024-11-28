@@ -109,7 +109,8 @@ export class GroupsController {
     const group = await this.groupService.findOne(groupId);
 
     if (
-      group.userIds.find((user) => user._id === new ObjectId(userId)) !== null
+      group.adminId.toString() === userId ||
+      group.userIds.find((id) => id.toString() === userId)
     ) {
       return new BadRequestException('User already joined in the ensamble');
     }

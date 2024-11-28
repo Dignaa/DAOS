@@ -72,7 +72,6 @@ function Profile() {
       </Section>
     );
   if (profile) {
-    console.log('POSTS', profile.posts);
     return (
       <main>
         <Section>
