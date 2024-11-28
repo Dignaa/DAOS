@@ -11,7 +11,7 @@ import { PostsService } from 'src/posts/posts.service';
     MongooseModule.forFeature([
       { name: Group.name, schema: GroupSchema },
       { name: Post.name, schema: PostSchema },
-    ])
+    ]),
   ],
   controllers: [GroupsController],
   providers: [GroupsService, PostsService],

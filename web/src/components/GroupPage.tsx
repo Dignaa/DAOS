@@ -44,6 +44,8 @@ export default function GroupOverview({
   group.posts?.forEach(post => {
     post.group = group;
   });
+    post.group = group;
+  });
   return (
     <>
       <div className={styles.box}>

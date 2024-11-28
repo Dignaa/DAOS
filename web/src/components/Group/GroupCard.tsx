@@ -18,7 +18,11 @@ export default function Card({ _id, name, imageUrl }: GroupProps) {
         className={styles.link}
       >
         <div className={styles.cardImageWrapper}>
-            <img src={imageUrl || '/illustrations/icons/group-icon.svg'} alt={""} className={styles.cardImage} />
+          <img
+            src={imageUrl || '/illustrations/icons/group-icon.svg'}
+            alt={''}
+            className={styles.cardImage}
+          />
         </div>
         <h1 className={styles.cardTitle}>{name}</h1>
       </Link>

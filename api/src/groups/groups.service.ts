@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ConsoleLogger,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -88,7 +87,7 @@ export class GroupsService {
     return await this.groupModel
       .findByIdAndUpdate(
         group._id,
-        { $addToSet: { userIds: new Types.ObjectId(userId) } }, // use $addToSet to avoid duplicates
+        { $addToSet: { userIds: new Types.ObjectId(userId) } },
         { new: true },
       )
       .exec();
@@ -130,10 +129,13 @@ export class GroupsService {
   ): Promise<boolean | null> {
     const group = await this.groupModel.findById(groupId);
     if (!group) {
-      return null;
+      throw NotFoundException;
     }
-    return (
-      group.userIds.find((user) => user._id === new ObjectId(userId)) !== null
-    );
+    if (group.adminId.toString() === userId) return true;
+    return group.userIds.find((id) => id.toString() === userId) ? true : false;
+  }
+
+  async deleteMany() {
+    await this.groupModel.deleteMany({});
   }
 }
