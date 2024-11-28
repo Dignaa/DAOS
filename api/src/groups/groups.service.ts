@@ -105,7 +105,7 @@ export class GroupsService {
   }
 
   async getGroupsForUser(userId: string) {
-    return this.groupModel.find({ userIds: new Types.ObjectId(userId) });
+    return this.groupModel.find({ userIds: userId });
   }
 
   private async getPostsForGroup(groupId: string) {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate, createLazyFileRoute } from '@tanstack/react-router';
+import { useNavigate, createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useState, useEffect, FormEvent } from 'react';
 import Section from '../../../components/Section';
 import Input from '../../../components/Input';
@@ -127,17 +127,26 @@ export default function EditGroup() {
       });
   };
 
-  if (loading) {
+  if (loading)
     return (
       <Section>
-        <h1>Loading Group...</h1>
-        <p>Please wait while we fetch your group data.</p>
+        <h1>Henter ensemble</h1>
+        <p>Vent venligst mens ensemble hentes fra databasen...</p>
       </Section>
     );
-  }
 
-  if (!group) return <p>Unable to load group.</p>;
-
+  if (!group)
+    return (
+      <Section>
+        <h1>Ensemble ikke fundet</h1>
+        <Link
+          className={`${buttonStyles.button} ${buttonStyles.blue}`}
+          to="/posts"
+        >
+          Find ensembles
+        </Link>
+      </Section>
+    );
   if (!isAdmin) return <p>You do not have the permission to do this action!</p>;
 
   return (

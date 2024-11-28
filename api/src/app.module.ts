@@ -9,6 +9,7 @@ import { env } from 'node:process';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
 import { GroupsModule } from './groups/groups.module';
+import { InstrumentsModule } from './instruments/instruments.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { GroupsModule } from './groups/groups.module';
     UsersModule,
     GroupsModule,
     AuthModule,
+    InstrumentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

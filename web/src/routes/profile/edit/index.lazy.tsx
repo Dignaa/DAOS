@@ -5,6 +5,7 @@ import Input from '../../../components/Input';
 import buttonStyles from '../../../components/buttonStyles.module.css';
 import Form from '../../../components/Form';
 import { useAuth } from '../../../contexts/AuthContext';
+import Select, { SingleValue } from 'react-select';
 
 interface Profile {
   _id: string;
@@ -18,6 +19,15 @@ interface Profile {
   instruments?: string[];
 }
 
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
+interface Instrument {
+  type: string;
+}
+
 export const Route = createLazyFileRoute('/profile/edit/')({
   component: EditProfile,
 });
@@ -29,11 +39,40 @@ export default function EditProfile() {
   const [seeking, setSeeking] = useState(true);
   const { session } = useAuth();
   const navigate = useNavigate();
+  const [instruments, setInstruments] = useState<SelectOption[]>([]);
+  const [userInstruments, setUserinstruments] = useState<string[]>([]);
+  const [selectedInstrument, setSelectedInstrument] =
+    useState<SingleValue<SelectOption>>(null);
 
   // Redirect if no session exists
   if (!session) {
-    window.location.href = '/signin';
+    navigate({
+      to: '/signin',
+    });
   }
+
+  const fetchInstruments = () => {
+    fetch('http://localhost:3000/instruments/', {
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(response => response.json())
+      .then(data => {
+        const instruments: SelectOption[] = data.map(
+          (instrument: Instrument) => ({
+            value: instrument.type,
+            label: instrument.type,
+          })
+        );
+        setInstruments(instruments);
+      })
+      .catch(errors => {
+        alert('Instrumenter ikke fundet');
+        navigate({
+          to: '/profile',
+        });
+        console.error(errors);
+      });
+  };
 
   useEffect(() => {
     const fetchProfile = () => {
@@ -43,6 +82,7 @@ export default function EditProfile() {
         .then(response => response.json())
         .then(data => {
           setProfile(data);
+          setUserinstruments(data.instruments);
           setSeeking(data.seeking);
         })
         .catch(error => {
@@ -55,6 +95,17 @@ export default function EditProfile() {
 
     fetchProfile();
   }, [session]);
+
+  useEffect(() => {
+    fetchInstruments();
+  }, []);
+
+  const pushUserInstrument = (newInstrument: SingleValue<SelectOption>) => {
+    if (newInstrument) {
+      setUserinstruments(prev => [...prev, newInstrument.value]);
+      setSelectedInstrument(null); // Clear the selected value
+    }
+  };
 
   // Handle input changes
   const handleChange = (
@@ -69,6 +120,9 @@ export default function EditProfile() {
     setSaving(true);
 
     profile!.seeking = seeking;
+    profile!.instruments = userInstruments;
+
+    console.log(profile);
 
     fetch(`http://localhost:3000/users/${profile?._id}`, {
       method: 'PATCH',
@@ -96,14 +150,23 @@ export default function EditProfile() {
 
   if (loading) {
     return (
-      <Section>
-        <h1>Loading Profile...</h1>
-        <p>Please wait while we fetch your profile data.</p>
-      </Section>
+      <main>
+        <Section>
+          <h1>Henter profil...</h1>
+          <p>Vent venligst mens din profil hentes fra databasen...</p>
+        </Section>
+      </main>
     );
   }
 
-  if (!profile) return <p>Unable to load profile.</p>;
+  if (!profile) {
+    <main>
+      <Section>
+        <h1>Fejl</h1>
+        <p>Profil kunne ikke hentes fra databasen.</p>
+      </Section>
+    </main>;
+  }
 
   return (
     <main>
@@ -154,6 +217,35 @@ export default function EditProfile() {
             value={profile.address}
             onChange={handleChange}
           />
+          <Select
+            name="instrument"
+            options={instruments}
+            placeholder="Vælg instrument"
+            noOptionsMessage={() => 'Ingen instrumenter fundet'}
+            value={selectedInstrument} // Bind the state to the Select input
+            onChange={newInstrument => {
+              setSelectedInstrument(newInstrument); // Update the state
+              pushUserInstrument(newInstrument); // Add the instrument and reset
+            }}
+          />
+          <ul>
+            {userInstruments.map((instrument, index) => (
+              <li key={index + instrument}>
+                {instrument}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUserinstruments(prevInstruments =>
+                      prevInstruments.filter((_, i) => i !== index)
+                    );
+                  }}
+                >
+                  -
+                </button>
+              </li>
+            ))}
+          </ul>
+
           <div>
             <Input
               label="Søger efter ensemble"
