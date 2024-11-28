@@ -39,12 +39,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Update the session state and local storage
   const setSession = (newSession: string | null) => {
-    if(newSession === null) {
+    if (newSession === null) {
       clearSession(); // Remove from localStorage
       return;
     }
     setCurrentSession(newSession); // Save to localStorage
-  
+
     setSessionState(newSession); // Update React state
   };
 

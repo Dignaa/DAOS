@@ -1,4 +1,4 @@
-export function setCurrentSession(token: string ) {
+export function setCurrentSession(token: string) {
   const session = {
     token: token,
     expires: Date.now() + 86400000, //one day 24 hours
