@@ -15,6 +15,7 @@ interface Post {
   date: string;
   address: string;
 }
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export const Route = createFileRoute('/')({
   component: Index,
@@ -25,7 +26,7 @@ function Index() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3000/posts')
+    fetch(`${apiUrl}/posts`)
       .then(response => {
         return response.json();
       })

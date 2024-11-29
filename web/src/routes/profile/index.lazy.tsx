@@ -46,9 +46,11 @@ function Profile() {
     clearSession();
     window.location.href = '/';
   };
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 
   useEffect(() => {
-    fetch('http://localhost:3000/users/profile', {
+    fetch(`${apiUrl}/users/profile`, {
       headers: { Authorization: 'Bearer ' + session },
     })
       .then(response => {

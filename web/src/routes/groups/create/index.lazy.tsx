@@ -37,8 +37,10 @@ function CreateGroup() {
         delete data[key];
       }
     }
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
-    fetch('http://localhost:3000/groups/', {
+
+    fetch(`${apiUrl}/groups`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${session}`,

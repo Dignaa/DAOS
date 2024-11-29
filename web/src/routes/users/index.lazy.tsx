@@ -11,13 +11,14 @@ interface User {
 export const Route = createLazyFileRoute('/users/')({
   component: Users,
 });
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 function Users() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3000/users')
+    fetch(`${apiUrl}/users`)
       .then(response => {
         return response.json();
       })
