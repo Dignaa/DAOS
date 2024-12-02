@@ -24,6 +24,7 @@ function SignUp() {
     const form = document.querySelector('form')!;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
     // Convert 'true' and 'false' strings to booleans in the data object
     for (const key in data) {
@@ -32,7 +33,7 @@ function SignUp() {
       }
     }
 
-    fetch('http://localhost:3000/users/', {
+    fetch(`${apiUrl}/users/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),

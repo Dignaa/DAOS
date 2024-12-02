@@ -28,6 +28,8 @@ interface Props {
   deletePostFunction: () => void;
 }
 
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 export default function Overview({ post, deletePostFunction }: Props) {
   const postedDaysAgo = daysAgo(post.createdAt);
   const [joined, setJoined] = useState(false);
@@ -37,7 +39,7 @@ export default function Overview({ post, deletePostFunction }: Props) {
   const { session } = useAuth();
 
   const checkIsInGroup = () => {
-    fetch(`http://localhost:3000/groups/${post?.group._id}/isUserInGroup`, {
+    fetch(`${apiUrl}/groups/${post?.group._id}/isUserInGroup`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + session,
@@ -55,7 +57,7 @@ export default function Overview({ post, deletePostFunction }: Props) {
   };
 
   const checkIsAdmin = () => {
-    fetch(`http://localhost:3000/groups/${post?.group._id}/isAdmin`, {
+    fetch(`${apiUrl}/groups/${post?.group._id}/isAdmin`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + session,
@@ -75,7 +77,7 @@ export default function Overview({ post, deletePostFunction }: Props) {
   };
 
   const joinGroup = () => {
-    fetch(`http://localhost:3000/groups/${post?.group._id}/users`, {
+    fetch(`${apiUrl}/groups/${post?.group._id}/users`, {
       method: 'POST',
       body: JSON.stringify({
         postId: post._id,

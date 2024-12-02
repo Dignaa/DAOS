@@ -43,6 +43,7 @@ export default function EditProfile() {
   const [userInstruments, setUserinstruments] = useState<string[]>([]);
   const [selectedInstrument, setSelectedInstrument] =
     useState<SingleValue<SelectOption>>(null);
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   // Redirect if no session exists
   if (!session) {
@@ -52,7 +53,7 @@ export default function EditProfile() {
   }
 
   const fetchInstruments = () => {
-    fetch('http://localhost:3000/instruments/', {
+    fetch(`${apiUrl}/instruments/`, {
       headers: { 'Content-Type': 'application/json' },
     })
       .then(response => response.json())
@@ -76,7 +77,7 @@ export default function EditProfile() {
 
   useEffect(() => {
     const fetchProfile = () => {
-      fetch('http://localhost:3000/users/profile', {
+      fetch(`${apiUrl}/users/profile`, {
         headers: { Authorization: 'Bearer ' + session },
       })
         .then(response => response.json())
@@ -125,7 +126,7 @@ export default function EditProfile() {
 
       console.log(profile);
 
-      fetch(`http://localhost:3000/users/${profile._id}`, {
+      fetch(`${apiUrl}/users/${profile._id}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${session}`,

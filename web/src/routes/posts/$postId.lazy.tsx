@@ -37,7 +37,7 @@ function PostPage() {
   const navigate = useNavigate();
 
   const deletePost = () => {
-    fetch(`http://localhost:3000/posts/${postId}`, {
+    fetch(`${apiUrl}/posts/${postId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -53,9 +53,11 @@ function PostPage() {
         alert('Error: ' + error.message);
       });
   };
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 
   useEffect(() => {
-    fetch(`http://localhost:3000/posts/${postId}`, {
+    fetch(`${apiUrl}/posts/${postId}`, {
       headers: { Authorization: 'Bearer ' + session },
     })
       .then(response => {
