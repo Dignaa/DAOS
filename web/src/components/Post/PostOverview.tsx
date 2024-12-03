@@ -49,7 +49,7 @@ export default function Overview({ post, deletePostFunction }: Props) {
         return response.json();
       })
       .then(data => {
-        setIsAlreadyJoined(data ? true : false);
+        setIsAlreadyJoined(data.isUserInGroup ? true : false);
       })
       .catch(() => {
         alert('Error');
@@ -68,8 +68,6 @@ export default function Overview({ post, deletePostFunction }: Props) {
       })
       .then(data => {
         setIsAdmin(data.isAdmin ? true : false);
-        console.log(data);
-        console.log(isAdmin);
       })
       .catch(() => {
         alert('Error');
@@ -92,8 +90,6 @@ export default function Overview({ post, deletePostFunction }: Props) {
           if (data.error) {
             throw new Error(data.message);
           }
-          console.log('response: ', response);
-
           if (!response.ok) {
             return Promise.reject(data);
           }

@@ -123,9 +123,6 @@ export default function EditProfile() {
     if (profile) {
       profile.seeking = seeking;
       profile.instruments = userInstruments;
-
-      console.log(profile);
-
       fetch(`${apiUrl}/users/${profile._id}`, {
         method: 'PUT',
         headers: {

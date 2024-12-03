@@ -48,7 +48,6 @@ function Profile() {
   };
   const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
-
   useEffect(() => {
     fetch(`${apiUrl}/users/profile`, {
       headers: { Authorization: 'Bearer ' + session },
@@ -58,7 +57,6 @@ function Profile() {
       })
       .then(data => {
         setProfile(data);
-        console.log(data);
         setLoading(false);
       })
       .catch(error => {

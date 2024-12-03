@@ -23,7 +23,6 @@ function Users() {
         return response.json();
       })
       .then(data => {
-        console.log(data);
         setUsers(data);
         setLoading(false);
       })
