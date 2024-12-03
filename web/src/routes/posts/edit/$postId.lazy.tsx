@@ -117,7 +117,7 @@ export default function EditPost() {
     setSaving(true);
 
     fetch(`${apiUrl}/posts/${post?._id}`, {
-      method: 'PATCH',
+      method: 'PUT',
       headers: {
         Authorization: `Bearer ${session}`,
         'Content-Type': 'application/json',
