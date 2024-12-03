@@ -3,12 +3,12 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   UseGuards,
   Request,
   HttpCode,
+  Put,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -38,7 +38,7 @@ export class PostsController {
     return await this.postsService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @UseGuards(AuthGuard)
   async update(
     @Param('id') id: string,

@@ -127,7 +127,7 @@ export default function EditProfile() {
       console.log(profile);
 
       fetch(`${apiUrl}/users/${profile._id}`, {
-        method: 'PATCH',
+        method: 'PUT',
         headers: {
           Authorization: `Bearer ${session}`,
           'Content-Type': 'application/json',

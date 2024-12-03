@@ -3,12 +3,12 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   UseGuards,
   HttpCode,
   Request,
+  Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -64,7 +64,7 @@ export class UsersController {
     return plainToInstance(UsersResponseDto, user);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @UseGuards(AuthGuard)
   async update(
     @Param('id') id: string,

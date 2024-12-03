@@ -41,11 +41,11 @@ export class GroupsService {
 
   async findOne(id: string) {
     if (!Types.ObjectId.isValid(id))
-      throw new BadRequestException('Invalid ID');
+      throw new BadRequestException('Invalid group ID format');
 
     const group = await this.groupModel.findById(id).exec();
 
-    if (!group) throw new NotFoundException('No group found with this ID');
+    if (!group) throw new NotFoundException('Group not found');
 
     const posts = await this.getPostsForGroup(group.id);
     return { ...group.toObject(), posts: posts };

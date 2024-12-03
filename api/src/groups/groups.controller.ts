@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   UseGuards,
@@ -13,6 +12,7 @@ import {
   BadRequestException,
   InternalServerErrorException,
   NotFoundException,
+  Put,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { PostsService } from '../posts/posts.service';
@@ -78,7 +78,7 @@ export class GroupsController {
     return await this.groupService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @UseGuards(AuthGuard)
   async update(
     @Param('id') id: string,

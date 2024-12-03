@@ -101,7 +101,7 @@ export default function EditGroup() {
     console.log(group);
 
     fetch(`${apiUrl}/groups/${group?._id}`, {
-      method: 'PATCH',
+      method: 'PUT',
       headers: {
         Authorization: `Bearer ${session}`,
         'Content-Type': 'application/json',
