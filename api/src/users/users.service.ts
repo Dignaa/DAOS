@@ -121,7 +121,7 @@ export class UsersService {
   // Get the groups for a specific user
   private async getUsersGroups(userId: string) {
     const groups = await this.groupModel
-      .find({ userIds: userId })
+      .find({ userIds: new Types.ObjectId(userId) })
       .select('_id name imageUrl noOfActiveMembers address')
       .exec();
 
@@ -140,16 +140,14 @@ export class UsersService {
       .select('')
       .exec();
 
-    // Wait for all posts to be resolved and group data processed correctly
     const resolvedPosts = await Promise.all(
       posts.map(async (post) => {
-        // Fetch group data for each post (this should be a single object, not an array)
         const groupData = await this.groupModel
           .find({ _id: new ObjectId(post.groupId) })
           .select('_id name imageUrl noOfActiveMembers address')
           .exec();
 
-        const processedGroup = groupData.length > 0 ? groupData[0] : null; // Extract the first group object if exists
+        const processedGroup = groupData.length > 0 ? groupData[0] : null; 
 
         return {
           _id: post.id,

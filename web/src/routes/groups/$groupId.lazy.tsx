@@ -5,6 +5,7 @@ import buttonStyles from '../../components/buttonStyles.module.css';
 import GroupOverview from '../../components/GroupPage';
 import { Group } from '../../components/GroupPage';
 import { useAuth } from '../../contexts/AuthContext';
+import ConfirmModal from '../../components/Modal/Confirm.modal';
 
 export const Route = createLazyFileRoute('/groups/$groupId')({
   component: GroupPage,
@@ -15,9 +16,18 @@ function GroupPage() {
   const [group, setGroup] = useState<Group>();
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { session } = useAuth();
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const deleteGroup = () => {
     fetch(`${apiUrl}/groups/${groupId}`, {
@@ -97,14 +107,21 @@ function GroupPage() {
         </Link>
       </Section>
     );
-
+    const deletionMessage = `Are you sure you want to delete ${group.name}? ${
+      group.posts && group.posts.length > 0
+        ? `All related posts will be deleted also: ${group.posts.map((post) => post.title).join(', ')}.`
+        : ''
+    }`;
+    
   return (
     <main>
       <Section>
-        <GroupOverview
-          group={group}
-          isAdmin={isAdmin}
-          deletePostFunction={deleteGroup}
+        <GroupOverview group={group} deletePostFunction={openModal} isAdmin={isAdmin} />
+        <ConfirmModal 
+          isOpen={isModalOpen} 
+          onClose={closeModal} 
+          onConfirm={() => { deleteGroup(); closeModal(); }} 
+          message = { deletionMessage }
         />
       </Section>
     </main>
