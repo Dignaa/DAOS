@@ -4,6 +4,7 @@ import Section from '../../components/Section';
 import PostOverview from '../../components/Post/PostOverview';
 import buttonStyles from '../../components/buttonStyles.module.css';
 import { useAuth } from '../../contexts/AuthContext';
+import ConfirmModal from '../../components/Modal/Confirm.modal';
 
 interface Group {
   _id: string;
@@ -33,8 +34,17 @@ function PostPage() {
 
   const [post, setPost] = useState<Post>();
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { session } = useAuth();
   const navigate = useNavigate();
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const deletePost = () => {
     fetch(`${apiUrl}/posts/${postId}`, {
@@ -97,10 +107,18 @@ function PostPage() {
       </Section>
     );
 
+    const deletionMessage = `Are you sure you want to delete ${post.title}`;
+
   return (
     <main>
       <Section>
-        <PostOverview post={post} deletePostFunction={deletePost} />
+      <PostOverview post={post} deletePostFunction={openModal} />
+        <ConfirmModal 
+          isOpen={isModalOpen} 
+          onClose={closeModal} 
+          onConfirm={() => { deletePost(); closeModal(); }} 
+          message = { deletionMessage }
+        />
       </Section>
     </main>
   );

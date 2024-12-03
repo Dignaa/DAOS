@@ -118,7 +118,7 @@ export class GroupsController {
     const updatedGroup = await this.groupService.addUser(groupId, userId);
 
     if (
-      updatedGroup.userIds.find((user) => user._id === new ObjectId(userId)) !==
+      updatedGroup.userIds.find((id) => id.toString() === userId) !==
       null
     ) {
       await this.postService.remove(userId, postId);

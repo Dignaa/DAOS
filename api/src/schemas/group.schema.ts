@@ -44,7 +44,7 @@ export class Group {
   adminId: Types.ObjectId;
 
   @Prop({ type: [Types.ObjectId], ref: 'User' })
-  userIds: Types.ObjectId[];
+  userIds: [Types.ObjectId]
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

@@ -23,7 +23,6 @@ export class GroupsService {
     const group = new this.groupModel({
       ...createGroupDto,
     });
-
     return await group.save();
   }
 
@@ -74,12 +73,11 @@ export class GroupsService {
     if (!group) {
       throw new NotFoundException(`Group with ID ${id} not found`);
     }
-
-    if (group.adminId.toString() === userId) {
-      await this.postModel.deleteMany({ groupId: group._id }).exec();
-      await this.groupModel.deleteOne({ _id: group._id }).exec();
-    }
+    if (!group.adminId.equals(new Types.ObjectId(userId))) {
     throw new UnauthorizedException();
+    }
+    await this.postModel.deleteMany({ groupId: new Types.ObjectId(group._id) }).exec();
+    await this.groupModel.deleteOne({ _id: new Types.ObjectId(group._id) }).exec();
   }
 
   async addUser(groupId: string, userId: string) {
@@ -105,7 +103,7 @@ export class GroupsService {
   }
 
   async getGroupsForUser(userId: string) {
-    return this.groupModel.find({ userIds: userId });
+    return this.groupModel.find({ userIds: new Types.ObjectId(userId)});
   }
 
   private async getPostsForGroup(groupId: string) {
@@ -131,8 +129,8 @@ export class GroupsService {
     if (!group) {
       throw NotFoundException;
     }
-    if (group.adminId.toString() === userId) return true;
-    return group.userIds.find((id) => id.toString() === userId) ? true : false;
+    if (group.adminId === new Types.ObjectId(userId)) return true;
+    return group.userIds.find((id) => id === new Types.ObjectId(userId)) ? true : false;
   }
 
   async deleteMany() {
