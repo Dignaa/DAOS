@@ -39,7 +39,6 @@ function CreatePost() {
   const [instruments, setInstruments] = useState<SelectOption[]>([]);
   const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
-
   const fetchInstruments = () => {
     fetch(`${apiUrl}/instruments`, {
       headers: { 'Content-Type': 'application/json' },
@@ -80,8 +79,6 @@ function CreatePost() {
       }
 
       const groups = await response.json();
-
-      console.log(groups);
 
       if (!groups || groups.length === 0) {
         alert('Ingen grupper fundet. Du bliver omdirigeret til din profil.');

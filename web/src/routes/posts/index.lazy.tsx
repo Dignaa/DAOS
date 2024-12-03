@@ -27,7 +27,6 @@ function Posts() {
         return response.json();
       })
       .then(data => {
-        console.log(data);
         setPosts(data);
         setLoading(false);
       })

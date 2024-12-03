@@ -23,10 +23,7 @@ import { ObjectId } from 'mongodb';
 
 @Controller('groups')
 export class GroupsController {
-  constructor(
-    private readonly groupService: GroupsService,
-    private readonly postService: PostsService,
-  ) {}
+  constructor(private readonly groupService: GroupsService) {}
 
   @Post()
   @UseGuards(AuthGuard)
@@ -105,29 +102,7 @@ export class GroupsController {
     @Req() req: any,
   ) {
     const userId: string = req.user.userId;
-
-    const group = await this.groupService.findOne(groupId);
-
-    if (
-      group.adminId.toString() === userId ||
-      group.userIds.find((id) => id.toString() === userId)
-    ) {
-      return new BadRequestException('User already joined in the ensamble');
-    }
-
-    const updatedGroup = await this.groupService.addUser(groupId, userId);
-
-    if (
-      updatedGroup.userIds.find((id) => id.toString() === userId) !==
-      null
-    ) {
-      await this.postService.remove(userId, postId);
-      return updatedGroup;
-    }
-
-    return new InternalServerErrorException(
-      'An error occured while trying to add a user into an enasmble. Please try again!',
-    );
+    return await this.groupService.addUser(groupId, userId, postId);
   }
 
   @Delete(':id/users')
