@@ -7,7 +7,6 @@ import buttonStyles from '../../../components/buttonStyles.module.css';
 import Form from '../../../components/Form';
 import { useAuth } from '../../../contexts/AuthContext';
 import Select from 'react-select';
-import UserInstruments from '../../../components/User/UserInstruments';
 
 export const Route = createLazyFileRoute('/posts/edit/$postId')({
   component: EditPost,
@@ -38,6 +37,7 @@ export default function EditPost() {
   const { session } = useAuth();
   const navigate = useNavigate();
   const [instruments, setInstruments] = useState<SelectOption[]>([]);
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   // Redirect if no session exists
   if (!session) {
@@ -47,7 +47,7 @@ export default function EditPost() {
   }
 
   const fetchInstruments = () => {
-    fetch('http://localhost:3000/instruments/', {
+    fetch(`${apiUrl}/instruments/`, {
       headers: { 'Content-Type': 'application/json' },
     })
       .then(response => {
@@ -72,7 +72,7 @@ export default function EditPost() {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:3000/posts/${postId}`, {
+    fetch(`${apiUrl}/posts/${postId}`, {
       headers: { Authorization: 'Bearer ' + session },
     })
       .then(response => {
@@ -116,7 +116,7 @@ export default function EditPost() {
     event.preventDefault();
     setSaving(true);
 
-    fetch(`http://localhost:3000/posts/${post?._id}`, {
+    fetch(`${apiUrl}/posts/${post?._id}`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${session}`,

@@ -7,10 +7,10 @@ import {
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Group } from 'src/schemas/group.schema';
+import { Group } from '../schemas/group.schema';
 import { Model, Types } from 'mongoose';
 import { ObjectId } from 'mongodb';
-import { Post } from 'src/schemas/post.schema';
+import { Post } from '../schemas/post.schema';
 
 @Injectable()
 export class GroupsService {

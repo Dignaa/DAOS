@@ -28,6 +28,8 @@ interface User {
 export const Route = createLazyFileRoute('/users/$userId')({
   component: UserPage,
 });
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 
 function UserPage() {
   const { userId } = Route.useParams();
@@ -37,7 +39,7 @@ function UserPage() {
   const { session } = useAuth();
 
   useEffect(() => {
-    fetch(`http://localhost:3000/users/${userId}`, {
+    fetch(`${apiUrl}/users/${userId}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${session}`,

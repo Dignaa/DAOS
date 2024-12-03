@@ -7,12 +7,12 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose'; // Ensure this import is present
+import { Model, Types } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { Group } from 'src/schemas/group.schema';
+import { Group } from '../schemas/group.schema';
 import { ObjectId } from 'mongodb';
-import { Post } from 'src/schemas/post.schema';
-import { Instrument } from 'src/schemas/instrument.schema';
+import { Post } from '../schemas/post.schema';
+import { Instrument } from '../schemas/instrument.schema';
 
 @Injectable()
 export class UsersService {

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UpdateUserDto } from '../users/dto/update-user.dto';
-import { TestModule } from 'src/test.module';
+import { TestModule } from '../test.module';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;

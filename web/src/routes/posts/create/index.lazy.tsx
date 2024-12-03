@@ -37,9 +37,11 @@ function CreatePost() {
   const [userGroupOptions, setUserGroupOptions] = useState<Option[]>([]);
   const [loading, setLoading] = useState(true);
   const [instruments, setInstruments] = useState<SelectOption[]>([]);
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 
   const fetchInstruments = () => {
-    fetch('http://localhost:3000/instruments/', {
+    fetch(`${apiUrl}/instruments`, {
       headers: { 'Content-Type': 'application/json' },
     })
       .then(response => {
@@ -66,7 +68,7 @@ function CreatePost() {
   // Fetch user groups
   const getUserGroups = async (): Promise<Group[]> => {
     try {
-      const response = await fetch('http://localhost:3000/users/groups', {
+      const response = await fetch(`${apiUrl}/users/groups`, {
         headers: {
           Authorization: `Bearer ${session}`,
           'Content-Type': 'application/json',
@@ -122,7 +124,7 @@ function CreatePost() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/posts/', {
+      const response = await fetch(`${apiUrl}/posts`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${session}`,

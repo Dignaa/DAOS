@@ -19,9 +19,10 @@ export const Route = createLazyFileRoute('/posts/')({
 function Posts() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   useEffect(() => {
-    fetch('http://localhost:3000/posts')
+    fetch(`${apiUrl}/posts`)
       .then(response => {
         return response.json();
       })

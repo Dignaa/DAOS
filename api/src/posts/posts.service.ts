@@ -7,11 +7,11 @@ import {
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Post, PostDocument } from 'src/schemas/post.schema';
+import { Post, PostDocument } from '../schemas/post.schema';
 import { Model, Types } from 'mongoose';
 import { ObjectId } from 'mongodb';
-import { Group, GroupDocument } from 'src/schemas/group.schema';
-import { Instrument } from 'src/schemas/instrument.schema';
+import { Group, GroupDocument } from '../schemas/group.schema';
+import { Instrument } from '../schemas/instrument.schema';
 
 @Injectable()
 export class PostsService {

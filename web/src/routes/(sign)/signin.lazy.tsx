@@ -13,6 +13,7 @@ export const Route = createLazyFileRoute('/(sign)/signin')({
 function SignIn() {
   const { setSession } = useAuth();
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   const signInUser = (event: FormEvent) => {
     event.preventDefault();
@@ -21,7 +22,7 @@ function SignIn() {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    fetch('http://localhost:3000/auth/signin', {
+    fetch(`${apiUrl}/auth/signin`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),

@@ -17,9 +17,10 @@ function GroupPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const { session } = useAuth();
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   const deleteGroup = () => {
-    fetch(`http://localhost:3000/groups/${groupId}`, {
+    fetch(`${apiUrl}/groups/${groupId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -37,7 +38,7 @@ function GroupPage() {
   };
 
   const checkIsAdmin = () => {
-    fetch(`http://localhost:3000/groups/${groupId}/isAdmin`, {
+    fetch(`${apiUrl}/groups/${groupId}/isAdmin`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + session,
@@ -56,7 +57,7 @@ function GroupPage() {
 
   useEffect(() => {
     checkIsAdmin();
-    fetch(`http://localhost:3000/groups/${groupId}`, {
+    fetch(`${apiUrl}/groups/${groupId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

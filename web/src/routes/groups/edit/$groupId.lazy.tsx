@@ -32,6 +32,7 @@ export default function EditGroup() {
   const [isAdmin, setIsAdmin] = useState(false);
   const { session } = useAuth();
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   // Redirect if no session exists
   if (!session) {
@@ -39,7 +40,7 @@ export default function EditGroup() {
   }
 
   const checkIsAdmin = () => {
-    fetch(`http://localhost:3000/groups/${groupId}/isAdmin`, {
+    fetch(`${apiUrl}/groups/${groupId}/isAdmin`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + session,
@@ -58,7 +59,7 @@ export default function EditGroup() {
 
   useEffect(() => {
     checkIsAdmin();
-    fetch(`http://localhost:3000/groups/${groupId}`, {
+    fetch(`${apiUrl}/groups/${groupId}`, {
       headers: { Authorization: 'Bearer ' + session },
     })
       .then(response => {
@@ -99,7 +100,7 @@ export default function EditGroup() {
     setSaving(true);
     console.log(group);
 
-    fetch(`http://localhost:3000/groups/${group?._id}`, {
+    fetch(`${apiUrl}/groups/${group?._id}`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${session}`,
