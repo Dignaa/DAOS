@@ -6,6 +6,8 @@ import buttonStyles from '../../../components/buttonStyles.module.css';
 import Form from '../../../components/Form';
 import { useAuth } from '../../../contexts/AuthContext';
 import Select, { SingleValue } from 'react-select';
+import listStyles from '../../../components/List/List.module.css';
+import InstrumentBoxstyles from '../../../components/InstrumentBox.module.css';
 
 interface Profile {
   _id: string;
@@ -222,7 +224,7 @@ export default function EditProfile() {
           <Select
             name="instrument"
             options={instruments}
-            placeholder="Vælg instrument"
+            placeholder="Tilføj instrument"
             noOptionsMessage={() => 'Ingen instrumenter fundet'}
             value={selectedInstrument} // Bind the state to the Select input
             onChange={newInstrument => {
@@ -230,11 +232,12 @@ export default function EditProfile() {
               pushUserInstrument(newInstrument); // Add the instrument and reset
             }}
           />
-          <ul>
+          <ul className={listStyles.list}>
             {userInstruments.map((instrument, index) => (
-              <li key={index + instrument}>
+              <li key={index + instrument} className={InstrumentBoxstyles.box}>
                 {instrument}
                 <button
+                  className={InstrumentBoxstyles.button}
                   type="button"
                   onClick={() => {
                     setUserinstruments(prevInstruments =>
@@ -242,7 +245,7 @@ export default function EditProfile() {
                     );
                   }}
                 >
-                  -
+                  Fjern
                 </button>
               </li>
             ))}

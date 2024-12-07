@@ -1,13 +1,14 @@
-import styles from './Grid.module.css';
+import styles from './List/List.module.css';
+import InstrumentBox from './IntrumentBox';
 
 interface IntrumentProps {
   instruments: string[];
 }
-export default function InstrumentGrid({ instruments }: IntrumentProps) {
+export default function InstrumentList({ instruments }: IntrumentProps) {
   return (
-    <ul className={styles.grid}>
+    <ul className={styles.list}>
       {instruments.map((instrument: string, index) => (
-        <li key={index + instrument}>{instrument}</li>
+        <InstrumentBox key={index + instrument} instrument={instrument} />
       ))}
     </ul>
   );
