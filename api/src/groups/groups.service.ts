@@ -59,7 +59,7 @@ export class GroupsService {
 
     if (group.adminId.toString() === userId) {
       const toUpdate = await this.groupModel
-        .findByIdAndUpdate(group._id, updateGroupDto, { new: true })
+        .findByIdAndUpdate(group._id, { ...updateGroupDto, adminId: new Types.ObjectId(userId), userIds: updateGroupDto.userIds.map((id) => new Types.ObjectId(id))}, { new: true })
         .exec();
       const posts = await this.getPostsForGroup(toUpdate.id);
       return { ...toUpdate.toObject(), posts: posts };

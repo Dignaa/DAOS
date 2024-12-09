@@ -136,7 +136,7 @@ export class UsersService {
 
   public async getPosts(userId) {
     const posts = await this.postModel
-      .find({ userId: new ObjectId(userId) })
+      .find({ userId: new Types.ObjectId(userId) })
       .select('')
       .exec();
 

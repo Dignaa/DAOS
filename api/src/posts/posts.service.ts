@@ -83,7 +83,7 @@ export class PostsService {
         updatePostDto.instrument,
       );
       const toUpdate = await this.postModel
-        .findByIdAndUpdate(post._id, updatePostDto, { new: true })
+      .findByIdAndUpdate(post._id, { ...updatePostDto, userId: new Types.ObjectId(userId), groupId: new Types.ObjectId(updatePostDto.groupId)}, { new: true })
         .exec();
 
       const group = await this.getGroupForPost(post.groupId);
