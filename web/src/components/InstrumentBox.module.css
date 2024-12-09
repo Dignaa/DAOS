@@ -1,0 +1,23 @@
+.box {
+  background-color: white;
+  border: 1pt solid #dddddd;
+  box-shadow: 0 2pt 4pt #00000014;
+  border-radius: 10pt;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 16pt;
+  margin-block: 16pt;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  border: none;
+  border-radius: 5pt;
+  display: grid;
+  place-items: center;
+  background-color: var(--color-red);
+  color: white;
+  padding: 8pt;
+}
