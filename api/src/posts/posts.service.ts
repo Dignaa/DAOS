@@ -83,7 +83,15 @@ export class PostsService {
         updatePostDto.instrument,
       );
       const toUpdate = await this.postModel
-      .findByIdAndUpdate(post._id, { ...updatePostDto, userId: new Types.ObjectId(userId), groupId: new Types.ObjectId(updatePostDto.groupId)}, { new: true })
+        .findByIdAndUpdate(
+          post._id,
+          {
+            ...updatePostDto,
+            userId: new Types.ObjectId(userId),
+            groupId: new Types.ObjectId(updatePostDto.groupId),
+          },
+          { new: true },
+        )
         .exec();
 
       const group = await this.getGroupForPost(post.groupId);
@@ -122,5 +130,21 @@ export class PostsService {
       throw BadRequestException;
     }
     return instrument;
+  }
+
+  async search(search: string) {
+    const filter: any = {};
+
+    filter['instrument'] = search;
+
+    const posts = await this.postModel.find(filter).exec();
+
+    const postWithGroup = await Promise.all(
+      posts.map(async (post) => {
+        const group = await this.getGroupForPost(post.groupId);
+        return { ...post.toObject(), group };
+      }),
+    );
+    return postWithGroup;
   }
 }
