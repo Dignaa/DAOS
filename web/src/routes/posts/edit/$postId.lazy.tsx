@@ -168,7 +168,7 @@ export default function EditPost() {
   return (
     <main>
       <Section>
-        <h1>Rediger Post</h1>
+        <h1>Rediger Opslag</h1>
         <Form onSubmit={handleSubmit}>
           <Input
             label="Post title"
@@ -190,6 +190,11 @@ export default function EditPost() {
             name="instrument"
             options={instruments}
             placeholder="Vælg instrument"
+            value={
+              post.instrument
+                ? { value: post.instrument, label: post.instrument }
+                : undefined
+            }
             noOptionsMessage={() => 'Ingen instrumenter fundet'}
           />
           <button

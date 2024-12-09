@@ -81,7 +81,13 @@ export default function GroupOverview({
             {group.link && (
               <a
                 className={`${buttonStyles.button} ${buttonStyles.blue}`}
-                href={group.link}
+                href={
+                  group.link.startsWith('http://') ||
+                  group.link.startsWith('https://')
+                    ? group.link
+                    : `https://${group.link}`
+                }
+                target="_blank"
               >
                 Group website
               </a>
