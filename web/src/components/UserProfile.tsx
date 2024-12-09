@@ -5,12 +5,14 @@ import buttonStyles from './buttonStyles.module.css';
 interface UserProps {
   name: string;
   avatarUrl?: string;
+  description?: string;
   lastLoggedIn: Date;
   createdAt: Date;
 }
 
 export default function UserProfile({
   name,
+  description,
   avatarUrl = '/illustrations/icons/user-icon.svg',
   lastLoggedIn,
   createdAt,
@@ -30,6 +32,10 @@ export default function UserProfile({
         <img className={styles.img} src={avatarUrl} alt="" />
         <div className={styles.text}>
           <h1 className={styles.h1}>{name}</h1>
+          <p>
+            {description ||
+              `${name} har ikke skrevet en brugerbeskrivelse endnu.`}
+          </p>
           {createdAt && <p className={styles.p}>Oprettet {createdAtString}</p>}
           {lastLoggedIn && (
             <p className={styles.p}>{formatLastLoggedIn(lastLoggedIn)}</p>

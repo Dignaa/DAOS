@@ -152,7 +152,7 @@ export default function EditGroup() {
   return (
     <main>
       <Section>
-        <h1>Rediger Profil</h1>
+        <h1>Rediger ensemble</h1>
         <Form onSubmit={handleSubmit}>
           <Input
             label="Group Name"
