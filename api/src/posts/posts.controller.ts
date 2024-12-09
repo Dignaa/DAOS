@@ -9,6 +9,7 @@ import {
   Request,
   HttpCode,
   Put,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -26,6 +27,15 @@ export class PostsController {
       { ...createPostDto },
       req.user.userId,
     );
+  }
+
+  @Get()
+  async findAllOrSearch(@Query('search') search?: string) {
+    if (search && search.trim().length > 0) {
+      return await this.postsService.search(search);
+    }
+
+    return await this.postsService.findAll();
   }
 
   @Get()

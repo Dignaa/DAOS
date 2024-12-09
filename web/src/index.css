@@ -10,6 +10,15 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+.react-select-container {
+  margin-block: 8pt;
+}
+
+.react-select__control {
+  padding: 16pt;
+}
+
 body {
   font-family: Montserrat;
   font-size: 16pt;
