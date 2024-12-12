@@ -20,8 +20,14 @@ export class GroupsService {
   ) {}
 
   async create(createGroupDto: CreateGroupDto) {
+    const loc = await this.getLocation(createGroupDto.address);
+
     const group = new this.groupModel({
       ...createGroupDto,
+      location: {
+        type: 'Point',
+        coordinates: loc,
+      },
     });
     return await group.save();
   }
@@ -58,8 +64,28 @@ export class GroupsService {
     }
 
     if (group.adminId.toString() === userId) {
+      let loc;
+      console.log(updateGroupDto.address);
+      if (updateGroupDto.address === '') {
+        loc = [0, 0];
+      } else {
+        loc = await this.getLocation(updateGroupDto.address);
+      }
+
       const toUpdate = await this.groupModel
-        .findByIdAndUpdate(group._id, { ...updateGroupDto, adminId: new Types.ObjectId(userId), userIds: updateGroupDto.userIds.map((id) => new Types.ObjectId(id))}, { new: true })
+        .findByIdAndUpdate(
+          group._id,
+          {
+            ...updateGroupDto,
+            adminId: new Types.ObjectId(userId),
+            userIds: updateGroupDto.userIds.map((id) => new Types.ObjectId(id)),
+            location: {
+              type: 'Point',
+              coordinates: loc,
+            },
+          },
+          { new: true },
+        )
         .exec();
       const posts = await this.getPostsForGroup(toUpdate.id);
       return { ...toUpdate.toObject(), posts: posts };
@@ -151,5 +177,28 @@ export class GroupsService {
 
   async deleteMany() {
     await this.groupModel.deleteMany({});
+  }
+
+  private async getLocation(address: string) {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+      address,
+    )}&format=json`;
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new BadRequestException('Failed to fetch geolocation data.');
+    }
+
+    const data = await response.json();
+    if (!data || data.length === 0) {
+      throw new BadRequestException(
+        'Unable to fetch geolocation for the address.',
+      );
+    }
+
+    // Extract latitude and longitude
+    const { lon, lat } = data[0];
+
+    return [parseFloat(lon), parseFloat(lat)];
   }
 }

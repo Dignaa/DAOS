@@ -16,6 +16,12 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { AuthGuard } from '../auth/auth.guard';
 
+interface SearchDTO {
+  instrument?: string;
+  address?: string;
+  range?: number;
+}
+
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
@@ -30,16 +36,11 @@ export class PostsController {
   }
 
   @Get()
-  async findAllOrSearch(@Query('search') search?: string) {
-    if (search && search.trim().length > 0) {
-      return await this.postsService.search(search);
+  async findAllOrSearch(@Query() searchDto?: SearchDTO) {
+    if (searchDto) {
+      return await this.postsService.search(searchDto);
     }
 
-    return await this.postsService.findAll();
-  }
-
-  @Get()
-  async findAll() {
     return await this.postsService.findAll();
   }
 

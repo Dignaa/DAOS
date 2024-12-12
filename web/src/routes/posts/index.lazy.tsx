@@ -44,7 +44,13 @@ function Posts() {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    fetch(`${apiUrl}/posts?search=${data.instrument}`)
+    const query = new URLSearchParams();
+    if (data.instrument) query.append('instrument', data.instrument.toString());
+    if (data.address) query.append('address', data.address.toString());
+    if (data.range) query.append('range', data.range.toString());
+
+    console.log(query.toString());
+    fetch(`${apiUrl}/posts?${query.toString()}`)
       .then(response => {
         return response.json();
       })

@@ -13,6 +13,12 @@ import { ObjectId } from 'mongodb';
 import { Group, GroupDocument } from '../schemas/group.schema';
 import { Instrument } from '../schemas/instrument.schema';
 
+interface SearchDTO {
+  instrument?: string;
+  address?: string;
+  range?: number;
+}
+
 @Injectable()
 export class PostsService {
   constructor(
@@ -132,19 +138,97 @@ export class PostsService {
     return instrument;
   }
 
-  async search(search: string) {
-    const filter: any = {};
+  async search(search: SearchDTO) {
+    /* The $geoNear stage must be the first stage in the MongoDB aggregation pipeline, because 
+    of optimization MongoDB enforces this requirement and $geoNear must always operate
+    on the initial collection before any other stages like $lookup or $unwind.
+    Since the location field resides in the Group collection, 
+    but $geoNear requires it to be in the root collection, we have to first get groups*/
 
-    filter['instrument'] = search;
+    const pipeline: any[] = [];
 
-    const posts = await this.postModel.find(filter).exec();
+    if (search.address && search.range) {
+      const loc = await this.getLocation(search.address);
+      console.log('address: ', search.address);
+      console.log('location: ', loc);
+      console.log('range: ', search.range);
 
-    const postWithGroup = await Promise.all(
-      posts.map(async (post) => {
-        const group = await this.getGroupForPost(post.groupId);
-        return { ...post.toObject(), group };
-      }),
-    );
-    return postWithGroup;
+      if (loc) {
+        console.log('Fetching groups near location...');
+        // Get groups near the location
+        const nearbyGroups = await this.groupModel
+          .aggregate([
+            {
+              $geoNear: {
+                near: { type: 'Point', coordinates: loc },
+                distanceField: 'distance',
+                maxDistance: search.range,
+                spherical: true,
+              },
+            },
+            {
+              $project: { _id: 1 }, // Only keep the group IDs
+            },
+          ])
+          .exec();
+
+        const groupIds = nearbyGroups.map((group) => group._id);
+
+        //filter for posts belonging to these groups
+        pipeline.push({
+          $match: {
+            groupId: { $in: groupIds },
+          },
+        });
+      }
+    }
+
+    //filter for posts belonging to these groups
+    if (search.instrument) {
+      console.log('Instrument filter applied');
+      pipeline.push({
+        $match: {
+          instrument: search.instrument,
+        },
+      });
+    }
+
+    // $lookup and $unwind for group details
+    pipeline.push({
+      $lookup: {
+        from: 'groups',
+        localField: 'groupId',
+        foreignField: '_id',
+        as: 'group',
+      },
+    });
+    pipeline.push({
+      $unwind: '$group',
+    });
+
+    const posts = await this.postModel.aggregate(pipeline).exec();
+    return posts;
+  }
+
+  private async getLocation(address: string): Promise<[number, number]> {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+      address,
+    )}&format=json`;
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new BadRequestException('Failed to fetch geolocation data.');
+    }
+
+    const data = await response.json();
+    if (!data || data.length === 0) {
+      throw new BadRequestException(
+        'Unable to fetch geolocation for the address.',
+      );
+    }
+    // Extract latitude and longitude
+    const { lon, lat } = data[0];
+
+    return [parseFloat(lon), parseFloat(lat)];
   }
 }
