@@ -162,7 +162,7 @@ export class PostsService {
               $geoNear: {
                 near: { type: 'Point', coordinates: loc },
                 distanceField: 'distance',
-                maxDistance: search.range,
+                maxDistance: Number(search.range) * 1000,
                 spherical: true,
               },
             },

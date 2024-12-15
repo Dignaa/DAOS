@@ -5,6 +5,12 @@ import Grid from '../../components/Grid';
 import Form from '../../components/Form';
 import Select from 'react-select';
 import buttonStyles from '../../components/buttonStyles.module.css';
+import Input from '../../components/Input';
+import SearchContainer from '../../components/Search/SearchContainer';
+import SearchRow from '../../components/Search/SearchRow';
+import SearchLabel from '../../components/Search/SearchLabel';
+import SearchText from '../../components/Search/SearchText';
+import SearchRange from '../../components/Search/SearchRange';
 
 interface Post {
   _id: string;
@@ -49,19 +55,21 @@ function Posts() {
     if (data.address) query.append('address', data.address.toString());
     if (data.range) query.append('range', data.range.toString());
 
-    console.log(query.toString());
     fetch(`${apiUrl}/posts?${query.toString()}`)
       .then(response => {
         return response.json();
       })
       .then(data => {
         console.log(data);
-        setPosts(data);
-        setLoading(false);
+        if (!data) {
+          setPosts([]);
+        } else {
+          setPosts(data);
+        }
+        document.getElementById('posts')?.scrollIntoView();
       })
       .catch(error => {
         console.error(error);
-        setLoading(false);
       });
   };
 
@@ -108,6 +116,10 @@ function Posts() {
     setPosts(allPosts);
   };
 
+  const updateDistance = (e: any) => {
+    document.querySelector('#distance')!.innerHTML = e.target.value;
+  };
+
   return (
     <main>
       <Section>
@@ -117,30 +129,48 @@ function Posts() {
         ) : posts ? (
           <>
             <Form onSubmit={search}>
-              <Select
-                className="react-select-container"
-                classNamePrefix="react-select"
-                required
-                name="instrument"
-                options={instruments}
-                placeholder="Vælg instrument"
-                noOptionsMessage={() => 'Ingen instrumenter fundet'}
-              />
-              <button
-                type="submit"
-                className={`${buttonStyles.button} ${buttonStyles.blue}`}
-              >
-                Søg
-              </button>
-              <button
-                onClick={showAll}
-                type="button"
-                className={`${buttonStyles.button}`}
-              >
-                Vis alle
-              </button>
+              <SearchContainer>
+                <h2>Søg efter opslag</h2>
+                <SearchRow>
+                  <Select
+                    className="react-select-container"
+                    classNamePrefix="react-select"
+                    name="instrument"
+                    options={instruments}
+                    placeholder="Vælg instrument"
+                    noOptionsMessage={() => 'Ingen instrumenter fundet'}
+                  />
+                </SearchRow>
+                <SearchRow>
+                  <SearchLabel>
+                    <span>Lokation</span>
+                    <SearchText />
+                  </SearchLabel>
+                  <SearchLabel>
+                    <span>
+                      Indenfor <span id="distance">50</span> km
+                    </span>
+                    <SearchRange updateDistance={updateDistance} />
+                  </SearchLabel>
+                </SearchRow>
+                <SearchRow>
+                  <button
+                    onClick={showAll}
+                    type="button"
+                    className={`${buttonStyles.button}`}
+                  >
+                    Vis alle opslag
+                  </button>
+                  <button
+                    type="submit"
+                    className={`${buttonStyles.button} ${buttonStyles.blue}`}
+                  >
+                    Søg efter opslag
+                  </button>
+                </SearchRow>
+              </SearchContainer>
             </Form>
-            <Grid cards={posts} />
+            <Grid id="posts" cards={posts} />
           </>
         ) : (
           <h2>Ingen opslag</h2>

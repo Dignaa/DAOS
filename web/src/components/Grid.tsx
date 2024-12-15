@@ -3,6 +3,7 @@ import Card from './Card/Card';
 
 interface PostGridProps {
   cards: PostProps[] | UserProps[]; // Expecting an array of either PostProps or UserProps
+  id?: string;
 }
 
 // PostProps interface for Post data type
@@ -43,14 +44,14 @@ interface UserProps {
   seeking?: boolean;
 }
 
-export default function Grid({ cards }: PostGridProps) {
+export default function Grid({ cards, id }: PostGridProps) {
   // Guard clause to ensure cards are valid
   if (!cards || cards.length === 0) {
     return <p>Ingen resultater</p>;
   }
 
   return (
-    <ul className={styles.grid}>
+    <ul className={styles.grid} id={id}>
       {cards.map((card, index) => (
         <Card key={index} {...card} />
       ))}
