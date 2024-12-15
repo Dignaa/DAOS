@@ -1,0 +1,84 @@
+/* General styles for the range input */
+.range {
+  -webkit-appearance: none; /* Remove default styling for WebKit browsers */
+  appearance: none; /* Remove default styling for other browsers */
+  width: 100%; /* Full-width input */
+  height: 8px; /* Thickness of the track */
+  background: #ddd; /* Track background color */
+  border-radius: 5px; /* Rounded corners for the track */
+  outline: none; /* Remove outline */
+  transition: background 0.3s ease-in-out;
+  margin-top: 20pt;
+}
+
+.range:hover {
+  background: #ccc; /* Change background on hover */
+}
+
+/* Thumb (slider handle) */
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Remove default thumb styling */
+  appearance: none; /* Remove default thumb styling */
+  width: 20px; /* Width of the thumb */
+  height: 20px; /* Height of the thumb */
+  background: var(--color-blue); /* Thumb color */
+  border: none; /* Remove border */
+  border-radius: 50%; /* Make thumb circular */
+  cursor: pointer; /* Show pointer cursor on hover */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
+  transition: background 0.3s ease-in-out;
+}
+
+.range::-webkit-slider-thumb:hover {
+  background: #4a4e6e; /* Change thumb color on hover */
+}
+
+/* Firefox thumb styling */
+.range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #007bff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease-in-out;
+}
+
+.range::-moz-range-thumb:hover {
+  background: #0056b3;
+}
+
+/* Track styling for Firefox */
+.range::-moz-range-track {
+  background: #ddd;
+  border-radius: 5px;
+  height: 8px;
+}
+
+/* For Edge and Internet Explorer */
+.range::-ms-thumb {
+  width: 20px;
+  height: 20px;
+  background: #007bff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.range::-ms-track {
+  width: 100%;
+  height: 8px;
+  background: transparent; /* Transparent track for proper alignment */
+  border-color: transparent;
+  color: transparent;
+}
+
+/* Active or filled track styles for Edge */
+.range::-ms-fill-lower {
+  background: #ccc;
+}
+
+.range::-ms-fill-upper {
+  background: #ddd;
+}

@@ -1,0 +1,9 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8pt;
+  padding: 16pt 32pt;
+  border: 1pt solid #dddddd;
+  box-shadow: 0 2pt 4pt #00000014;
+  border-radius: 10pt;
+}

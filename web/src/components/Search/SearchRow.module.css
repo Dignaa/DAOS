@@ -1,0 +1,14 @@
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 8pt;
+  > * {
+    flex: 1;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .row {
+    flex-direction: column;
+  }
+}
