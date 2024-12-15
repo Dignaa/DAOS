@@ -5,7 +5,6 @@ import Grid from '../../components/Grid';
 import Form from '../../components/Form';
 import Select from 'react-select';
 import buttonStyles from '../../components/buttonStyles.module.css';
-import Input from '../../components/Input';
 import SearchContainer from '../../components/Search/SearchContainer';
 import SearchRow from '../../components/Search/SearchRow';
 import SearchLabel from '../../components/Search/SearchLabel';
