@@ -7,10 +7,10 @@ export default function SearchRange({ updateDistance }: any) {
       onChange={updateDistance}
       type="range"
       name="range"
-      min="0"
+      min="1"
       defaultValue="50"
-      step="10"
-      max="999"
+      step="1"
+      max="1000"
     />
   );
 }
