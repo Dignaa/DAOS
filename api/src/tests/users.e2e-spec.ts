@@ -105,7 +105,7 @@ describe('UsersController (e2e)', () => {
     });
   });
 
-  describe('PATCH /users/:id', () => {
+  describe('PUT /users/:id', () => {
     it('should update user information', async () => {
       const createUserDto: CreateUserDto = {
         name: 'Test User',
@@ -118,7 +118,7 @@ describe('UsersController (e2e)', () => {
       const updateUserDto: UpdateUserDto = { seeking: false };
 
       const { body } = await request(app.getHttpServer())
-        .patch(`/users/${user._id}`)
+        .put(`/users/${user._id}`)
         .set('Authorization', `Bearer ${authToken}`)
         .send(updateUserDto)
         .expect(200);
@@ -130,7 +130,7 @@ describe('UsersController (e2e)', () => {
       const updateUserDto: UpdateUserDto = { seeking: false };
 
       const { body } = await request(app.getHttpServer())
-        .patch('/users/invalid-id')
+        .put('/users/invalid-id')
         .set('Authorization', `Bearer ${authToken}`)
         .send(updateUserDto)
         .expect(404);
