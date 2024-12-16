@@ -59,7 +59,6 @@ function Posts() {
         return response.json();
       })
       .then(data => {
-        console.log(data);
         if (!data) {
           setPosts([]);
         } else {

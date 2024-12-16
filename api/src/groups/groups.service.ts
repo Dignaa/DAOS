@@ -65,7 +65,6 @@ export class GroupsService {
 
     if (group.adminId.toString() === userId) {
       let loc;
-      console.log(updateGroupDto.address);
       if (updateGroupDto.address === '') {
         loc = [0, 0];
       } else {

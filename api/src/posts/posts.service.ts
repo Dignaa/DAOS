@@ -149,12 +149,8 @@ export class PostsService {
 
     if (search.address && search.range) {
       const loc = await this.getLocation(search.address);
-      console.log('address: ', search.address);
-      console.log('location: ', loc);
-      console.log('range: ', search.range);
 
       if (loc) {
-        console.log('Fetching groups near location...');
         // Get groups near the location
         const nearbyGroups = await this.groupModel
           .aggregate([
