@@ -78,20 +78,21 @@ describe('UsersController (e2e)', () => {
 
   describe('GET /users/:id', () => {
     it('should return a user by ID', async () => {
+      //arrange
       const createUserDto: CreateUserDto = {
         name: 'Test User',
         email: 'find@test.com',
         password: 'password',
         seeking: true,
       };
-
+      //arrange
       const user = await usersService.create(createUserDto);
-
+      //act & assert
       const { body } = await request(app.getHttpServer())
         .get(`/users/${user._id}`)
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200);
-
+      //assert
       expect(body.email).toEqual(createUserDto.email);
     });
 

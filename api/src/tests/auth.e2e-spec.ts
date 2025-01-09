@@ -9,6 +9,7 @@ import { TestModule } from '../test.module';
 import { UsersService } from '../users/users.service';
 
 describe('AuthController (e2e)', () => {
+  //arrange
   let app: INestApplication;
   let userService: UsersService;
 
@@ -47,11 +48,12 @@ describe('AuthController (e2e)', () => {
 
   describe('AuthController /auth/signin', () => {
     it('should not log in a non-existent user', async () => {
+      //act
       const { body } = await request(app.getHttpServer())
         .post('/auth/signin')
         .send({ email: 'nonexistent@test.com', password: 'password' })
         .expect(404);
-
+      //asseert
       expect(body.message).toEqual(
         'User with email - nonexistent@test.com not found',
       );
