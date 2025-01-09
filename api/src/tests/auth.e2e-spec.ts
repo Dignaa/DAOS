@@ -48,12 +48,12 @@ describe('AuthController (e2e)', () => {
 
   describe('AuthController /auth/signin', () => {
     it('should not log in a non-existent user', async () => {
-      //act
+      //act & assert
       const { body } = await request(app.getHttpServer())
         .post('/auth/signin')
         .send({ email: 'nonexistent@test.com', password: 'password' })
         .expect(404);
-      //asseert
+      //assert
       expect(body.message).toEqual(
         'User with email - nonexistent@test.com not found',
       );
